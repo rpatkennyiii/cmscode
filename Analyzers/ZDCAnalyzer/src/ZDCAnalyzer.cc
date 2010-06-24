@@ -63,17 +63,22 @@ void ZDCAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 		double QHAD1 = 0.;
 		double QHAD2 = 0.;
 		double QHADR = 0.;
+		
+		for(int i=0; i<180; i++){data[i]=0;}
+
 		for (ZDCDigiCollection::const_iterator j=zdc_digi->begin();j!=zdc_digi->end(); ++j) {
 			const ZDCDataFrame digi = (const ZDCDataFrame)(*j);		
 			int iSide      = digi.id().zside();
 			int iSection   = digi.id().section();
 			int iChannel   = digi.id().channel();
-                        cout << iChannel << " ";
+			int chid = (iSection-1)*5+(iSide+1)/2*9+(iChannel-1);
+
 			double fSum = 0.;		
 			double fData[10] = {-999.};
 			int fTS = digi.size();
 			for (int i = 0; i < fTS; ++i) {
 				fData[i] = HFQIEConst*digi[i].nominal_fC();
+				data[i+chid*10] = fData[i];
 			}
 			        
 			double fTSMean = getTime(fData, fSum);
@@ -113,7 +118,8 @@ void ZDCAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 			    }
 			}				
 		}
-   		cout << endl;
+		
+		ZDCTree->Fill();
 		h_ZDCP_Charge_Correlation->Fill(QEM, QHAD);
 		h_ZDCP_Charge_CorrelationHAD->Fill(QHAD1, QHAD2);
 		h_ZDCP_Charge_Correlation2->Fill(QEM/5, QHAD/4);
@@ -123,6 +129,16 @@ void ZDCAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
 void ZDCAnalyzer::beginJob(){
 	TFileDirectory ZDCDir = mFileServer->mkdir("ZDC");
+	string bnames[] = {"EM1","EM1","EM1","EM1","EM1",
+		     	   "HM1","HM1","HM1","HM1",
+			   "EP1","EP1","EP1","EP1","EP1",
+			   "HP1","HP1","HP1","HP1"};
+	BranchNames=bnames;
+   	ZDCTree = new TTree("ZDCT","ZDC Tree");
+
+//	for(int i=0; i<18; i++){ZDCTree->Branch(bnames[i].c_str(),&data[i*10],"tsz[10]/D");}
+	for(int i=0; i<18; i++){ZDCTree->Branch(bnames[i].c_str(),&data[i*10],"ts1/D:ts2:ts3:ts4:ts5:ts6:ts7:ts8:ts9:ts10");}
+ 	
 	char title[128];
 	char name[128];
 	for(int i = 0; i < 4;++i){

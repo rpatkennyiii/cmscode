@@ -28,6 +28,7 @@
 #include "TH2F.h"
 #include "TStyle.h"
 #include "TCanvas.h"
+#include "TTree.h"
 
 class ZDCAnalyzer : public edm::EDAnalyzer {
 public:
@@ -54,6 +55,8 @@ private:
 	long runBegin,lumibegin,lumiend,evtNo;
 	int run, event, lumi;
 	std::string startTime;
+	std::string *BranchNames;
+        double data[180];
 
 	int Runno;
 	// edm::ESHandle<HcalDbService> conditions;
@@ -92,6 +95,7 @@ private:
 	TH1F* h_ZDCM_EMHAD_ChargeAve;
 	TH1F* h_ZDCM_EMHAD_TSMeanAve;
 
+	TTree* ZDCTree;
 };
 DEFINE_FWK_MODULE(ZDCAnalyzer);
 
