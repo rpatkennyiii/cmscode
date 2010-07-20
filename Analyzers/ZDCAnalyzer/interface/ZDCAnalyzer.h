@@ -17,7 +17,7 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "DataFormats/HcalDigi/interface/HcalDigiCollections.h"
-#include "DataFormats/DetId/interface/DetId.h"
+#include "DataFormats/HcalRecHit/interface/HcalRecHitCollections.h"
 
 //TFile Service
 #include "FWCore/ServiceRegistry/interface/Service.h"
@@ -25,8 +25,7 @@
 
 //Root Classes
 #include "TTree.h"
-#include "TH2F.h"
-#include "TH1F.h"
+#include "TFile.h"
 
 class ZDCAnalyzer : public edm::EDAnalyzer {
 public:
@@ -37,24 +36,21 @@ private:
 	virtual void beginJob();
 	virtual void analyze(const edm::Event&, const edm::EventSetup&);
 	virtual void endJob();
-
-	TH2F *book2DHistogram(TFileDirectory & fDir, const std::string & fName, const std::string & fTitle,
-		int fNbinsX, double fXmin, double fXmax, int fNbinsY, double fYmin, double fYmax) const; 
-	TH1F *book1DHistogram(TFileDirectory & fDir, const std::string & fName, const std::string & fTitle,
-		int fNbins, double fXmin, double fXmax) const;
 private:
 	long runBegin,lumibegin,lumiend,evtNo;
 	int run, event, lumi;
 	std::string startTime;
 	std::string *BranchNames;
-        double data[180];
+        double DigiData[180];
+        double RecData[36];
+	float BeamData[2];
 
 	int Runno;
 	edm::Service<TFileService> mFileServer;
 
-        TH1F* h_bunchXing;
-        TH1F* h_lumiBlock;
-	TTree* ZDCTree;
+	TTree* ZDCDigiTree;
+	TTree* ZDCRecoTree;
+	TTree* BeamTree;
 };
 DEFINE_FWK_MODULE(ZDCAnalyzer);
 

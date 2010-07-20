@@ -1,13 +1,15 @@
 #include "Analyzers/ZDCAnalyzer/interface/ZDCAnalyzer.h"
 
-static const float HFQIEConst = 4.0;
+//static const float HFQIEConst = 4.0;
+static const float HFQIEConst = 2.6;
 static const float EMGain  = 0.025514;
 static const float HADGain = 0.782828;
 
 using namespace edm;
 using namespace std;
 
-ZDCAnalyzer::ZDCAnalyzer(const edm::ParameterSet& iConfig){
+ZDCAnalyzer::ZDCAnalyzer(const ParameterSet& iConfig)
+{
 	runBegin = -1;
 	evtNo = 0;
 	lumibegin = 0;
@@ -19,7 +21,7 @@ ZDCAnalyzer::ZDCAnalyzer(const edm::ParameterSet& iConfig){
 ZDCAnalyzer::~ZDCAnalyzer(){}
 
 
-void ZDCAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+void ZDCAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 {
 	++evtNo;
 	time_t a = (iEvent.time().value()) >> 32; // store event info
@@ -37,17 +39,22 @@ void ZDCAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 	if (lumi < lumibegin)lumibegin = lumi;
 	if (lumi > lumiend)lumiend = lumi;
 
-	h_lumiBlock->Fill(iEvent.luminosityBlock());
-	h_bunchXing->Fill(iEvent.bunchCrossing());
+	BeamData[0]=iEvent.bunchCrossing();
+	BeamData[1]=lumi;
 
-	edm::Handle<ZDCDigiCollection> zdc_digi_h;
+	BeamTree->Fill();
+
+	Handle<ZDCDigiCollection> zdc_digi_h;
+	Handle<ZDCRecHitCollection> zdc_recHits_h;
 	iEvent.getByType(zdc_digi_h);
+	iEvent.getByType(zdc_recHits_h);
 	const ZDCDigiCollection *zdc_digi = zdc_digi_h.failedToGet()? 0 : &*zdc_digi_h;
+	const ZDCRecHitCollection *zdc_recHits = zdc_recHits_h.failedToGet()? 0 : &*zdc_recHits_h;
 
 	if(zdc_digi){
-		for(int i=0; i<180; i++){data[i]=0;}
+		for(int i=0; i<180; i++){DigiData[i]=0;}
 
-		for (ZDCDigiCollection::const_iterator j=zdc_digi->begin();j!=zdc_digi->end(); ++j) {
+		for (ZDCDigiCollection::const_iterator j=zdc_digi->begin();j!=zdc_digi->end();j++){
 			const ZDCDataFrame digi = (const ZDCDataFrame)(*j);		
 			int iSide      = digi.id().zside();
 			int iSection   = digi.id().section();
@@ -56,50 +63,53 @@ void ZDCAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
 			int fTS = digi.size();
 			for (int i = 0; i < fTS; ++i) {
-				data[i+chid*10] = HFQIEConst*digi[i].nominal_fC();
+				DigiData[i+chid*10] = HFQIEConst*digi[i].nominal_fC();
 			}
 		}
 		
-		ZDCTree->Fill();
+		ZDCDigiTree->Fill();
+	}
+
+	if(zdc_recHits){
+
+		for(int i=0; i<36; i++){RecData[i]=0;}
+
+		for (ZDCRecHitCollection::const_iterator zhit=zdc_recHits->begin();zhit!=zdc_recHits->end();zhit++){		
+			int iSide      = (zhit->id()).zside();
+			int iSection   = (zhit->id()).section();
+			int iChannel   = (zhit->id()).channel();
+			int chid = (iSection-1)*5+(iSide+1)/2*9+(iChannel-1);
+
+			RecData[chid]=zhit->energy();
+			RecData[chid+18]=zhit->time();
+		}
+		
+		ZDCRecoTree->Fill();
 	}
 }
 
+
 void ZDCAnalyzer::beginJob(){
-	TFileDirectory ZDCDir = mFileServer->mkdir("ZDC");
-	string bnames[] = {"EM1","EM2","EM3","EM4","EM5",
-		     	   "HM1","HM2","HM3","HM4",
-			   "EP1","EP2","EP3","EP4","EP5",
-			   "HP1","HP2","HP3","HP4"};
+	mFileServer->cd();
+		
+	string bnames[] = {"negEM1","negEM2","negEM3","negEM4","negEM5",
+		     	   "negHD1","negHD2","negHD3","negHD4",
+			   "posEM1","posEM2","posEM3","posEM4","posEM5",
+			   "posHD1","posHD2","posHD3","posHD4"};
 	BranchNames=bnames;
-   	ZDCTree = new TTree("ZDCTree","ZDC Tree");
+   	ZDCDigiTree = new TTree("ZDCDigiTree","ZDC Digi Tree");
+   	ZDCRecoTree = new TTree("ZDCRecTree","ZDC Rec Tree");
+	BeamTree = new TTree("BeamTree","Beam Tree");
 
-	for(int i=0; i<18; i++){ZDCTree->Branch(bnames[i].c_str(),&data[i*10],(bnames[i]+"tsz[10]/D").c_str());}
-//	for(int i=0; i<18; i++){ZDCTree->Branch(bnames[i].c_str(),&data[i*10],"ts1/D:ts2:ts3:ts4:ts5:ts6:ts7:ts8:ts9:ts10");}
- 	
-	h_bunchXing = book1DHistogram(ZDCDir,"h_bunchXing", "BX distribution", 3565, -0.5, 3563.5);
-	h_lumiBlock = book1DHistogram(ZDCDir,"h_lumiBlock", "Lumi Blocks", 300, -0.5, 295.5);
-	h_bunchXing->SetFillColor(kBlue);
-	h_lumiBlock->SetFillColor(kBlue);
-}
+	BeamTree->Branch("BunchXing",&BeamData[0],"BunchXing/F");
+	BeamTree->Branch("LumiBlock",&BeamData[1],"LumiBlock/F");
 
-//exact copy from http://cmslxr.fnal.gov/lxr/source/DQM/HcalMonitorModule/src/HcalTimingMonitorModule.cc#100
-
-
-TH1F *ZDCAnalyzer::book1DHistogram(TFileDirectory & fDir, const std::string & fName, const std::string & fTitle,
-int fNbins, double fXmin, double fXmax) const {
-	char title[1024];
-	sprintf(title, "%s [RUN:%i]", fTitle.c_str(), Runno);
-	return fDir.make < TH1F > (fName.c_str(), title, fNbins, fXmin, fXmax);
-}
-
-
-TH2F *ZDCAnalyzer::book2DHistogram(TFileDirectory & fDir, const std::string & fName, const std::string & fTitle,
-int fNbinsX, double fXmin, double fXmax, int fNbinsY, double fYmin, double fYmax) const {
-	char title[1024];
-	sprintf(title, "%s [RUN:%i]", fTitle.c_str(), Runno);
-	return fDir.make < TH2F > (fName.c_str(), title, fNbinsX, fXmin, fXmax, fNbinsY, fYmin, fYmax);
+	for(int i=0; i<18; i++){
+		ZDCDigiTree->Branch(bnames[i].c_str(),&DigiData[i*10],(bnames[i]+"tsz[10]/D").c_str());
+		ZDCRecoTree->Branch((bnames[i]+"energy").c_str(),&RecData[i],(bnames[i]+"energy/D").c_str());
+		ZDCRecoTree->Branch((bnames[i]+"timing").c_str(),&RecData[i+18],(bnames[i]+"timing/D").c_str());
+	}	
 }
 
 
 void ZDCAnalyzer::endJob() {}
-
