@@ -1,9 +1,9 @@
 #include "Analyzers/ZDCAnalyzer/interface/ZDCAnalyzer.h"
 
 //static const float HFQIEConst = 4.0;
-static const float HFQIEConst = 2.6;
-static const float EMGain  = 0.025514;
-static const float HADGain = 0.782828;
+//static const float HFQIEConst = 2.6;
+//static const float EMGain  = 0.025514;
+//static const float HADGain = 0.782828;
 
 using namespace edm;
 using namespace std;
@@ -46,13 +46,16 @@ void ZDCAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 
 	Handle<ZDCDigiCollection> zdc_digi_h;
 	Handle<ZDCRecHitCollection> zdc_recHits_h;
+	ESHandle<HcalDbService> conditions;
 	iEvent.getByType(zdc_digi_h);
 	iEvent.getByType(zdc_recHits_h);
 	const ZDCDigiCollection *zdc_digi = zdc_digi_h.failedToGet()? 0 : &*zdc_digi_h;
 	const ZDCRecHitCollection *zdc_recHits = zdc_recHits_h.failedToGet()? 0 : &*zdc_recHits_h;
 
+	iSetup.get<HcalDbRecord>().get(conditions);
+
 	if(zdc_digi){
-		for(int i=0; i<180; i++){DigiData[i]=0;}
+		for(int i=0; i<180; i++){DigiDatafC[i]=0;DigiDataADC[i]=0;}
 
 		for (ZDCDigiCollection::const_iterator j=zdc_digi->begin();j!=zdc_digi->end();j++){
 			const ZDCDataFrame digi = (const ZDCDataFrame)(*j);		
@@ -61,9 +64,17 @@ void ZDCAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 			int iChannel   = digi.id().channel();
 			int chid = (iSection-1)*5+(iSide+1)/2*9+(iChannel-1);
 
+			const HcalQIEShape* qieshape=conditions->getHcalShape();
+			const HcalQIECoder* qiecoder=conditions->getHcalCoder(digi.id());
+			CaloSamples caldigi;
+			HcalCoderDb coder(*qiecoder,*qieshape);
+			
+		        coder.adc2fC(digi,caldigi);
+	
 			int fTS = digi.size();
 			for (int i = 0; i < fTS; ++i) {
-				DigiData[i+chid*10] = HFQIEConst*digi[i].nominal_fC();
+				DigiDatafC[i+chid*10] = caldigi[i];
+				DigiDataADC[i+chid*10] = digi[i].adc();
 			}
 		}
 		
@@ -90,7 +101,8 @@ void ZDCAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 
 
 void ZDCAnalyzer::beginJob(){
-	mFileServer->cd();
+	mFileServer->file().SetCompressionLevel(9);
+	mFileServer->file().cd();
 		
 	string bnames[] = {"negEM1","negEM2","negEM3","negEM4","negEM5",
 		     	   "negHD1","negHD2","negHD3","negHD4",
@@ -101,15 +113,13 @@ void ZDCAnalyzer::beginJob(){
    	ZDCRecoTree = new TTree("ZDCRecTree","ZDC Rec Tree");
 	BeamTree = new TTree("BeamTree","Beam Tree");
 
-	BeamTree->Branch("BunchXing",&BeamData[0],"BunchXing/F");
-	BeamTree->Branch("LumiBlock",&BeamData[1],"LumiBlock/F");
+	BeamTree->Branch("BunchXing",&BeamData[0],"BunchXing/I");
+	BeamTree->Branch("LumiBlock",&BeamData[1],"LumiBlock/I");
 
 	for(int i=0; i<18; i++){
-		ZDCDigiTree->Branch(bnames[i].c_str(),&DigiData[i*10],(bnames[i]+"tsz[10]/D").c_str());
-		ZDCRecoTree->Branch((bnames[i]+"energy").c_str(),&RecData[i],(bnames[i]+"energy/D").c_str());
-		ZDCRecoTree->Branch((bnames[i]+"timing").c_str(),&RecData[i+18],(bnames[i]+"timing/D").c_str());
+		ZDCDigiTree->Branch((bnames[i]+"fC").c_str(),&DigiDatafC[i*10],(bnames[i]+"cFtsz[10]/F").c_str());
+		ZDCDigiTree->Branch((bnames[i]+"ADC").c_str(),&DigiDataADC[i*10],(bnames[i]+"ADCtsz[10]/I").c_str());
+		ZDCRecoTree->Branch((bnames[i]+"energy").c_str(),&RecData[i],(bnames[i]+"energy/F").c_str());
+		ZDCRecoTree->Branch((bnames[i]+"timing").c_str(),&RecData[i+18],(bnames[i]+"timing/F").c_str());
 	}	
 }
-
-
-void ZDCAnalyzer::endJob() {}
