@@ -2,7 +2,10 @@ import FWCore.ParameterSet.Config as cms
 import sys
 
 if len(sys.argv) > 2:
-	infile=sys.argv[2]
+	infile=[sys.argv[2]]
+	for x in sys.argv[3:]:
+		infile.append(x)
+
 	outfile='histos.root'
 
 	process = cms.Process("PatDemo")
@@ -15,11 +18,11 @@ if len(sys.argv) > 2:
 
 	raw=0
 
-	if infile.find('RAW')+1:
+	if infile[0].find('RAW')+1:
 		process.load("EventFilter.HcalRawToDigi.HcalRawToDigi_cfi")
 		raw=1
 
-	process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+	process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100000) )
 	process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
 	process.source = cms.Source("PoolSource",
@@ -65,7 +68,7 @@ if len(sys.argv) > 2:
 			      maxd0 = cms.double(2)	
 			      )
 
-	process.patdemo = cms.EDAnalyzer('ZDCAnalyzer')
+	process.patdemo = cms.EDAnalyzer('ZDCAnalyzer',)
 
 	if raw:
 		process.p = cms.Path(process.hcalDigis*process.patdemo)
