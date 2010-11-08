@@ -22,7 +22,7 @@ if len(sys.argv) > 2:
 		process.load("EventFilter.HcalRawToDigi.HcalRawToDigi_cfi")
 		raw=1
 
-	process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100000) )
+	process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000000) )
 	process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
 	process.source = cms.Source("PoolSource",
