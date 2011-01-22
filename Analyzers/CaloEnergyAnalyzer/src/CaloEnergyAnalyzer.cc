@@ -75,12 +75,14 @@ void CaloEnergyAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 		for(int j=0;j<82;j++){CalodEtdEta[j]=0;}
 
 		for(CaloTowerCollection::const_iterator calt=(&*calotower)->begin();calt!=(&*calotower)->end();calt++){
-			float cor=(calt->ieta()>=30&&calt->ieta()<=40&&HFCorrection)?(1/HFcor[calt->ieta()-30]):1;
+			float cor=((abs(calt->ieta())>=30)&&(abs(calt->ieta())<=40)&&(HFCorrection))?(1/HFcor[abs(calt->ieta())-30]):1;
 
 			cet.push_back(calt->et()*cor);
 			ce.push_back(calt->energy()*cor);
 			ceta.push_back(calt->eta());
 			cphi.push_back(calt->phi());
+
+			if((abs(calt->ieta())>=30)&&(abs(calt->ieta())<=40)&&(HFCorrection)){ cout << calt->energy() << " "<< calt->energy()*cor << endl;}
 			
 			if(etaBinSize){		
 				for(int k=0;k<82;k++){
