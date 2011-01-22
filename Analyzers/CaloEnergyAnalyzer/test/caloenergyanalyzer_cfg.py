@@ -40,7 +40,10 @@ if len(sys.argv) > 2:
 	    fileName = cms.string(outfile)
 	)
 
-	process.caloana = cms.EDAnalyzer('CaloEnergyAnalyzer',)
+	process.caloana = cms.EDAnalyzer('CaloEnergyAnalyzer',
+		etaBinSize = cms.bool(False),
+		HFCorrection = cms.bool(True)
+	)
 
 	process.HeavyIonGlobalParameters=cms.PSet(centralityVariable= cms.string("PixelHits"),
     		centralitySrc = cms.InputTag("hiCentrality")
@@ -74,7 +77,7 @@ if len(sys.argv) > 2:
 	
 	process.p = cms.Path(process.hltMinBiasHFOrBSC*
 		process.primaryVertexFilter*
-	#	process.siPixelRecHits*
+		#process.siPixelRecHits*
 		process.SiPixFilter*
 		process.HFCoincFilter*
 		process.noBSChalo*

@@ -35,14 +35,19 @@ private:
 	virtual void beginJob();
 	virtual void analyze(const edm::Event&, const edm::EventSetup&);
 
+	bool etaBinSize, HFCorrection;
 	int RunData[4];
 	int CaloSize;
 	float* CaloEt;
+	float* CaloEnergy;
 	float* CaloEta;
 	float* CaloPhi;
 	float CalodEtdEta[82];
 	float cent[2];
 	int centi;	
+	
+	float etabin[83];
+	float HFcor[11];
 	
 //	const ZDCDigiCollection *ZDCDigiz;
 //	const ZDCRecHitCollection *ZDCRecHitz;
