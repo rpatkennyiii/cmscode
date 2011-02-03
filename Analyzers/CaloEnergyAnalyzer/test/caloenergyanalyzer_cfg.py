@@ -1,5 +1,7 @@
-import FWCore.ParameterSet.Config as cms
 import sys
+import FWCore.ParameterSet.Config as cms
+import PhysicsTools.PythonAnalysis.LumiList as LumiList
+import FWCore.ParameterSet.Types as CfgTypes
 from CmsHi.Analysis2010.CommonFunctions_cff import *
 
 if len(sys.argv) > 2:
@@ -23,6 +25,10 @@ if len(sys.argv) > 2:
 	    fileNames = cms.untracked.vstring(infile)
 	)
 
+	myLumis = LumiList.LumiList(filename = 'Cer_BFieldOff_JSON.txt').getCMSSWString().split(',')
+	process.source.lumisToProcess = CfgTypes.untracked(CfgTypes.VLuminosityBlockRange())
+	process.source.lumisToProcess.extend(myLumis)
+
 	#3_3_6 GlobalTag for reReco
 	#process.GlobalTag.globaltag = 'GR09_R_V5::All'
 	#3_4_1 GlobalTag fore reReco
@@ -41,8 +47,10 @@ if len(sys.argv) > 2:
 	)
 
 	process.caloana = cms.EDAnalyzer('CaloEnergyAnalyzer',
-		etaBinSize = cms.bool(False),
-		HFCorrection = cms.bool(True)
+		etaBinSize = cms.bool(True),
+		HFCorrection = cms.bool(True),
+		realHFbins = cms.bool(True),
+		noiseCut = cms.bool(True)
 	)
 
 	process.HeavyIonGlobalParameters=cms.PSet(centralityVariable= cms.string("PixelHits"),
@@ -51,9 +59,11 @@ if len(sys.argv) > 2:
 
 	process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
 	process.hltMinBiasHFOrBSC = process.hltHighLevel.clone()
-	process.hltMinBiasHFOrBSC.HLTPaths = ["HLT_HIMinBiasHf_Core","HLT_HIMinBiasBSC_Core"]
-	process.hltMinBiasHFOrBSC.andOr = cms.bool(True) # this is the default meaning either of the paths above
-	process.hltMinBiasHFOrBSC.throw = cms.bool(False) # don't throw exception since some runs have only one trigger or the other	
+	process.hltMinBiasHFOrBSC.HLTPaths = ["HLT_HIMinBiasHfOrBSC_Core"] # don't forget '_Core' if working on HICorePhysics
+
+#	process.hltMinBiasHFOrBSC.HLTPaths = ["HLT_HIMinBiasHf_Core","HLT_HIMinBiasBSC_Core"]
+#	process.hltMinBiasHFOrBSC.andOr = cms.bool(True) # this is the default meaning either of the paths above
+#	process.hltMinBiasHFOrBSC.throw = cms.bool(False) # don't throw exception since some runs have only one trigger or the other	
 
 	process.load("HeavyIonsAnalysis.Configuration.hfCoincFilter_cff")
 	process.HFCoincFilter = process.hfCoincFilter3	
@@ -75,14 +85,14 @@ if len(sys.argv) > 2:
 	    L1SeedsLogicalExpression = cms.string('NOT (36 OR 37 OR 38 OR 39)')
 	)
 	
-	process.p = cms.Path(process.hltMinBiasHFOrBSC*
-		process.primaryVertexFilter*
-		#process.siPixelRecHits*
-		process.SiPixFilter*
-		process.HFCoincFilter*
-		process.noBSChalo*
-		process.caloana)
+#	process.p = cms.Path(process.hltMinBiasHFOrBSC*
+#		process.primaryVertexFilter*
+#		#process.siPixelRecHits*
+#		process.SiPixFilter*
+#		process.HFCoincFilter*
+#		process.noBSChalo*
+#		process.caloana)
 
-#	process.p = cms.Path(process.HFCoincFilter*process.noBSChalo*process.caloana)
+	process.p = cms.Path(process.hltMinBiasHFOrBSC*process.noBSChalo*process.HFCoincFilter*process.SiPixFilter*process.caloana)
 else:
 	print 'error: no input file'	

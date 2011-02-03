@@ -4,7 +4,9 @@ using namespace edm;
 
 CaloEnergyAnalyzer::CaloEnergyAnalyzer(const ParameterSet& iConfig):
 	etaBinSize(iConfig.getParameter<bool>("etaBinSize")),
-	HFCorrection(iConfig.getParameter<bool>("HFCorrection"))
+	HFCorrection(iConfig.getParameter<bool>("HFCorrection")),
+	realHFbins(iConfig.getParameter<bool>("realHFbins")),
+	noiseCut(iConfig.getParameter<bool>("noiseCut"))
 {
 	if(HFCorrection){
 		float tHFcor[11]={0.982,0.978,0.974,0.969,0.963,0.956
@@ -27,6 +29,15 @@ CaloEnergyAnalyzer::CaloEnergyAnalyzer(const ParameterSet& iConfig):
 				,3.66400,3.83900,4.01300,4.19100,4.36300,4.53800,4.71600,4.88900
 				,5.19100};
 
+		if(realHFbins){
+			float xBins[14] = {2.866,2.976,3.152,3.327,3.503,3.677,3.853,4.027,4.204,4.377,4.552,4.730,4.903,5.205};
+			
+			for(int i=0;i<14;i++){
+				tetabin[i+83-14]=xBins[i];
+				tetabin[13-i]=-tetabin[i+83-14];
+			}
+		}
+
 		for(int i=0;i<83;i++){etabin[i]=tetabin[i];}
 
 	}else{for(int i=0; i<43;i++){etabin[i]=-5.25+i*.25;}}
@@ -38,10 +49,10 @@ void CaloEnergyAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 {
 	CentProv = new CentralityProvider(iSetup);
 	CentProv->newEvent(iEvent,iSetup);
-
-	RunData[0]=iEvent.bunchCrossing();
+	
+//	RunData[0]=iEvent.bunchCrossing();
 	RunData[1]=iEvent.id().luminosityBlock();
-	RunData[2]=iEvent.id().event();
+//	RunData[2]=iEvent.id().event();
 	RunData[3]=iEvent.id().run();
 
 	cent[0]=CentProv->NpartMean();
@@ -77,44 +88,34 @@ void CaloEnergyAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 		for(CaloTowerCollection::const_iterator calt=(&*calotower)->begin();calt!=(&*calotower)->end();calt++){
 			float cor=((abs(calt->ieta())>=30)&&(abs(calt->ieta())<=40)&&(HFCorrection))?(1/HFcor[abs(calt->ieta())-30]):1;
 
-			cet.push_back(calt->et()*cor);
-			ce.push_back(calt->energy()*cor);
-			ceta.push_back(calt->eta());
-			cphi.push_back(calt->phi());
+//			cet.push_back(calt->et()*cor);
+//			ce.push_back(calt->energy()*cor);
+//			ceta.push_back(calt->eta());
+//			cphi.push_back(calt->phi());
 
-			if((abs(calt->ieta())>=30)&&(abs(calt->ieta())<=40)&&(HFCorrection)){ cout << calt->energy() << " "<< calt->energy()*cor << endl;}
-			
-			if(etaBinSize){		
-				for(int k=0;k<82;k++){
-					if(calt->eta()>etabin[k]&&calt->eta()<=etabin[k+1]){
-						CalodEtdEta[k]+=calt->et()*cor/(etabin[k+1]-etabin[k]);
-						k=82;
-					}
+			for(int k=0;k<(etaBinSize?82:42);k++){
+				if(calt->eta()>etabin[k]&&calt->eta()<=etabin[k+1]){
+//					CalodEtdEta[k]+=calt->et()*cor/(etabin[k+1]-etabin[k]);
+					if(!noiseCut||calt->energy()>4){CalodEtdEta[k]+=calt->energy()*cor;}
+					k=(etaBinSize?82:42);
 				}
-			}else{
-				for(int k=0;k<42;k++){
-					if(calt->eta()>etabin[k]&&calt->eta()<=etabin[k+1]){
-						CalodEtdEta[k]+=calt->et()*cor/(etabin[k+1]-etabin[k]);
-						k=42;
-					}
-				}
-			}	
+			}
 		}
 	}
 
-	CaloSize=cet.size();
+//	CaloSize=cet.size();
 
-	CaloTree->SetBranchAddress("CaloEt",&cet[0]);
-	CaloTree->SetBranchAddress("CaloEnergy",&ce[0]);
-	CaloTree->SetBranchAddress("CaloEta",&ceta[0]);
-	CaloTree->SetBranchAddress("CaloPhi",&cphi[0]);
+	//CaloTree->SetBranchAddress("CaloEt",&cet[0]);
+	//CaloTree->SetBranchAddress("CaloEnergy",&ce[0]);
+	//CaloTree->SetBranchAddress("CaloEta",&ceta[0]);
+	//CaloTree->SetBranchAddress("CaloPhi",&cphi[0]);
 
 	CaloTree->Fill();
 
-	cet.clear();
-	ce.clear();
-	ceta.clear();
-	cphi.clear();
+//	cet.clear();
+//	ce.clear();
+//	ceta.clear();
+//	cphi.clear();
 
 //	ZDCDigiz=&*zdc_digi;
 //	ZDCRecHitz=&*zdc_recHits;
@@ -132,37 +133,43 @@ void CaloEnergyAnalyzer::beginJob(){
 	mFileServer->file().SetCompressionLevel(9);
 	mFileServer->file().cd();
 
+//	int nbins=etaBinSize?43:83;
+//	TVectorT<double> EtaBins(nbins,etabin);
+//	mFileServer->file().WriteTObject(&EtaBins,"EtaBins");
+	
 //   	ZDCTree = new TTree("ZDCTree","ZDC Tree");
 	RunTree = new TTree("RunTree","Run Tree");
 	CenTree = new TTree("CentTree","Centrality Tree");
 //	ForwardTree = new TTree("ForwardTree","Forward Tree");
 	CaloTree = new TTree("CaloTree","Calo Tree");
 		
-	RunTree->Branch("BunchXing",&RunData[0],"BunchXing/I");
+//	RunTree->Branch("BunchXing",&RunData[0],"BunchXing/I");
 	RunTree->Branch("LumiBlock",&RunData[1],"LumiBlock/I");
-	RunTree->Branch("Event",&RunData[2],"Event/I");
+//	RunTree->Branch("Event",&RunData[2],"Event/I");
 	RunTree->Branch("Run",&RunData[3],"Run/I");
 
 //	ZDCTree->Branch("ZDCDigi",&ZDCDigiz);
 //	ZDCTree->Branch("ZDCRecHit",&ZDCRecHitz);
 	
-	CenTree->Branch("CentralityNpart",&cent[0],"NpartMean/F");
-	CenTree->Branch("CentralityValue",&cent[1],"centralityValue/F");
+//	CenTree->Branch("CentralityNpart",&cent[0],"NpartMean/F");
+//	CenTree->Branch("CentralityValue",&cent[1],"centralityValue/F");
 	CenTree->Branch("CentralityBin",&centi,"Bin/I");
 
 //	ForwardTree->Branch("HBHERecHit",&HBHERecHitz);
 //	ForwardTree->Branch("HFRecHit",&HFRecHitz);
 //	ForwardTree->Branch("CastorRecHit",&CastorRecHitz);
 
-	CaloTree->Branch("CaloSize",&CaloSize);
-	CaloTree->Branch("CaloEt",&CaloEt,"CaloEt[CaloSize]/F");
-	CaloTree->Branch("CaloEnergy",&CaloEnergy,"CaloEnergy[CaloSize]/F");
-	CaloTree->Branch("CaloEta",&CaloEta,"CaloEta[CaloSize]/F");
-	CaloTree->Branch("CaloPhi",&CaloPhi,"CaloPhi[CaloSize]/F");
+//	CaloTree->Branch("CaloSize",&CaloSize);
+//	CaloTree->Branch("CaloEt",&CaloEt,"CaloEt[CaloSize]/F");
+//	CaloTree->Branch("CaloEnergy",&CaloEnergy,"CaloEnergy[CaloSize]/F");
+//	CaloTree->Branch("CaloEta",&CaloEta,"CaloEta[CaloSize]/F");
+//	CaloTree->Branch("CaloPhi",&CaloPhi,"CaloPhi[CaloSize]/F");
 
 	if(etaBinSize){
 		CaloTree->Branch("CalodEtdEta",&CalodEtdEta,"CalodEtdEta[82]/F");
+//		CaloTree->Branch("CalodEtdEtaBins",&etabin,"CalodEtdEta[82]/F");
 	}else{
 		CaloTree->Branch("CalodEtdEta",&CalodEtdEta,"CalodEtdEta[42]/F");
+//		CaloTree->Branch("CalodEtdEtaBins",&etabin,"CalodEtdEta[32]/F");
 	}
 }	

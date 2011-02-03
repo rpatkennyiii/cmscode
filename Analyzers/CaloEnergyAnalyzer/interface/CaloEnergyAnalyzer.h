@@ -14,6 +14,7 @@
 #include "DataFormats/HeavyIonEvent/interface/CentralityProvider.h"
 #include "DataFormats/CaloTowers/interface/CaloTowerCollection.h"
 #include "FWCore/Framework/interface/EventSetup.h"
+#include "Geometry/CaloGeometry/interface/CaloGeometry.h"
 
 //TFile Service
 #include "FWCore/ServiceRegistry/interface/Service.h"
@@ -22,6 +23,7 @@
 //Root Classes
 #include "TTree.h"
 #include "TFile.h"
+#include "TVectorT.h"
 
 using namespace reco;
 using namespace std;
@@ -35,13 +37,13 @@ private:
 	virtual void beginJob();
 	virtual void analyze(const edm::Event&, const edm::EventSetup&);
 
-	bool etaBinSize, HFCorrection;
+	bool etaBinSize, HFCorrection, realHFbins,noiseCut;
 	int RunData[4];
 	int CaloSize;
-	float* CaloEt;
-	float* CaloEnergy;
-	float* CaloEta;
-	float* CaloPhi;
+	float *CaloEt;
+	float *CaloEnergy;
+	float *CaloEta;
+	float *CaloPhi;
 	float CalodEtdEta[82];
 	float cent[2];
 	int centi;	
