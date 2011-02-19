@@ -10,13 +10,22 @@ process = cms.Process("CaloEnergyTreeMaker")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
+process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
+process.load("HeavyIonsAnalysis.Configuration.hfCoincFilter_cff")
+process.load("HLTrigger.special.hltPixelClusterShapeFilter_cfi")
+process.load("RecoLocalTracker.SiPixelRecHits.SiPixelRecHits_cfi") 
+process.load('Configuration.StandardSequences.MagneticField_38T_cff')
+process.load("Configuration.StandardSequences.ReconstructionHeavyIons_cff")
+process.load("Configuration.StandardSequences.GeometryDB_cff")
 
 overrideCentrality(process)
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1))
+process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True))
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(5000) )
 
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring()
+    fileNames = cms.untracked.vstring('/store/hidata/HIRun2010/HICorePhysics/RECO/PromptReco-v3/000/153/368/887B497F-DC01-E011-86DB-001D09F28D54.root'
+    )
 )
 
 #3_3_6 GlobalTag for reReco
@@ -43,18 +52,17 @@ process.caloana = cms.EDAnalyzer('CaloEnergyAnalyzer',
 	noiseCut = cms.bool(True)
 )
 
-process.HeavyIonGlobalParameters=cms.PSet(centralityVariable= cms.string("PixelHits"),
+process.HeavyIonGlobalParameters=cms.PSet(
+	centralityVariable= cms.string("PixelHits"),
 	centralitySrc = cms.InputTag("hiCentrality")
 )
 
-process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
 process.hltMinBiasHFOrBSC = process.hltHighLevel.clone()
 process.hltMinBiasHFOrBSC.HLTPaths = ["HLT_HIMinBiasHfOrBSC_Core"] # don't forget '_Core' if working on HICorePhysics
 #process.hltMinBiasHFOrBSC.HLTPaths = ["HLT_HIMinBiasHf_Core","HLT_HIMinBiasBSC_Core"]
 #process.hltMinBiasHFOrBSC.andOr = cms.bool(True) # this is the default meaning either of the paths above
 #process.hltMinBiasHFOrBSC.throw = cms.bool(False) # don't throw exception since some runs have only one trigger or the other	
 
-process.load("HeavyIonsAnalysis.Configuration.hfCoincFilter_cff")
 process.HFCoincFilter = process.hfCoincFilter3	
 
 process.primaryVertexFilter = cms.EDFilter("VertexSelector",
@@ -63,7 +71,6 @@ process.primaryVertexFilter = cms.EDFilter("VertexSelector",
     filter = cms.bool(True),   # otherwise it won't filter the events, instead making an empty vertex collection
 )
 
-process.load("HLTrigger.special.hltPixelClusterShapeFilter_cfi")
 process.hltPixelClusterShapeFilter.inputTag = "siPixelRecHits"
 process.SiPixFilter = process.hltPixelClusterShapeFilter
 
@@ -82,4 +89,4 @@ process.noBSChalo = process.hltLevel1GTSeed.clone(
 #		process.noBSChalo*
 #		process.caloana)
 
-process.p = cms.Path(process.hltMinBiasHFOrBSC*process.noBSChalo*process.HFCoincFilter*process.SiPixFilter*process.caloana)
+process.p = cms.Path(process.hltMinBiasHFOrBSC*process.noBSChalo*process.HFCoincFilter*process.siPixelRecHits*process.SiPixFilter*process.caloana)

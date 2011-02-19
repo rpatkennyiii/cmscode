@@ -14,6 +14,12 @@ if len(sys.argv) > 2:
 	process = cms.Process("CaloEnergyTreeMaker")
 
 	process.load("FWCore.MessageService.MessageLogger_cfi")
+	process.MessageLogger.cerr.FwkReport.reportEvery = 1
+	process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True))
+	process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+	process.load('Configuration.StandardSequences.MagneticField_38T_cff')
+	process.load("Configuration.StandardSequences.ReconstructionHeavyIons_cff")
+	process.load("Configuration.StandardSequences.GeometryDB_cff")
 	process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 
 	overrideCentrality(process)
@@ -41,7 +47,7 @@ if len(sys.argv) > 2:
 	#process.GlobalTag.globaltag = "GR_R_38X_V9::All"
 	#HI global tags
 	process.GlobalTag.globaltag="GR10_P_V12::All"
-
+	
 	process.TFileService = cms.Service("TFileService",
 	    fileName = cms.string(outfile)
 	)
@@ -66,6 +72,7 @@ if len(sys.argv) > 2:
 #	process.hltMinBiasHFOrBSC.throw = cms.bool(False) # don't throw exception since some runs have only one trigger or the other	
 
 	process.load("HeavyIonsAnalysis.Configuration.hfCoincFilter_cff")
+	process.load("HeavyIonsAnalysis.Configuration.collisionEventSelection_NOVTX_cff")
 	process.HFCoincFilter = process.hfCoincFilter3	
 
 	process.primaryVertexFilter = cms.EDFilter("VertexSelector",
@@ -73,7 +80,14 @@ if len(sys.argv) > 2:
 	    cut = cms.string("!isFake && abs(z) <= 25 && position.Rho <= 2 && tracksSize >= 2"), 
 	    filter = cms.bool(True),   # otherwise it won't filter the events, instead making an empty vertex collection
 	)
-	
+
+	process.hiPixelClusterVertex = cms.EDProducer("HIPixelClusterVtxProducer",
+                                              maxZ = cms.double(22.05),
+                                              zStep = cms.double(0.1),
+                                              minZ = cms.double(-22.0),
+                                              pixelRecHits = cms.string('siPixelRecHits')
+                                              )
+
 	process.load("HLTrigger.special.hltPixelClusterShapeFilter_cfi")
 	process.hltPixelClusterShapeFilter.inputTag = "siPixelRecHits"
 	process.SiPixFilter = process.hltPixelClusterShapeFilter
@@ -93,6 +107,7 @@ if len(sys.argv) > 2:
 #		process.noBSChalo*
 #		process.caloana)
 
-	process.p = cms.Path(process.hltMinBiasHFOrBSC*process.noBSChalo*process.HFCoincFilter*process.SiPixFilter*process.caloana)
+	process.p = cms.Path(process.hltMinBiasHFOrBSC*process.noBSChalo*process.HFCoincFilter*process.siPixelRecHits*process.SiPixFilter*process.caloana)
+#	process.p = cms.Path(process.hltMinBiasHFOrBSC*process.collisionEventSelection*process.caloana)
 else:
 	print 'error: no input file'	
