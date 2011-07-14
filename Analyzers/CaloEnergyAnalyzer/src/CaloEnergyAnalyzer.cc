@@ -15,6 +15,7 @@ CaloEnergyAnalyzer::CaloEnergyAnalyzer(const ParameterSet& iConfig):
 		for(int i=0;i<11;i++){HFcor[i]=tHFcor[i];}
 	}
 
+	
 	if(etaBinSize){	
 		float tetabin[83]={-5.191,-4.889,-4.716,-4.538,-4.363,-4.191,-4.013
 		   ,-3.839,-3.664,-3.489,-3.314,-3.139,-2.964,-2.853
@@ -43,16 +44,61 @@ CaloEnergyAnalyzer::CaloEnergyAnalyzer(const ParameterSet& iConfig):
 	}else{for(int i=0; i<43;i++){etabin[i]=-5.25+i*.25;}}
 }
 
+
 CaloEnergyAnalyzer::~CaloEnergyAnalyzer(){}
+
+
+void CaloEnergyAnalyzer::beginJob(){
+	mFileServer->file().SetCompressionLevel(9);
+	mFileServer->file().cd();
+
+	int nbins=etaBinSize?83:43;
+	TVectorT<float> EtaBins(nbins,etabin);
+	mFileServer->file().WriteTObject(&EtaBins,"EtaBins");
+	
+	RunTree = new TTree("RunTree","Run Tree");
+	CenTree = new TTree("CentTree","Centrality Tree");
+	CaloTree = new TTree("CaloTree","Calo Tree");
+	VertTree = new TTree("VertTree","Vertex Tree");
+		
+	RunTree->Branch("BunchXing",&RunData[0],"BunchXing/I");
+	RunTree->Branch("LumiBlock",&RunData[1],"LumiBlock/I");
+	RunTree->Branch("Event",&RunData[2],"Event/I");
+	RunTree->Branch("Run",&RunData[3],"Run/I");
+
+	CenTree->Branch("CentralityNpart",&cent[0],"NpartMean/F");
+	CenTree->Branch("CentralityValue",&cent[1],"centralityValue/F");
+	CenTree->Branch("CentralityBin",&centi,"Bin/I");
+
+//	CaloTree->Branch("CaloSize",&CaloSize);
+//	CaloTree->Branch("CaloEmEnergy",&CaloEmEnergy,"CaloEmEnergy[CaloSize]/F");
+//	CaloTree->Branch("CaloHadEnergy",&CaloHadEnergy,"CaloHadEnergy[CaloSize]/F");
+//	CaloTree->Branch("CaloEta",&CaloEta,"CaloEta[CaloSize]/F");
+//	CaloTree->Branch("CaloPhi",&CaloPhi,"CaloPhi[CaloSize]/F");
+
+	if(etaBinSize){
+		CaloTree->Branch("CalodEtdEta",&CalodEtdEta,"CalodEtdEta[82]/F");
+	}else{
+		CaloTree->Branch("CalodEtdEta",&CalodEtdEta,"CalodEtdEta[42]/F");
+	}
+
+	VertTree->Branch("VertSel",VertData);
+	VertTree->Branch("VertSelErr",&VertData[1]);
+	VertTree->Branch("VertAdp",&VertData[2]);
+	VertTree->Branch("VertAdpErr",&VertData[3]);
+//	VertTree->Branch("VertMed",&VertData[4]);
+//	VertTree->Branch("VertMedErr",&VertData[5]);
+}
+
 
 void CaloEnergyAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 {
 	CentProv = new CentralityProvider(iSetup);
 	CentProv->newEvent(iEvent,iSetup);
 	
-//	RunData[0]=iEvent.bunchCrossing();
+	RunData[0]=iEvent.bunchCrossing();
 	RunData[1]=iEvent.id().luminosityBlock();
-//	RunData[2]=iEvent.id().event();
+	RunData[2]=iEvent.id().event();
 	RunData[3]=iEvent.id().run();
 
 	cent[0]=CentProv->NpartMean();
@@ -62,25 +108,29 @@ void CaloEnergyAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 	RunTree->Fill();
 	CenTree->Fill();
 
-//	Handle<ZDCDigiCollection> zdc_digi;
-//	Handle<ZDCRecHitCollection> zdc_recHits;
-//	Handle<HBHERecHitCollection> hbhe_recHits;
-//	Handle<HFRecHitCollection> hf_recHits;
-//	Handle<CastorRecHitCollection> castor_recHits;
-//	Handle<CaloTowerCollection> calotower_h;
 	Handle<CaloTowerCollection> calotower;
+	Handle<VertexCollection> vertexCollection3;
+	Handle<VertexCollection> vertexCollection2;
+//	Handle<VertexCollection> vertexCollection;
 
-//	iEvent.getByType(zdc_digi);
-//	iEvent.getByType(zdc_recHits);
-//	iEvent.getByType(hbhe_recHits);
-//	iEvent.getByType(hf_recHits);
-//	iEvent.getByType(castor_recHits);
 	iEvent.getByType(calotower);
+	iEvent.getByLabel("hiSelectedVertex",vertexCollection3);
+	iEvent.getByLabel("hiPixelAdaptiveVertex",vertexCollection2);
+//	iEvent.getByLabel("hiPixelMedianVertex",vertexCollection);
 	
-	vector<float> cet;
-	vector<float> ce;
-	vector<float> ceta;
-	vector<float> cphi;
+	const VertexCollection * vertices3 = vertexCollection3.product();
+	const VertexCollection * vertices2 = vertexCollection2.product();
+//	const VertexCollection * vertices = vertexCollection.product();
+
+//	typedef ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<double> > Point;
+	const math::XYZPoint pv = vertices3->begin()->position();
+//	cout << getVertexData(vertices,&VertData[4]) << endl;
+
+	if(getVertexData(vertices3,VertData)||getVertexData(vertices2,&VertData[2])){VertTree->Fill();}
+//	vector<float> cee;
+//	vector<float> ceh;
+//	vector<float> ceta;
+//	vector<float> cphi;
 
 	if(!calotower.failedToGet()){
 		for(int j=0;j<82;j++){CalodEtdEta[j]=0;}
@@ -88,16 +138,16 @@ void CaloEnergyAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 		for(CaloTowerCollection::const_iterator calt=(&*calotower)->begin();calt!=(&*calotower)->end();calt++){
 			float cor=((abs(calt->ieta())>=30)&&(abs(calt->ieta())<=40)&&(HFCorrection))?(1/HFcor[abs(calt->ieta())-30]):1;
 
-//			cet.push_back(calt->et()*cor);
-//			ce.push_back(calt->energy()*cor);
+//			cee.push_back(calt->emEnergy()*cor);
+//			ceh.push_back(calt->hadEnergy());
 //			ceta.push_back(calt->eta());
 //			cphi.push_back(calt->phi());
 
 			for(int k=0;k<(etaBinSize?82:42);k++){
-				if(calt->eta()>etabin[k]&&calt->eta()<=etabin[k+1]){
+				if(calt->p4(pv).eta()>etabin[k]&&calt->p4(pv).eta()<=etabin[k+1]){
 
 					if(!noiseCut||calt->energy()>4){//CalodEtdEta[k]+=calt->energy()*cor;}
-						CalodEtdEta[k]+=calt->et()*cor/(etabin[k+1]-etabin[k]);
+						CalodEtdEta[k]+=calt->et(pv)*cor/(etabin[k+1]-etabin[k]);
 					}
 
 					k=(etaBinSize?82:42);
@@ -106,73 +156,29 @@ void CaloEnergyAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 		}
 	}
 
-//	CaloSize=cet.size();
 
-	//CaloTree->SetBranchAddress("CaloEt",&cet[0]);
-	//CaloTree->SetBranchAddress("CaloEnergy",&ce[0]);
-	//CaloTree->SetBranchAddress("CaloEta",&ceta[0]);
-	//CaloTree->SetBranchAddress("CaloPhi",&cphi[0]);
+//	CaloSize=cee.size();
+
+//	CaloTree->SetBranchAddress("CaloEmEnergy",&cee[0]);
+//	CaloTree->SetBranchAddress("CaloHadEnergy",&ceh[0]);
+//	CaloTree->SetBranchAddress("CaloEta",&ceta[0]);
+//	CaloTree->SetBranchAddress("CaloPhi",&cphi[0]);
 
 	CaloTree->Fill();
 
-//	cet.clear();
-//	ce.clear();
+//	cee.clear();
+//	ceh.clear();
 //	ceta.clear();
 //	cphi.clear();
 
-//	ZDCDigiz=&*zdc_digi;
-//	ZDCRecHitz=&*zdc_recHits;
-//	HBHERecHitz=&*hbhe_recHits;
-//	HFRecHitz=&*hf_recHits;
-//	CastorRecHitz=&*castor_recHits;
 //	CaloTowerz=&*calotower;
-
-//	ZDCTree->Fill();
-//	ForwardTree->Fill();
 }
 
 
-void CaloEnergyAnalyzer::beginJob(){
-	mFileServer->file().SetCompressionLevel(9);
-	mFileServer->file().cd();
-
-//	int nbins=etaBinSize?43:83;
-//	TVectorT<double> EtaBins(nbins,etabin);
-//	mFileServer->file().WriteTObject(&EtaBins,"EtaBins");
-	
-//   	ZDCTree = new TTree("ZDCTree","ZDC Tree");
-	RunTree = new TTree("RunTree","Run Tree");
-	CenTree = new TTree("CentTree","Centrality Tree");
-//	ForwardTree = new TTree("ForwardTree","Forward Tree");
-	CaloTree = new TTree("CaloTree","Calo Tree");
-		
-//	RunTree->Branch("BunchXing",&RunData[0],"BunchXing/I");
-	RunTree->Branch("LumiBlock",&RunData[1],"LumiBlock/I");
-//	RunTree->Branch("Event",&RunData[2],"Event/I");
-	RunTree->Branch("Run",&RunData[3],"Run/I");
-
-//	ZDCTree->Branch("ZDCDigi",&ZDCDigiz);
-//	ZDCTree->Branch("ZDCRecHit",&ZDCRecHitz);
-	
-//	CenTree->Branch("CentralityNpart",&cent[0],"NpartMean/F");
-//	CenTree->Branch("CentralityValue",&cent[1],"centralityValue/F");
-	CenTree->Branch("CentralityBin",&centi,"Bin/I");
-
-//	ForwardTree->Branch("HBHERecHit",&HBHERecHitz);
-//	ForwardTree->Branch("HFRecHit",&HFRecHitz);
-//	ForwardTree->Branch("CastorRecHit",&CastorRecHitz);
-
-//	CaloTree->Branch("CaloSize",&CaloSize);
-//	CaloTree->Branch("CaloEt",&CaloEt,"CaloEt[CaloSize]/F");
-//	CaloTree->Branch("CaloEnergy",&CaloEnergy,"CaloEnergy[CaloSize]/F");
-//	CaloTree->Branch("CaloEta",&CaloEta,"CaloEta[CaloSize]/F");
-//	CaloTree->Branch("CaloPhi",&CaloPhi,"CaloPhi[CaloSize]/F");
-
-	if(etaBinSize){
-		CaloTree->Branch("CalodEtdEta",&CalodEtdEta,"CalodEtdEta[82]/F");
-//		CaloTree->Branch("CalodEtdEtaBins",&etabin,"CalodEtdEta[82]/F");
-	}else{
-		CaloTree->Branch("CalodEtdEta",&CalodEtdEta,"CalodEtdEta[42]/F");
-//		CaloTree->Branch("CalodEtdEtaBins",&etabin,"CalodEtdEta[32]/F");
-	}
-}	
+bool CaloEnergyAnalyzer::getVertexData(const VertexCollection *vert, float* vdata){
+	if(vert->size()>0) {
+		vdata[0]=vert->begin()->z();
+		vdata[1]=vert->begin()->zError();
+		return(vert->size());
+	}else{return(-999.9);}
+}
