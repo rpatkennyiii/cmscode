@@ -9,24 +9,23 @@ outfile='CaloEnergy.root'
 process = cms.Process("CaloEnergyTreeMaker")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
-process.load("HeavyIonsAnalysis.Configuration.hfCoincFilter_cff")
-process.load("HLTrigger.special.hltPixelClusterShapeFilter_cfi")
-process.load("RecoLocalTracker.SiPixelRecHits.SiPixelRecHits_cfi") 
+process.MessageLogger.cerr.FwkReport.reportEvery = 1
+process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True))
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load("Configuration.StandardSequences.ReconstructionHeavyIons_cff")
 process.load("Configuration.StandardSequences.GeometryDB_cff")
+process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 
 overrideCentrality(process)
 
-process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True))
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(5000) )
-
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('/store/hidata/HIRun2010/HICorePhysics/RECO/PromptReco-v3/000/153/368/887B497F-DC01-E011-86DB-001D09F28D54.root'
-    )
+    fileNames = cms.untracked.vstring()
 )
+
+#	myLumis = LumiList.LumiList(filename = 'Cer_BFieldOff_JSON.txt').getCMSSWString().split(',')
+#	process.source.lumisToProcess = CfgTypes.untracked(CfgTypes.VLuminosityBlockRange())
+#	process.source.lumisToProcess.extend(myLumis)
 
 #3_3_6 GlobalTag for reReco
 #process.GlobalTag.globaltag = 'GR09_R_V5::All'
@@ -49,44 +48,21 @@ process.caloana = cms.EDAnalyzer('CaloEnergyAnalyzer',
 	etaBinSize = cms.bool(True),
 	HFCorrection = cms.bool(False),
 	realHFbins = cms.bool(True),
-	noiseCut = cms.bool(True)
+	noiseCut = cms.bool(False)
 )
 
-process.HeavyIonGlobalParameters=cms.PSet(
-	centralityVariable= cms.string("PixelHits"),
+process.HeavyIonGlobalParameters=cms.PSet(centralityVariable= cms.string("PixelHits"),
 	centralitySrc = cms.InputTag("hiCentrality")
 )
 
+process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
 process.hltMinBiasHFOrBSC = process.hltHighLevel.clone()
 process.hltMinBiasHFOrBSC.HLTPaths = ["HLT_HIMinBiasHfOrBSC_Core"] # don't forget '_Core' if working on HICorePhysics
-#process.hltMinBiasHFOrBSC.HLTPaths = ["HLT_HIMinBiasHf_Core","HLT_HIMinBiasBSC_Core"]
-#process.hltMinBiasHFOrBSC.andOr = cms.bool(True) # this is the default meaning either of the paths above
-#process.hltMinBiasHFOrBSC.throw = cms.bool(False) # don't throw exception since some runs have only one trigger or the other	
 
-process.HFCoincFilter = process.hfCoincFilter3	
+#	process.hltMinBiasHFOrBSC.HLTPaths = ["HLT_HIMinBiasHf_Core","HLT_HIMinBiasBSC_Core"]
+#	process.hltMinBiasHFOrBSC.andOr = cms.bool(True) # this is the default meaning either of the paths above
+#	process.hltMinBiasHFOrBSC.throw = cms.bool(False) # don't throw exception since some runs have only one trigger or the other	
 
-process.primaryVertexFilter = cms.EDFilter("VertexSelector",
-    src = cms.InputTag("hiSelectedVertex"),
-    cut = cms.string("!isFake && abs(z) <= 25 && position.Rho <= 2 && tracksSize >= 2"), 
-    filter = cms.bool(True),   # otherwise it won't filter the events, instead making an empty vertex collection
-)
+process.load("HeavyIonsAnalysis.Configuration.collisionEventSelection_cff")
 
-process.hltPixelClusterShapeFilter.inputTag = "siPixelRecHits"
-process.SiPixFilter = process.hltPixelClusterShapeFilter
-
-process.load("L1TriggerConfig.L1GtConfigProducers.L1GtTriggerMaskTechTrigConfig_cff")
-process.load("HLTrigger.HLTfilters.hltLevel1GTSeed_cfi")
-process.noBSChalo = process.hltLevel1GTSeed.clone(
-    L1TechTriggerSeeding = cms.bool(True),
-    L1SeedsLogicalExpression = cms.string('NOT (36 OR 37 OR 38 OR 39)')
-)
-
-#	process.p = cms.Path(process.hltMinBiasHFOrBSC*
-#		process.primaryVertexFilter*
-#		#process.siPixelRecHits*
-#		process.SiPixFilter*
-#		process.HFCoincFilter*
-#		process.noBSChalo*
-#		process.caloana)
-
-process.p = cms.Path(process.hltMinBiasHFOrBSC*process.noBSChalo*process.HFCoincFilter*process.siPixelRecHits*process.SiPixFilter*process.caloana)
+process.path = cms.Path(process.hltMinBiasHFOrBSC*process.collisionEventSelection*process.caloana)

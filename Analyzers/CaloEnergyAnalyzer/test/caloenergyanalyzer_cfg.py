@@ -1,7 +1,7 @@
 import sys
 import FWCore.ParameterSet.Config as cms
-import PhysicsTools.PythonAnalysis.LumiList as LumiList
 import FWCore.ParameterSet.Types as CfgTypes
+import PhysicsTools.PythonAnalysis.LumiList as LumiList
 from CmsHi.Analysis2010.CommonFunctions_cff import *
 
 if len(sys.argv) > 2:
@@ -31,7 +31,7 @@ if len(sys.argv) > 2:
 	    fileNames = cms.untracked.vstring(infile)
 	)
 
-	myLumis = LumiList.LumiList(filename = 'Cer_BFieldOff_JSON.txt').getCMSSWString().split(',')
+	myLumis = LumiList.LumiList(filename = 'eflow.json').getCMSSWString().split(',')
 	process.source.lumisToProcess = CfgTypes.untracked(CfgTypes.VLuminosityBlockRange())
 	process.source.lumisToProcess.extend(myLumis)
 
@@ -71,43 +71,9 @@ if len(sys.argv) > 2:
 #	process.hltMinBiasHFOrBSC.andOr = cms.bool(True) # this is the default meaning either of the paths above
 #	process.hltMinBiasHFOrBSC.throw = cms.bool(False) # don't throw exception since some runs have only one trigger or the other	
 
-	process.load("HeavyIonsAnalysis.Configuration.hfCoincFilter_cff")
-	process.load("HeavyIonsAnalysis.Configuration.collisionEventSelection_NOVTX_cff")
-	process.HFCoincFilter = process.hfCoincFilter3	
+	process.load("HeavyIonsAnalysis.Configuration.collisionEventSelection_cff")
 
-	process.primaryVertexFilter = cms.EDFilter("VertexSelector",
-	    src = cms.InputTag("hiSelectedVertex"),
-	    cut = cms.string("!isFake && abs(z) <= 25 && position.Rho <= 2 && tracksSize >= 2"), 
-	    filter = cms.bool(True),   # otherwise it won't filter the events, instead making an empty vertex collection
-	)
-
-	process.hiPixelClusterVertex = cms.EDProducer("HIPixelClusterVtxProducer",
-                                              maxZ = cms.double(22.05),
-                                              zStep = cms.double(0.1),
-                                              minZ = cms.double(-22.0),
-                                              pixelRecHits = cms.string('siPixelRecHits')
-                                              )
-
-	process.load("HLTrigger.special.hltPixelClusterShapeFilter_cfi")
-	process.hltPixelClusterShapeFilter.inputTag = "siPixelRecHits"
-	process.SiPixFilter = process.hltPixelClusterShapeFilter
-
-	process.load("L1TriggerConfig.L1GtConfigProducers.L1GtTriggerMaskTechTrigConfig_cff")
-	process.load("HLTrigger.HLTfilters.hltLevel1GTSeed_cfi")
-	process.noBSChalo = process.hltLevel1GTSeed.clone(
-	    L1TechTriggerSeeding = cms.bool(True),
-	    L1SeedsLogicalExpression = cms.string('NOT (36 OR 37 OR 38 OR 39)')
-	)
+	process.path = cms.Path(process.hltMinBiasHFOrBSC*process.collisionEventSelection*process.caloana)
 	
-#	process.p = cms.Path(process.hltMinBiasHFOrBSC*
-#		process.primaryVertexFilter*
-#		#process.siPixelRecHits*
-#		process.SiPixFilter*
-#		process.HFCoincFilter*
-#		process.noBSChalo*
-#		process.caloana)
-
-	process.p = cms.Path(process.hltMinBiasHFOrBSC*process.noBSChalo*process.HFCoincFilter*process.siPixelRecHits*process.SiPixFilter*process.caloana)
-#	process.p = cms.Path(process.hltMinBiasHFOrBSC*process.collisionEventSelection*process.caloana)
 else:
 	print 'error: no input file'	
