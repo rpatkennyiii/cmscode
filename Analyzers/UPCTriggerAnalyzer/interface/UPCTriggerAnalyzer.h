@@ -29,7 +29,6 @@ public:
 private:
 	virtual void beginJob();
 	virtual void analyze(const edm::Event&, const edm::EventSetup&);
-	void GetTracks(edm::Handle<TrackCollection>);
 
 	edm::Service<TFileService> mFileServer;
 	CentralityProvider *CentProv;
@@ -38,10 +37,8 @@ private:
 	int RunData[4];
 	int centi;	
 	double cent[2];
-	vector<double> x1,y1,z1,px1,py1,pz1;
-	vector<double> x2,y2,z2,px2,py2,pz2;
-	double *pxGP, *pyGP, *pzGP, *xGP, *yGP, *zGP,
-	      *pxSel, *pySel, *pzSel, *xSel, *ySel, *zSel;
+	vector<double> xGP,yGP,zGP,pxGP,pyGP,pzGP,
+		       xSel,ySel,zSel,pxSel,pySel,pzSel;
 
 	TTree* TrakTree;
 	TTree* CenTree;

@@ -1,6 +1,10 @@
 #include "Analyzers/UPCTriggerAnalyzer/interface/UPCTriggerAnalyzer.h"
+#include <iostream>
 
 using namespace edm;
+
+void GetTracks(Handle<TrackCollection>, vector<double>&, vector<double>&, 
+               vector<double>&, vector<double>&, vector<double>&, vector<double>&);
 
 UPCTriggerAnalyzer::UPCTriggerAnalyzer(const edm::ParameterSet& iConfig){}
 
@@ -15,23 +19,23 @@ void UPCTriggerAnalyzer::beginJob(){
 	RunTree = new TTree("RunTree","RunTree");
 
 	TrakTree->Branch("nGloPrimTracks",&nGPTracks,"nGloPrimTracks/I");
-	TrakTree->Branch("pxGloPrim",pxGP,"pxGloPrim[nGloPrimTracks]/F");
-	TrakTree->Branch("pyGloPrim",pyGP,"pyGloPrim[nGloPrimTracks]/F");
-	TrakTree->Branch("pzGloPrim",pzGP,"pzGloPrim[nGloPrimTracks]/F");
-	TrakTree->Branch("xGloPrim",xGP,"xGloPrim[nGloPrimTracks]/F");
-	TrakTree->Branch("yGloPrim",yGP,"yGloPrim[nGloPrimTracks]/F");
-	TrakTree->Branch("zGloPrim",zGP,"zGloPrim[nGloPrimTracks]/F");
+	TrakTree->Branch("pxGloPrim",&pxGP[0],"pxGloPrim[nGloPrimTracks]/D");
+	TrakTree->Branch("pyGloPrim",&pyGP[0],"pyGloPrim[nGloPrimTracks]/D");
+	TrakTree->Branch("pzGloPrim",&pzGP[0],"pzGloPrim[nGloPrimTracks]/D");
+	TrakTree->Branch("xGloPrim",&xGP[0],"xGloPrim[nGloPrimTracks]/D");
+	TrakTree->Branch("yGloPrim",&yGP[0],"yGloPrim[nGloPrimTracks]/D");
+	TrakTree->Branch("zGloPrim",&zGP[0],"zGloPrim[nGloPrimTracks]/D");
 	
 	TrakTree->Branch("nSelTracks",&nSelTracks,"nSelTracks/I");
-	TrakTree->Branch("pxSel",pxSel,"pxSel[nSelTracks]/F");
-	TrakTree->Branch("pySel",pySel,"pySel[nSelTracks]/F");
-	TrakTree->Branch("pzSel",pzSel,"pzSel[nSelTracks]/F");
-	TrakTree->Branch("xSel",xSel,"xSel[nSelTracks]/F");
-	TrakTree->Branch("ySel",ySel,"ySel[nSelTracks]/F");
-	TrakTree->Branch("zSel",zSel,"zSel[nSelTracks]/F");
+	TrakTree->Branch("pxSel",&pxSel[0],"pxSel[nSelTracks]/D");
+	TrakTree->Branch("pySel",&pySel[0],"pySel[nSelTracks]/D");
+	TrakTree->Branch("pzSel",&pzSel[0],"pzSel[nSelTracks]/D");
+	TrakTree->Branch("xSel",&xSel[0],"xSel[nSelTracks]/D");
+	TrakTree->Branch("ySel",&ySel[0],"ySel[nSelTracks]/D");
+	TrakTree->Branch("zSel",&zSel[0],"zSel[nSelTracks]/D");
 
-	CenTree->Branch("CentralityNpart",&cent[0],"NpartMean/F");
-	CenTree->Branch("CentralityValue",&cent[1],"centralityValue/F");
+	CenTree->Branch("CentralityNpart",&cent[0],"NpartMean/D");
+	CenTree->Branch("CentralityValue",&cent[1],"centralityValue/D");
 	CenTree->Branch("CentralityBin",&centi,"Bin/I");
 
 	RunTree->Branch("BunchXing",&RunData[0],"BunchXing/I");
@@ -59,46 +63,47 @@ void UPCTriggerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup
 	iEvent.getByLabel("hiGlobalPrimTracks",hiGloPrimTrax);
 	iEvent.getByLabel("hiSelectedTracks",hiSelTrax);
 
-	x1.clear(); y1.clear(); z1.clear(); 
-	px1.clear(); py1.clear(); pz1.clear(); 
-	x2.clear(); y2.clear(); z2.clear(); 
-	px2.clear(); py2.clear(); pz2.clear();
+	xGP.clear(); yGP.clear(); zGP.clear(); 
+	pxGP.clear(); pyGP.clear(); pzGP.clear(); 
+	xSel.clear(); ySel.clear(); zSel.clear(); 
+	pxSel.clear(); pySel.clear(); pzSel.clear();
 
-	if(!hiGloPrimTrax.failedToGet()){
-		GetTracks(hiGloPrimTrax);
-		for(int i=0;i<int(x2.size());i++){
-			x1.push_back(x2[i]);
-			y1.push_back(y2[i]);
-			z1.push_back(z2[i]);
-			px1.push_back(px2[i]);
-			py1.push_back(py2[i]);
-			pz1.push_back(pz2[i]);
-		}
+	if(!hiGloPrimTrax.failedToGet()){GetTracks(hiGloPrimTrax,xGP,yGP,zGP,pxGP,pyGP,pzGP);}
+	if(!hiSelTrax.failedToGet()){GetTracks(hiSelTrax,xSel,ySel,zSel,pxSel,pySel,pzSel);}
 
-	}
-	if(!hiSelTrax.failedToGet()){GetTracks(hiSelTrax);}
+	nGPTracks=xGP.size(); nSelTracks=xSel.size();
 
-	nGPTracks=x1.size(); nSelTracks=x2.size();
-	xGP=&(x1[0]);yGP=&(y1[0]);zGP=&(z1[0]);
-	xSel=&(x2[0]);ySel=&(y2[0]);zSel=&(z2[0]);
-	pxGP=&(px1[0]);pyGP=&(py1[0]);pzGP=&(pz1[0]);
-	pxSel=&(px2[0]);pySel=&(py2[0]);pzSel=&(pz2[0]);
+	TrakTree->SetBranchAddress("pxGloPrim",&pxGP[0]);
+	TrakTree->SetBranchAddress("pyGloPrim",&pyGP[0]);
+	TrakTree->SetBranchAddress("pzGloPrim",&pzGP[0]);
+	TrakTree->SetBranchAddress("xGloPrim",&xGP[0]);
+	TrakTree->SetBranchAddress("yGloPrim",&yGP[0]);
+	TrakTree->SetBranchAddress("zGloPrim",&zGP[0]);
+	
+	TrakTree->SetBranchAddress("pxSel",&pxSel[0]);
+	TrakTree->SetBranchAddress("pySel",&pySel[0]);
+	TrakTree->SetBranchAddress("pzSel",&pzSel[0]);
+	TrakTree->SetBranchAddress("xSel",&xSel[0]);
+	TrakTree->SetBranchAddress("ySel",&ySel[0]);
+	TrakTree->SetBranchAddress("zSel",&zSel[0]);
 
 	TrakTree->Fill();
 	CenTree->Fill();
 	RunTree->Fill();
 }
 
-void UPCTriggerAnalyzer::GetTracks(Handle<TrackCollection> TrackCol){
+void GetTracks(Handle<TrackCollection> TrackCol, 
+	vector<double> &x, vector<double> &y, vector<double> &z,
+	vector<double> &px, vector<double> &py, vector<double> &pz){
 	for(TrackCollection::const_iterator trax=(&*TrackCol)->begin();
 	    trax!=(&*TrackCol)->end();
 	    trax++){
-		x2.push_back(trax->vx());
-		y2.push_back(trax->vy());
-		z2.push_back(trax->vz());
-		px2.push_back(trax->px());
-		py2.push_back(trax->py());
-		pz2.push_back(trax->pz());
+		x.push_back(trax->vx());
+		y.push_back(trax->vy());
+		z.push_back(trax->vz());
+		px.push_back(trax->px());
+		py.push_back(trax->py());
+		pz.push_back(trax->pz());
 	}
 }
 
