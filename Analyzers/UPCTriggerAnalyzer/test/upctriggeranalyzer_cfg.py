@@ -9,17 +9,38 @@ if len(sys.argv) > 2:
 	for x in sys.argv[3:(len(sys.argv)-2)]:
 		infile.append(x)
 
-	outfile='UPCTriggerTrees.root'
+	outfile='UPCTree.root'
 
 	process = cms.Process("UPCTriggerTreeMaker")
 
 	process.load("FWCore.MessageService.MessageLogger_cfi")
-	process.MessageLogger.cerr.FwkReport.reportEvery = 10
+	process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 #	process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True))
 	process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 	process.load("Configuration.StandardSequences.ReconstructionHeavyIons_cff")
 	process.load("Configuration.StandardSequences.GeometryDB_cff")
 	process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
+#	process.load('L1Trigger.Skimmer.l1Filter_cfi')
+#	process.load('HLTrigger.HLTfilters.hltLevel1GTSeed_cfi')
+#	process.load("HLTrigger.HLTanalyzers.HI_HLTAnalyser_cff")
+
+#	process.hltLevel1GTSeed.L1SeedsLogicalExpression = cms.string('L1_BscMinBiasThreshold1')
+
+#	process.upcNeutron = !(process.l1Filter.clone(
+#		algorithms = cms.vstring('L1_BscMinBiasThreshold1')
+#	))
+
+#	process.hltanalysis.RunParameters.Debug = False
+#	process.hltanalysis.RunParameters.UseTFileService = True
+#	process.hltanalysis.RunParameters.Monte = False
+#	process.hltanalysis.RunParameters.DoMC = False
+#	process.hltanalysis.RunParameters.DoJets = True
+#	process.hltanalysis.RunParameters.DoPhotons = True
+#	process.hltanalysis.RunParameters.DoSuperClusters = True
+#	process.hltanalysis.recjets  = "iterativeConePu5CaloJets"
+#	process.hltanalysis.BarrelPhoton = "correctedIslandBarrelSuperClusters"
+#	process.hltanalysis.EndcapPhoton = "correctedIslandEndcapSuperClusters"
+#	process.hltanalysis.l1GtReadoutRecord = cms.InputTag("gtDigis")
 
 	overrideCentrality(process)
 
@@ -54,12 +75,49 @@ if len(sys.argv) > 2:
 	)
 
 	process.upctana = cms.EDAnalyzer('UPCTriggerAnalyzer')
+	process.zdcana = cms.EDAnalyzer('ZDCAnalyzer')
+
+	process.anaSelTrack = cms.EDAnalyzer('TrackAnalyzer',
+                          trackPtMin = cms.untracked.double(0.4),
+                          simTrackPtMin = cms.untracked.double(0.4),
+                          vertexSrc = cms.vstring('hiSelectedVertex'),
+                          trackSrc = cms.InputTag('hiSelectedTracks'),
+                          pfCandSrc = cms.InputTag('particleFlow'),
+                          doPFMatching = cms.untracked.bool(False),
+                          doSimTrack = cms.untracked.bool(False)
+                          )
+
+	process.anaGpTrack = cms.EDAnalyzer('TrackAnalyzer',
+                          trackPtMin = cms.untracked.double(0.4),
+                          simTrackPtMin = cms.untracked.double(0.4),
+                          vertexSrc = cms.vstring('hiSelectedVertex'),
+                          trackSrc = cms.InputTag('hiGlobalPrimTracks'),
+                          pfCandSrc = cms.InputTag('particleFlow'),
+                          doPFMatching = cms.untracked.bool(False),
+                          doSimTrack = cms.untracked.bool(False)
+                          )
+	
+#	process.anaCentrality = cms.EDAnalyzer('CentralityTableProducer',
+#                          isMC = cms.untracked.bool(False),
+#                          makeDBFromTFile = cms.untracked.bool(False),
+#                          makeTFileFromDB = cms.untracked.bool(True)
+#                          )
+
+	process.triggerSelection = cms.EDFilter( "TriggerResultsFilter",
+    		triggerConditions = cms.vstring("( L1_ZdcCaloPlus_BptxAND OR L1_ZdcCaloMinus_BptxAND ) AND ( NOT L1_BscMinBiasThreshold1 )"),
+		hltResults = cms.InputTag(""),
+		l1tResults = cms.InputTag("gtDigis","","RECO"),
+		daqPartitions = cms.uint32( 0x01 ),
+		l1tIgnoreMask = cms.bool( False ),
+    		l1techIgnorePrescales = cms.bool( False ),
+    		throw = cms.bool( True )
+	)
 
 	process.HeavyIonGlobalParameters=cms.PSet(centralityVariable= cms.string("HFhits"),#"PixelHits"),
     		centralitySrc = cms.InputTag("hiCentrality")
 	)
 
-#	process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
+#	process.load("HLTrigger.HLTfilters.hltHighLevel_cfi"
 #	process.hltMinBiasHFOrBSC = process.hltHighLevel.clone()
 #	process.hltMinBiasHFOrBSC.HLTPaths = ["HLT_HIMinBiasHfOrBSC_Core"] # don't forget '_Core' if working on HICorePhysics
 
@@ -70,7 +128,7 @@ if len(sys.argv) > 2:
 #	process.load("HeavyIonsAnalysis.Configuration.collisionEventSelection_cff")
 
 #	process.path = cms.Path(process.hltMinBiasHFOrBSC*process.collisionEventSelection*process.caloana)
-	process.path = cms.Path(process.upctana)
+	process.path = cms.Path(process.triggerSelection+process.anaSelTrack+process.anaGpTrack+process.upctana+process.zdcana)
 	
 else:
 	print 'error: no input file'	
