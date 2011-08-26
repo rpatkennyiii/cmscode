@@ -17,7 +17,7 @@
 <use name=root>
 <flags EDM_PLUGIN=1>
 <export>
-   <lib name=AnalyzersZDCAnalyzer2>
+   <lib name=AnalyzersZDCAnalyzer>
    <use name=FWCore/Framework>
    <use name=FWCore/PluginManager>
    <use name=FWCore/ParameterSet>
