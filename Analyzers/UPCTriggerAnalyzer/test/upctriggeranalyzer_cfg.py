@@ -96,6 +96,11 @@ if len(sys.argv) > 2:
                           doPFMatching = cms.untracked.bool(False),
                           doSimTrack = cms.untracked.bool(False)
                           )
+
+	process.tkTracks = cms.EDProducer("ConcreteChargedCandidateProducer",
+     			  src = cms.InputTag("hiGlobalPrimTracks"),
+     			  particleType = cms.string("mu+"),
+ 	)
 	
 #	process.anaCentrality = cms.EDAnalyzer('CentralityTableProducer',
 #                          isMC = cms.untracked.bool(False),
@@ -128,7 +133,9 @@ if len(sys.argv) > 2:
 #	process.load("HeavyIonsAnalysis.Configuration.collisionEventSelection_cff")
 
 #	process.path = cms.Path(process.hltMinBiasHFOrBSC*process.collisionEventSelection*process.caloana)
-	process.path = cms.Path(process.triggerSelection+process.anaSelTrack+process.anaGpTrack+process.upctana+process.zdcana)
+#	process.path = cms.Path(process.triggerSelection+process.anaSelTrack+process.anaGpTrack+process.upctana+process.zdcana)
+	process.path = cms.Path(process.anaSelTrack+process.anaGpTrack+process.upctana+process.zdcana)
+#	process.path = cms.Path(process.tkTracks+process.upctana+process.zdcana)
 	
 else:
 	print 'error: no input file'	

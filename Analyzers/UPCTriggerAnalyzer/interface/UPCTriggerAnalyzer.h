@@ -9,6 +9,9 @@
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "DataFormats/TrackReco/interface/TrackFwd.h"
 #include "DataFormats/HeavyIonEvent/interface/CentralityProvider.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
+#include "DataFormats/VertexReco/interface/VertexFwd.h"
+#include "DataFormats/MuonReco/interface/Muon.h"
 
 //TFile Service
 #include "FWCore/ServiceRegistry/interface/Service.h"
@@ -18,6 +21,7 @@
 #include "TTree.h"
 #include "TFile.h"
 #include "TVectorT.h"
+#include "TList.h"
 
 using namespace reco;
 using namespace std;
@@ -32,18 +36,28 @@ private:
 
 	edm::Service<TFileService> mFileServer;
 	CentralityProvider *CentProv;
+	vector<reco::Muon> Muonz;
 
 	int nGPTracks, nSelTracks;
 	int RunData[4];
 	int centi;	
 	double cent[2];
-	vector<double> xGP,yGP,zGP,pxGP,pyGP,pzGP,
-		       xSel,ySel,zSel,pxSel,pySel,pzSel;
+	float VertData[6];
+	vector<int> ndofGP,ndofSel;
+	vector<double> chi2GP,xGP, yGP, zGP, 
+	   pGP, qoverpGP, lambdaGP, phiGP,
+	   varQoverpGP, varLambdaGP, varPhiGP,
+	   covarQoverpLambdaGP,covarQoverpPhiGP,covarLambdaPhiGP;
+	vector<double> chi2Sel,xSel, ySel, zSel, 
+	   pSel, qoverpSel, lambdaSel, phiSel,
+	   varQoverpSel, varLambdaSel, varPhiSel,
+	   covarQoverpLambdaSel,covarQoverpPhiSel,covarLambdaPhiSel;
 
+//	TTree* MuonTree;
 	TTree* TrakTree;
 	TTree* CenTree;
 	TTree* RunTree;
+	TTree* VertTree;
 };
 DEFINE_FWK_MODULE(UPCTriggerAnalyzer);
-
 #endif
