@@ -3,13 +3,6 @@
 
 using namespace edm;
 
-void GetTracks(Handle<TrackCollection>, vector<int>&, vector<double>&, vector<double>&, 
-             vector<double>&, vector<double>&, vector<double>&, vector<double>&,
-             vector<double>&, vector<double>&, vector<double>&, vector<double>&,
-             vector<double>&, vector<double>&, vector<double>&, vector<double>&);
-
-bool getVertexData(const VertexCollection*, float*);
-
 UPCTriggerAnalyzer::UPCTriggerAnalyzer(const edm::ParameterSet& iConfig){}
 
 UPCTriggerAnalyzer::~UPCTriggerAnalyzer(){}
@@ -109,10 +102,10 @@ void UPCTriggerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup
 	const VertexCollection * vertices = vertexCollection.product();
 
 //	Muonz.clear();
-	if(!hiGloPrimTrax.failedToGet()){GetTracks(hiGloPrimTrax,ndofGP,chi2GP,xGP,yGP,zGP,pGP,qoverpGP,lambdaGP,phiGP,varQoverpGP,varLambdaGP,varPhiGP,
+	if(!hiGloPrimTrax.failedToGet()){getTracks(hiGloPrimTrax,ndofGP,chi2GP,xGP,yGP,zGP,pGP,qoverpGP,lambdaGP,phiGP,varQoverpGP,varLambdaGP,varPhiGP,
                                                    covarQoverpLambdaSel,covarQoverpPhiSel,covarLambdaPhiSel);}
 	
-	if(!hiSelTrax.failedToGet()){GetTracks(hiSelTrax,ndofSel,chi2Sel,xSel,ySel,zSel,pSel,qoverpSel,lambdaSel,phiSel,varQoverpSel,varLambdaSel,varPhiSel,
+	if(!hiSelTrax.failedToGet()){getTracks(hiSelTrax,ndofSel,chi2Sel,xSel,ySel,zSel,pSel,qoverpSel,lambdaSel,phiSel,varQoverpSel,varLambdaSel,varPhiSel,
                                                covarQoverpLambdaSel,covarQoverpPhiSel,covarLambdaPhiSel);}
 //	if(!muons.failedToGet()){
 //		for(unsigned int i=0; i<(*muons).size();i++){Muonz.push_back((*muons)[i]);}
@@ -159,10 +152,11 @@ void UPCTriggerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup
 	TrakTree->Fill();
 	CenTree->Fill();
 	RunTree->Fill();
+	VertTree->Fill();
 //	MuonTree->Fill();
 }
 
-void GetTracks(Handle<TrackCollection> TrackCol, vector<int> &ndof, vector<double> &chi2,
+void UPCTriggerAnalyzer::getTracks(Handle<TrackCollection> TrackCol, vector<int> &ndof, vector<double> &chi2,
 	vector<double> &x, vector<double> &y, vector<double> &z,
 	vector<double> &p, vector<double> &qoverp, vector<double> &lambda, vector<double> &phi,
 	vector<double> &varqoverp, vector<double> &varlambda, vector<double> &varphi,
@@ -187,7 +181,7 @@ void GetTracks(Handle<TrackCollection> TrackCol, vector<int> &ndof, vector<doubl
 	}
 }
 
-bool getVertexData(const VertexCollection *vert, float* vdata){
+bool UPCTriggerAnalyzer::getVertexData(const VertexCollection *vert, float* vdata){
 	if(vert->size()>0) {
 		vdata[0]=vert->begin()->x();
 		vdata[1]=vert->begin()->xError();

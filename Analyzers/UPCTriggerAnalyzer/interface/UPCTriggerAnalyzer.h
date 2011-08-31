@@ -33,6 +33,11 @@ public:
 private:
 	virtual void beginJob();
 	virtual void analyze(const edm::Event&, const edm::EventSetup&);
+	virtual void getTracks(edm::Handle<TrackCollection>, vector<int>&, vector<double>&, vector<double>&, 
+             vector<double>&, vector<double>&, vector<double>&, vector<double>&,
+             vector<double>&, vector<double>&, vector<double>&, vector<double>&,
+             vector<double>&, vector<double>&, vector<double>&, vector<double>&);
+	bool getVertexData(const VertexCollection*, float*);
 
 	edm::Service<TFileService> mFileServer;
 	CentralityProvider *CentProv;
