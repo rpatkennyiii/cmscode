@@ -35,9 +35,8 @@ void LorentzTree::Begin(TTree * /*tree*/)
    // The tree argument is deprecated (on PROOF 0 is passed).
 
    TString option = GetOption();
-   muPairInvMass = new TH1F(option.Data(),option.Data(),500,0,20);
-
-
+   gpPairInvMass = new TH1F(("GP"+option).Data(),("GP"+option).Data(),500,0,20);
+   selPairInvMass = new TH1F(("Sel"+option).Data(),("Sel"+option).Data(),500,0,20);
 }
 
 void LorentzTree::SlaveBegin(TTree * /*tree*/)
@@ -71,9 +70,17 @@ Bool_t LorentzTree::Process(Long64_t entry)
    // The return value is currently not used.
 
    GetEntry(entry);
-   TLorentzVector *mu0=(*gp4vec)[0], *mu1=(*gp4vec)[1];
-   muPair=(*mu0)+(*mu1);
-   muPairInvMass->Fill(muPair.M());
+   if (fChain->GetBranch("gp4vec")){
+      TLorentzVector *Gp0=(*gp4vec)[0], *Gp1=(*gp4vec)[1];
+      TLorentzVector pairGp=((*Gp0)+(*Gp1));
+      gpPairInvMass->Fill(pairGp.M());
+   }
+
+   if (fChain->GetBranch("sel4vec")){
+      TLorentzVector *Sel0=(*sel4vec)[0], *Sel1=(*sel4vec)[1];
+      TLorentzVector pairSel=((*Sel0)+(*Sel1));
+      selPairInvMass->Fill(pairSel.M());
+   }
 
    return kTRUE;
 }
@@ -91,6 +98,15 @@ void LorentzTree::Terminate()
    // The Terminate() function is the last function to be called during
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
-   muPairInvMass->Draw();
+   if (fChain->GetBranch("gp4vec")){ 
+      gpPairInvMass->Draw();
 
+      if (fChain->GetBranch("sel4vec")){
+         selPairInvMass->SetLineColor(2);
+         selPairInvMass->Draw("same");
+      }
+
+    }else{
+       selPairInvMass->Draw();
+    }      
 }

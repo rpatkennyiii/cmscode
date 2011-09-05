@@ -43,8 +43,8 @@ public :
    virtual TList  *GetOutputList() const { return fOutput; }
    virtual void    SlaveTerminate();
    virtual void    Terminate();
-   TLorentzVector  muPair;
-   TH1F 	  *muPairInvMass;
+   TH1F 	  *gpPairInvMass;
+   TH1F 	  *selPairInvMass;
 
    ClassDef(LorentzTree,0);
 };
@@ -70,8 +70,8 @@ void LorentzTree::Init(TTree *tree)
    fChain = tree;
    fChain->SetMakeClass(1);
 
-   fChain->SetBranchAddress("sel4vec", &sel4vec, &b_sel4vec);
-   fChain->SetBranchAddress("gp4vec", &gp4vec, &b_gp4vec);
+   if (fChain->GetBranch("sel4vec")){fChain->SetBranchAddress("sel4vec", &sel4vec, &b_sel4vec);}
+   if (fChain->GetBranch("gp4vec")){fChain->SetBranchAddress("gp4vec", &gp4vec, &b_gp4vec);}
 }
 
 Bool_t LorentzTree::Notify()
