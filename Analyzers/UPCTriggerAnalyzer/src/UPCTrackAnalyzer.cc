@@ -15,7 +15,7 @@ void UPCTrackAnalyzer::beginJob(){
 
 	TrakTree->Branch("nTracks",&nTracks,"nTracks/I");
 	TrakTree->Branch("ndof",&ndof,"ndof[nTracks]/I");
-	TrakTree->Branch("chi2",&chi2,"nchi2[nTracks]/D");
+	TrakTree->Branch("chi2",&chi2,"chi2[nTracks]/D");
 	TrakTree->Branch("p",&p[0],"p[nTracks]/D");
 	TrakTree->Branch("qoverp",&qoverp[0],"qoverp[nTracks]/D");
 	TrakTree->Branch("lambda",&lambda[0],"lambda[nTracks]/D");

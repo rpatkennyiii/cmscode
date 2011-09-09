@@ -19,7 +19,7 @@ void UPCTriggerAnalyzer::beginJob(){
 
 	TrakTree->Branch("nGloPrimTracks",&nGPTracks,"nGloPrimTracks/I");
 	TrakTree->Branch("ndofGloPrim",&ndofGP,"ndofGloPrim[nGloPrimTracks]/I");
-	TrakTree->Branch("chi2GloPrim",&chi2GP,"nchi2GloPrim[nGloPrimTracks]/D");
+	TrakTree->Branch("chi2GloPrim",&chi2GP,"chi2GloPrim[nGloPrimTracks]/D");
 	TrakTree->Branch("pGloPrim",&pGP[0],"pGloPrim[nGloPrimTracks]/D");
 	TrakTree->Branch("qoverpGloPrim",&qoverpGP[0],"qoverpGloPrim[nGloPrimTracks]/D");
 	TrakTree->Branch("lambdaGloPrim",&lambdaGP[0],"lambdaGloPrim[nGloPrimTracks]/D");
@@ -103,7 +103,7 @@ void UPCTriggerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup
 
 //	Muonz.clear();
 	if(!hiGloPrimTrax.failedToGet()){getTracks(hiGloPrimTrax,ndofGP,chi2GP,xGP,yGP,zGP,pGP,qoverpGP,lambdaGP,phiGP,varQoverpGP,varLambdaGP,varPhiGP,
-                                                   covarQoverpLambdaSel,covarQoverpPhiSel,covarLambdaPhiSel);}
+                                                   covarQoverpLambdaGP,covarQoverpPhiGP,covarLambdaPhiGP);}
 	
 	if(!hiSelTrax.failedToGet()){getTracks(hiSelTrax,ndofSel,chi2Sel,xSel,ySel,zSel,pSel,qoverpSel,lambdaSel,phiSel,varQoverpSel,varLambdaSel,varPhiSel,
                                                covarQoverpLambdaSel,covarQoverpPhiSel,covarLambdaPhiSel);}
