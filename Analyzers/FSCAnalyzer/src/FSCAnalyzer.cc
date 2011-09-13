@@ -6,7 +6,7 @@ FSCAnalyzer::FSCAnalyzer(edm::ParameterSet const& conf):l1GtRR_(conf.getParamete
 
    FSCTree = new TTree("FSCTree","FSCTree");
 
-   FSCTree->Branch("FSCBits",FSCBits,"FSCBits[14]/I");
+   FSCTree->Branch("FSCBits",FSCBits,"FSCBits[16]/I");
    FSCTree->Branch("BunchXing",&RunData[0],"BunchXing/I");
    FSCTree->Branch("LumiBlock",&RunData[1],"LumiBlock/I");
    FSCTree->Branch("Event",&RunData[2],"Event/I");
