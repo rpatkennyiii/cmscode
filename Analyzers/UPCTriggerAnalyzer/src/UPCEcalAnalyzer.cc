@@ -4,7 +4,7 @@ using namespace edm;
 using namespace std;
 
 UPCEcalAnalyzer::UPCEcalAnalyzer(const ParameterSet& iConfig):
-	EcalColName(iConfig.getParameter<string>("EcalCollection")){}
+	EcalColName(iConfig.getParameter<string>("ecalCollection")){}
 
 UPCEcalAnalyzer::~UPCEcalAnalyzer(){}
 
