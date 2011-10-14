@@ -6,11 +6,13 @@ FSCAnalyzer::FSCAnalyzer(edm::ParameterSet const& conf):l1GtRR_(conf.getParamete
 
    FSCTree = new TTree("FSCTree","FSCTree");
 
-   FSCTree->Branch("FSCBits",FSCBits,"FSCBits[16]/I");
-   FSCTree->Branch("BunchXing",&RunData[0],"BunchXing/I");
-   FSCTree->Branch("LumiBlock",&RunData[1],"LumiBlock/I");
-   FSCTree->Branch("Event",&RunData[2],"Event/I");
-   FSCTree->Branch("Run",&RunData[3],"Run/I");
+   FSCTree->Branch("nBits",&nBits,"nBits/i");
+   FSCTree->Branch("FSCBits",FSCBits,"FSCBits[16]/O");
+   FSCTree->Branch("ZeroBiasBit",&ZeroBiasBit,"ZeroBiasBit/O");
+   FSCTree->Branch("BunchXing",&RunData[0],"BunchXing/i");
+   FSCTree->Branch("LumiBlock",&RunData[1],"LumiBlock/i");
+   FSCTree->Branch("Event",&RunData[2],"Event/i");
+   FSCTree->Branch("Run",&RunData[3],"Run/i");
 
    FSCNames[0]="L1Tech_FSC_St1Sect45_upp.v0";
    FSCNames[1]="L1Tech_FSC_St1Sect45_down.v0";
@@ -52,22 +54,30 @@ void FSCAnalyzer::analyze(edm::Event const& e, edm::EventSetup const& iSetup){
    if (l1GtRR.isValid()) {
 
        const TechnicalTriggerWord&  technicalTriggerWordBeforeMask = l1GtRR->technicalTriggerWord();
-
+       
+       nBits=0;
+       ZeroBiasBit=0;
        for (CItAlgo techTrig = menu->gtTechnicalTriggerMap().begin(); techTrig != menu->gtTechnicalTriggerMap().end(); ++techTrig) {
 	  int itrig = (techTrig->second).algoBitNumber();
 	  TString trigName = TString( (techTrig->second).algoName() );
+	  
+	  if("L1Tech_BPTX_plus_AND_minus.v0"==trigName){
+	     nBits++;
+             ZeroBiasBit=technicalTriggerWordBeforeMask.at(itrig);
+	  }
 
 	  for(int fsctrig=0; fsctrig != 16; fsctrig++){
 
 	     if(FSCNames[fsctrig]==trigName){
-		FSCBits[fsctrig] = (int) technicalTriggerWordBeforeMask.at(itrig);
+		nBits++;
+		FSCBits[fsctrig] = technicalTriggerWordBeforeMask.at(itrig);
 	     }else if(itrig == 0){
-		FSCBits[fsctrig]=-999;
+		FSCBits[fsctrig]=0;
 	     }
 	  }
        }
    }
-   FSCTree->Fill();
+   if(nBits>0){FSCTree->Fill();}
 }
 
 

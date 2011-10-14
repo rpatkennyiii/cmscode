@@ -37,7 +37,8 @@ public:
 private:
   edm::Service<TFileService> mFileServer;
   TTree *FSCTree;
-  int FSCBits[16], RunData[4];
+  unsigned int RunData[4], nBits;
+  bool FSCBits[16], ZeroBiasBit;
   TString FSCNames[16];
   edm::InputTag l1GtRR_;
   L1GtUtils m_l1GtUtils;
