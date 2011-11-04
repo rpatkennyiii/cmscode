@@ -4,7 +4,7 @@ import PhysicsTools.PythonAnalysis.LumiList as LumiList
 from CmsHi.Analysis2010.CommonFunctions_cff import *
 
 
-outfile='UPCEG2SingleTrackTree.root'
+outfile='UPCEG2Tree.root'
 
 process = cms.Process("UPCTreeMaker")
 
@@ -31,7 +31,7 @@ process.TFileService = cms.Service("TFileService",
 process.upctana = cms.EDAnalyzer('UPCTriggerAnalyzer')
 process.zdcana = cms.EDAnalyzer('ZDCAnalyzer')
 process.triggerSelection = cms.EDFilter( "TriggerResultsFilter",
-    		triggerConditions = cms.vstring("(L1_SingleEG2) AND (HLT_HIZeroBiasPixel_SingleTrack)"),
+    		triggerConditions = cms.vstring("L1_SingleEG2"),
 		hltResults = cms.InputTag("TriggerResults","","HLT"),
 		l1tResults = cms.InputTag("gtDigis","","RECO"),
 		daqPartitions = cms.uint32( 0x01 ),

@@ -201,10 +201,25 @@ if len(sys.argv) > 2:
 	)
 
 	process.zdcana = cms.EDAnalyzer('ZDCAnalyzer')
-	
-	process.siPixPath = cms.Path(process.hiPixelClusterVertices+process.hiSiPixelRecHits+process.hiPixelTracks+process.upctrackspixana)
-	process.stdPath = cms.Path(process.upctrackselana+process.upctrackgpana+process.upcvertexana+process.upcrunana+process.upccentralityana+process.zdcana)
 
-	process.schedule = cms.Schedule(process.siPixPath,process.stdPath)
+	process.ecalesana = cms.EDAnalyzer('UPCEcalAnalyzer',
+		ecalCollection=cms.string("EcalRecHitsES")
+	)
+	
+	process.ecaleeana = cms.EDAnalyzer('UPCEcalAnalyzer',
+		ecalCollection=cms.string("EcalRecHitsEE")
+	)
+
+	process.ecalebana = cms.EDAnalyzer('UPCEcalAnalyzer',
+		ecalCollection=cms.string("EcalRecHitsEB")
+	)
+
+	process.siPixPath = cms.Path(process.hiPixelClusterVertices+process.hiSiPixelRecHits+process.hiPixelTracks+process.upctrackspixana)
+	process.trackPath = cms.Path(process.upctrackselana+process.upctrackgpana)
+	process.runPath = cms.Path(process.upcvertexana+process.upcrunana+process.upccentralityana)
+        process.zdcPath = cms.Path(process.zdcana)
+	process.ecalPath = cms.Path(process.ecalesana+process.ecaleeana+process.ecalebana)
+
+	process.schedule = cms.Schedule(process.ecalPath)
 else:
 	print 'error: no input file'	
