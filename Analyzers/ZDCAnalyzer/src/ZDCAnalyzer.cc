@@ -1,4 +1,5 @@
 #include "Analyzers/ZDCAnalyzer/interface/ZDCAnalyzer.h"
+#include <iostream>
 
 //static const float HFQIEConst = 4.0;
 //static const float HFQIEConst = 2.6;

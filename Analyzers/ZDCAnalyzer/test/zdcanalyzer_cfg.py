@@ -16,10 +16,20 @@ if len(sys.argv) > 2:
 	raw=0
 
 	if infile[0].find('RAW')+1:
-		process.load("EventFilter.HcalRawToDigi.HcalRawToDigi_cfi")
+		process.hcalDigis = cms.EDProducer("HcalRawToDigi",
+		   UnpackZDC = cms.untracked.bool(True),
+		   UnpackTTP = cms.untracked.bool(True),
+		   FilterDataQuality = cms.bool(True),
+		   InputLabel = cms.InputTag("rawDataRepacker"),
+		   ComplainEmptyData = cms.untracked.bool(False),
+		   UnpackCalib = cms.untracked.bool(True),
+		   lastSample = cms.int32(9),
+		   firstSample = cms.int32(0)
+	       )
+
 		raw=1
 
-	process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100000) )
+	process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
 
 	process.source = cms.Source("PoolSource",
 	    fileNames = cms.untracked.vstring(infile
@@ -37,7 +47,8 @@ if len(sys.argv) > 2:
 	#process.GlobalTag.globaltag = "GR09_31X_V6P::All"
 	#process.GlobalTag.globaltag = "GR10_P_V4::All"
 	#process.GlobalTag.globaltag = "GR_R_37X_V5A::All"
-	process.GlobalTag.globaltag = "GR_R_38X_V9::All"
+	#process.GlobalTag.globaltag = "GR_R_38X_V9::All"
+	process.GlobalTag.globaltag = "GR_R_44_V7::All"
 
 	process.TFileService = cms.Service("TFileService",
 	    fileName = cms.string(outfile)
