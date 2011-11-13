@@ -17,6 +17,8 @@
 #include "FWCore/Framework/interface/ESHandle.h"
 #include "FWCore/Framework/interface/EventSetup.h"
 
+#include "DataFormats/HeavyIonEvent/interface/CentralityProvider.h"
+
 //TFile Service
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
@@ -41,7 +43,10 @@ private:
         int DigiDataADC[180];
         float DigiDatafC[180];
         float RecData[36];
-	int BeamData[2];
+        float RecDataLowGain[18];
+	int BeamData[6];
+	double SumHF;
+    CentralityProvider * centrality_;
 
 	int Runno;
 	edm::Service<TFileService> mFileServer;

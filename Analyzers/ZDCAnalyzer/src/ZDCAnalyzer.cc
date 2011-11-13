@@ -1,4 +1,6 @@
 #include "Analyzers/ZDCAnalyzer/interface/ZDCAnalyzer.h"
+#include "DataFormats/HeavyIonEvent/interface/CentralityBins.h"
+#include "DataFormats/HeavyIonEvent/interface/Centrality.h"
 #include <iostream>
 
 //static const float HFQIEConst = 4.0;
@@ -39,10 +41,26 @@ void ZDCAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 
 	if (lumi < lumibegin)lumibegin = lumi;
 	if (lumi > lumiend)lumiend = lumi;
+	 int bin = -1;
+    double hf = 0.;
+    double b = 999.;
+    SumHF=0.;
+    centrality_ = new CentralityProvider(iSetup);      
+      centrality_->newEvent(iEvent,iSetup); // make sure you do this first in every event
+      //double c = centrality_->centralityValue();
+      const reco::Centrality *cent = centrality_->raw();
+      
+      hf = cent->EtHFhitSum();
 
+      bin = centrality_->getBin();
+      b = centrality_->bMean();
 	BeamData[0]=iEvent.bunchCrossing();
 	BeamData[1]=lumi;
-
+	BeamData[2]=run;
+	BeamData[3]=event;
+    BeamData[4]=bin;
+    SumHF=hf;
+    
 	BeamTree->Fill();
 
 	Handle<ZDCDigiCollection> zdc_digi_h;
@@ -84,7 +102,8 @@ void ZDCAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 
 	if(zdc_recHits){
 
-		for(int i=0; i<36; i++){RecData[i]=0;}
+		for(int i=0; i<36; i++){RecData[i]=0.; }
+		for(int i=0; i<18; i++){RecDataLowGain[i]=0.; }
 
 		for (ZDCRecHitCollection::const_iterator zhit=zdc_recHits->begin();zhit!=zdc_recHits->end();zhit++){		
 			int iSide      = (zhit->id()).zside();
@@ -93,6 +112,7 @@ void ZDCAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 			int chid = (iSection-1)*5+(iSide+1)/2*9+(iChannel-1);
 
 			RecData[chid]=zhit->energy();
+			RecDataLowGain[chid]=zhit->lowGainEnergy();
 			RecData[chid+18]=zhit->time();
 		}
 		
@@ -116,11 +136,21 @@ void ZDCAnalyzer::beginJob(){
 
 	BeamTree->Branch("BunchXing",&BeamData[0],"BunchXing/I");
 	BeamTree->Branch("LumiBlock",&BeamData[1],"LumiBlock/I");
+	BeamTree->Branch("Run",&BeamData[2],"Run/I");
+	BeamTree->Branch("Event",&BeamData[3],"Event/I");
+	BeamTree->Branch("CentralityBin",&BeamData[4],"CentralityBin/I");
+	BeamTree->Branch("CentralityHF",&SumHF,"CentralityHF/D");
 
 	for(int i=0; i<18; i++){
 		ZDCDigiTree->Branch((bnames[i]+"fC").c_str(),&DigiDatafC[i*10],(bnames[i]+"cFtsz[10]/F").c_str());
 		ZDCDigiTree->Branch((bnames[i]+"ADC").c_str(),&DigiDataADC[i*10],(bnames[i]+"ADCtsz[10]/I").c_str());
+//		ZDCDigiTree->Branch("CentralityBin",&BeamData[4],"CentralityBin/I");
+//		ZDCDigiTree->Branch("CentralityHF",&SumHF,"CentralityHF/D");
 		ZDCRecoTree->Branch((bnames[i]+"energy").c_str(),&RecData[i],(bnames[i]+"energy/F").c_str());
+		ZDCRecoTree->Branch((bnames[i]+"lowGainEnergy").c_str(),&RecDataLowGain[i],(bnames[i]+"lowGainEnergy/F").c_str());
 		ZDCRecoTree->Branch((bnames[i]+"timing").c_str(),&RecData[i+18],(bnames[i]+"timing/F").c_str());
+//		ZDCRecoTree->Branch("CentralityBin",&BeamData[4],"CentralityBin/I");
+//		ZDCRecoTree->Branch("CentralityHF",&SumHF,"CentralityHF/D");		
 	}	
+	centrality_ = 0;
 }
