@@ -11,7 +11,8 @@
 using namespace edm;
 using namespace std;
 
-ZDCAnalyzer::ZDCAnalyzer(const ParameterSet& iConfig)
+ZDCAnalyzer::ZDCAnalyzer(const ParameterSet& iConfig) :
+l1GtRR_(iConfig.getParameter<edm::InputTag>("l1GtRR"))
 {
 	runBegin = -1;
 	evtNo = 0;
@@ -26,43 +27,84 @@ ZDCAnalyzer::~ZDCAnalyzer(){}
 
 void ZDCAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 {
+   using namespace edm;
 	++evtNo;
 	time_t a = (iEvent.time().value()) >> 32; // store event info
 	event = iEvent.id().event();
 	run = iEvent.id().run();
 	lumi = iEvent.luminosityBlock();
 
+     centrality_ = new CentralityProvider(iSetup);  
+      centrality_->newEvent(iEvent,iSetup); // make sure you do this first in every event
 	if (runBegin < 0) {         // parameters for the first event
 		startTime = ctime(&a);
 		lumibegin = lumiend = lumi;
 		runBegin = iEvent.id().run();
 		Runno=iEvent.id().run();
 	}
-
 	if (lumi < lumibegin)lumibegin = lumi;
 	if (lumi > lumiend)lumiend = lumi;
-	 int bin = -1;
-    double hf = 0.;
-    double b = 999.;
+
     SumHF=0.;
-    centrality_ = new CentralityProvider(iSetup);      
-      centrality_->newEvent(iEvent,iSetup); // make sure you do this first in every event
-      //double c = centrality_->centralityValue();
-      const reco::Centrality *cent = centrality_->raw();
-      
-      hf = cent->EtHFhitSum();
 
       bin = centrality_->getBin();
-      b = centrality_->bMean();
+
+    hiNpix = centrality_->raw()->multiplicityPixel();
+    hiNpixelTracks = centrality_->raw()->NpixelTracks();
+    hiNtracks = centrality_->raw()->Ntracks();
+    hiNtracksPtCut = centrality_->raw()->NtracksPtCut();
+    hiNtracksEtaCut = centrality_->raw()->NtracksEtaCut();
+    hiNtracksEtaPtCut = centrality_->raw()->NtracksEtaPtCut();
+
+    hiHF = centrality_->raw()->EtHFtowerSum();   
+    hiHFplus = centrality_->raw()->EtHFtowerSumPlus();
+    hiHFminus = centrality_->raw()->EtHFtowerSumMinus();
+    hiHFhit = centrality_->raw()->EtHFhitSum();
+    hiHFhitPlus = centrality_->raw()->EtHFhitSumPlus();
+    hiHFhitMinus = centrality_->raw()->EtHFhitSumMinus();
+
+    hiZDC = centrality_->raw()->zdcSum();
+    hiZDCplus = centrality_->raw()->zdcSumPlus();
+    hiZDCminus = centrality_->raw()->zdcSumMinus();
+   
 	BeamData[0]=iEvent.bunchCrossing();
 	BeamData[1]=lumi;
 	BeamData[2]=run;
 	BeamData[3]=event;
     BeamData[4]=bin;
-    SumHF=hf;
+    SumHF=hiHF;
     
 	BeamTree->Fill();
+// from UserCode/pkenny/Analyzers/L1BitAnalyzer
+   RunData[0]=iEvent.bunchCrossing();
+   RunData[1]=iEvent.id().luminosityBlock();
+   RunData[2]=iEvent.id().event();
+   RunData[3]=iEvent.id().run();
 
+   m_l1GtUtils.retrieveL1EventSetup(iSetup);
+   edm::ESHandle<L1GtTriggerMenu> menuRcd;
+   iSetup.get<L1GtTriggerMenuRcd>().get(menuRcd) ;
+   const L1GtTriggerMenu* menu = menuRcd.product();
+    edm::Handle<L1GlobalTriggerReadoutRecord> l1GtRR; 
+   iEvent.getByLabel(l1GtRR_, l1GtRR);
+
+   if (l1GtRR.isValid()) {
+       const DecisionWord&  dWord = l1GtRR->decisionWord();
+       nBits=0;
+       for (CItAlgo l1Trig = menu->gtAlgorithmAliasMap().begin(); l1Trig != menu->gtAlgorithmAliasMap().end(); ++l1Trig) {
+	  int itrig = (l1Trig->second).algoBitNumber();
+	  string trigName = string( (l1Trig->second).algoName() );
+	  if(firstEv){
+	     L1BitTree->Branch(trigName.c_str(),&L1Bits[nBits],(trigName+"/O").c_str());
+	  }
+	  L1Bits[nBits] = dWord.at(itrig);
+	  nBits++;
+       }
+       firstEv=false;
+   }
+   L1BitTree->Fill();
+
+//
 	Handle<ZDCDigiCollection> zdc_digi_h;
 	Handle<ZDCRecHitCollection> zdc_recHits_h;
 	ESHandle<HcalDbService> conditions;
@@ -140,6 +182,29 @@ void ZDCAnalyzer::beginJob(){
 	BeamTree->Branch("Event",&BeamData[3],"Event/I");
 	BeamTree->Branch("CentralityBin",&BeamData[4],"CentralityBin/I");
 	BeamTree->Branch("CentralityHF",&SumHF,"CentralityHF/D");
+   BeamTree->Branch("bin",&bin,"bin/I");
+   BeamTree->Branch("hiHF",&hiHF,"hiHF/F");
+   BeamTree->Branch("hiHFplus",&hiHFplus,"hiHFplus/F");
+   BeamTree->Branch("hiHFminus",&hiHFminus,"hiHFminus/F");
+   BeamTree->Branch("hiZDC",&hiZDC,"hiZDC/F");
+   BeamTree->Branch("hiZDCplus",&hiZDCplus,"hiZDCplus/F");
+   BeamTree->Branch("hiZDCminus",&hiZDCminus,"hiZDCminus/F");
+   
+   BeamTree->Branch("hiHFhit",&hiHFhit,"hiHFhit/F");
+   BeamTree->Branch("hiHFhitPlus",&hiHFhitPlus,"hiHFhitPlus/F");
+   BeamTree->Branch("hiHFhitMinus",&hiHFhitMinus,"hiHFhitMinus/F");
+   
+   BeamTree->Branch("hiET",&hiET,"hiET/F");
+   BeamTree->Branch("hiEE",&hiEE,"hiEE/F");
+   BeamTree->Branch("hiEB",&hiEB,"hiEB/F");
+   BeamTree->Branch("hiEEplus",&hiEEplus,"hiEEplus/F");
+   BeamTree->Branch("hiEEminus",&hiEEminus,"hiEEminus/F");
+   BeamTree->Branch("hiNpix",&hiNpix,"hiNpix/I");
+   BeamTree->Branch("hiNpixelTracks",&hiNpixelTracks,"hiNpixelTracks/I");
+   BeamTree->Branch("hiNtracks",&hiNtracks,"hiNtracks/I");
+   BeamTree->Branch("hiNtracksPtCut",&hiNtracksPtCut,"hiNtracksPtCut/I");
+   BeamTree->Branch("hiNtracksEtaCut",&hiNtracksEtaCut,"hiNtracksEtaCut/I");
+   BeamTree->Branch("hiNtracksEtaPtCut",&hiNtracksEtaPtCut,"hiNtracksEtaPtCut/I");
 
 	for(int i=0; i<18; i++){
 		ZDCDigiTree->Branch((bnames[i]+"fC").c_str(),&DigiDatafC[i*10],(bnames[i]+"cFtsz[10]/F").c_str());
@@ -152,5 +217,10 @@ void ZDCAnalyzer::beginJob(){
 //		ZDCRecoTree->Branch("CentralityBin",&BeamData[4],"CentralityBin/I");
 //		ZDCRecoTree->Branch("CentralityHF",&SumHF,"CentralityHF/D");		
 	}	
-	centrality_ = 0;
+   L1BitTree = new TTree("L1BitTree","L1BitTree");
+   firstEv=true;	
+   L1BitTree->Branch("BunchXing",&RunData[0],"BunchXing/i");
+   L1BitTree->Branch("LumiBlock",&RunData[1],"LumiBlock/i");
+   L1BitTree->Branch("Event",&RunData[2],"Event/i");
+   L1BitTree->Branch("Run",&RunData[3],"Run/i");	
 }

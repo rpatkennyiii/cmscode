@@ -23,6 +23,18 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 
+// L1 bit analyzer
+#include "DataFormats/Common/interface/Handle.h"
+#include "DataFormats/Common/interface/TriggerResults.h"
+#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutRecord.h"
+#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutSetupFwd.h"
+
+#include "CondFormats/L1TObjects/interface/L1GtTriggerMenu.h"
+#include "CondFormats/L1TObjects/interface/L1GtTriggerMenuFwd.h"
+#include "CondFormats/DataRecord/interface/L1GtTriggerMenuRcd.h"
+
+#include "L1Trigger/GlobalTriggerAnalyzer/interface/L1GtUtils.h"
+
 //Root Classes
 #include "TTree.h"
 #include "TFile.h"
@@ -46,14 +58,25 @@ private:
         float RecDataLowGain[18];
 	int BeamData[6];
 	double SumHF;
-    CentralityProvider * centrality_;
+   int bin;
+   int hiNpix, hiNpixelTracks, hiNtracks, hiNtracksPtCut, hiNtracksEtaCut, hiNtracksEtaPtCut;
+   double hiHF, hiHFplus, hiHFminus, hiHFhit, hiHFhitPlus, hiHFhitMinus, hiEB, hiET, hiEE, hiEEplus, hiEEminus, hiZDC, hiZDCplus, hiZDCminus;
 
 	int Runno;
 	edm::Service<TFileService> mFileServer;
 	
+   CentralityProvider * centrality_;
+	
 	TTree* ZDCDigiTree;
 	TTree* ZDCRecoTree;
 	TTree* BeamTree;
+// from UserCode/pkenny/Analyzers/L1BitAnalyzer
+  TTree *L1BitTree;
+  unsigned int RunData[4], nBits;
+  bool L1Bits[400], firstEv;
+  edm::InputTag l1GtRR_;
+  L1GtUtils m_l1GtUtils;
+
 };
 DEFINE_FWK_MODULE(ZDCAnalyzer);
 

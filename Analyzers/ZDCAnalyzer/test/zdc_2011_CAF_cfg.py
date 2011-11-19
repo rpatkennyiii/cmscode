@@ -8,27 +8,14 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.load('Configuration/StandardSequences/Reconstruction_cff')
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
-# 
-# readFiles = cms.untracked.vstring()
-# readFiles.extend( (
-# 'file:file:/data/users/belt/PbPb_data/HICorePhysics/HICorePromptv3_151353_EE0FFA35-30F2-DF11-9F88-0030486730C6.root'
-# ) )
+
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring( 
-'file:/data/users/belt/PbPb_data/HICorePhysics/HICorePromptv3_151353_EE0FFA35-30F2-DF11-9F88-0030486730C6.root'
+       '/store/express/HIRun2011/HIExpressPhysics/FEVT/Express-v1/000/181/611/049C5E56-0F0E-E111-B98B-001D09F25401.root'
 )
 )
 
-	#3_3_6 GlobalTag for reReco
-	#process.GlobalTag.globaltag = 'GR09_R_V5::All'
-	#3_4_1 GlobalTag fore reReco
-	#process.GlobalTag.globaltag = 'MC_37Y_V5::All'
-	#process.GlobalTag.globaltag = "CRAFT09_R_V1::All"
-	#process.GlobalTag.globaltag = "CRUZETALL_V8::All"
-	#process.GlobalTag.globaltag = "GR09_31X_V6P::All"
-	#process.GlobalTag.globaltag = "GR10_P_V4::All"
-	#process.GlobalTag.globaltag = "GR_R_37X_V5A::All"
 process.GlobalTag.globaltag = 'GR_R_44_V10::All'
 
 # load centrality
@@ -40,9 +27,10 @@ process.HeavyIonGlobalParameters = cms.PSet(
 
 
 process.TFileService = cms.Service("TFileService",
-	    fileName = cms.string('zdctrees_HIExpress_181529To181352.root')
+	    fileName = cms.string('zdctrees_181611_HIExpress_test_100ev.root')
 )
 
-process.zdcana = cms.EDAnalyzer('ZDCAnalyzer',)
-
+process.zdcana = cms.EDAnalyzer('ZDCAnalyzer', 
+   l1GtRR=cms.InputTag("gtDigis")
+)
 process.p = cms.Path(process.zdcreco*process.zdcana)
