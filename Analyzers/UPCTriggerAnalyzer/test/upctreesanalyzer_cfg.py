@@ -64,6 +64,14 @@ if len(sys.argv) > 2:
 	)
 
 	process.GlobalTag.globaltag = 'GR_R_44_V11::All'
+	
+	process.eclustbana = cms.EDAnalyzer('UPCEcalClusterAnalyzer',
+        	ecalClusterCollection=cms.string("islandBarrelSuperClusters")
+	)
+
+	process.eclusteana = cms.EDAnalyzer('UPCEcalClusterAnalyzer',
+		ecalClusterCollection=cms.string("islandEndcapSuperClusters")
+	)
 
 	process.upcmuana = cms.EDAnalyzer('UPCMuonAnalyzer',
 		muonLabel=cms.InputTag("muons")
@@ -105,8 +113,9 @@ if len(sys.argv) > 2:
 	process.runPath = cms.Path(process.triggerSelection+process.upcvertexana+process.upcrunana+process.upccentralityana)
         process.zdcPath = cms.Path(process.triggerSelection+process.zdcana)
 	process.ecalPath = cms.Path(process.triggerSelection+process.ecalesana+process.ecaleeana+process.ecalebana)
+	process.ecalclustPath = cms.Path(process.triggerSelection+process.eclustbana+process.eclusteana)
 	process.muPath = cms.Path(process.triggerSelection+process.upcmuana)
 
-	process.schedule = cms.Schedule(process.muPath,process.trackPath,process.runPath,process.zdcPath)
+	process.schedule = cms.Schedule(process.muPath,process.trackPath,process.runPath,process.zdcPath,process.ecalclustPath)
 else:
 	print 'error: no input file'	
