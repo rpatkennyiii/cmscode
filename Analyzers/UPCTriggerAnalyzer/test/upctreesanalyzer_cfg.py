@@ -2,12 +2,9 @@ import FWCore.ParameterSet.Config as cms
 import sys
 import FWCore.ParameterSet.Types as CfgTypes
 import PhysicsTools.PythonAnalysis.LumiList as LumiList
-#from CmsHi.Analysis2011.CommonFunctions_cff import *
 
 if len(sys.argv) > 2:
-	infile=[sys.argv[2]]
-	for x in sys.argv[3:(len(sys.argv)-2)]:
-		infile.append(x)
+	infile=open(sys.argv[2])
 
 	outfile='UPCTree.root'
 
@@ -20,36 +17,18 @@ if len(sys.argv) > 2:
 	process.load("Configuration.StandardSequences.GeometryDB_cff")
 	process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 
-	#	process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True))
-#	overrideCentrality(process)
-
 	nEventz=int(sys.argv[len(sys.argv)-1])
 	process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(nEventz))
 
 	process.source = cms.Source("PoolSource",
-	    fileNames = cms.untracked.vstring(infile)
+	    fileNames = cms.untracked.vstring(infile.readlines())
 	)
-
-	#3_3_6 GlobalTag for reReco
-	#process.GlobalTag.globaltag = 'GR09_R_V5::All'
-	#3_4_1 GlobalTag fore reReco
-	#process.GlobalTag.globaltag = 'MC_37Y_V5::All'
-	#process.GlobalTag.globaltag = "CRAFT09_R_V1::All"
-	#process.GlobalTag.globaltag = "CRUZETALL_V8::All"
-	#process.GlobalTag.globaltag = "GR09_31X_V6P::All"
-	#process.GlobalTag.globaltag = "GR10_P_V4::All"
-	#process.GlobalTag.globaltag = "GR_R_37X_V5A::All"
-	#process.GlobalTag.globaltag = "GR_R_38X_V9::All"
-	#HI global tags
-	#"GR10_P_V12::All"
-	#process.GlobalTag.globaltag="GR_R_43_V2::ALL"
-	#process.GlobalTag.globaltag = 'GR_R_39X_V6B::All'
 
 	process.TFileService = cms.Service("TFileService",
 	    fileName = cms.string(outfile)
 	)
 
-	process.HeavyIonGlobalParameters=cms.PSet(centralityVariable= cms.string("HFhits"),#"PixelHits"),
+	process.HeavyIonGlobalParameters=cms.PSet(centralityVariable= cms.string("PixelHits"),#HFhits"),#"PixelHits"),
 		centralitySrc = cms.InputTag("hiCentrality")
 	)
 	
@@ -63,7 +42,11 @@ if len(sys.argv) > 2:
 		 throw = cms.bool( True )
 	)
 
-	process.GlobalTag.globaltag = 'GR_R_44_V11::All'
+	process.GlobalTag.globaltag = 'GR_R_44_V12::All'
+
+	process.l1bitana = cms.EDAnalyzer('L1BitAnalyzer',
+		l1GtRR=cms.InputTag("gtDigis")
+	)
 	
 	process.eclustbana = cms.EDAnalyzer('UPCEcalClusterAnalyzer',
         	ecalClusterCollection=cms.string("islandBarrelSuperClusters")
@@ -115,7 +98,8 @@ if len(sys.argv) > 2:
 	process.ecalPath = cms.Path(process.triggerSelection+process.ecalesana+process.ecaleeana+process.ecalebana)
 	process.ecalclustPath = cms.Path(process.triggerSelection+process.eclustbana+process.eclusteana)
 	process.muPath = cms.Path(process.triggerSelection+process.upcmuana)
+	process.triggerPath = cms.Path(process.triggerSelection+process.l1bitana)
 
-	process.schedule = cms.Schedule(process.muPath,process.trackPath,process.runPath,process.zdcPath,process.ecalclustPath)
+	process.schedule = cms.Schedule(process.triggerPath,process.muPath,process.trackPath,process.runPath,process.zdcPath,process.ecalclustPath)
 else:
 	print 'error: no input file'	
