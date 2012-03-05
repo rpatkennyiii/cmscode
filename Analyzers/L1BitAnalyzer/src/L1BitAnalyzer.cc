@@ -35,6 +35,8 @@ void L1BitAnalyzer::analyze(edm::Event const& e, edm::EventSetup const& iSetup){
 
    if (l1GtRR.isValid()) {
        const DecisionWord&  dWord = l1GtRR->decisionWord();
+       const TechnicalTriggerWord&  ttdWord = l1GtRR->technicalTriggerWord();
+
        nBits=0;
        for (CItAlgo l1Trig = menu->gtAlgorithmAliasMap().begin(); l1Trig != menu->gtAlgorithmAliasMap().end(); ++l1Trig) {
 	  int itrig = (l1Trig->second).algoBitNumber();
@@ -43,6 +45,15 @@ void L1BitAnalyzer::analyze(edm::Event const& e, edm::EventSetup const& iSetup){
 	     L1BitTree->Branch(trigName.c_str(),&L1Bits[nBits],(trigName+"/O").c_str());
 	  }
 	  L1Bits[nBits] = dWord.at(itrig);
+	  nBits++;
+       }
+       for (CItAlgo l1Trig = menu->gtTechnicalTriggerMap().begin(); l1Trig != menu->gtTechnicalTriggerMap().end(); ++l1Trig) {
+	  int itrig = (l1Trig->second).algoBitNumber();
+	  string trigName = string( (l1Trig->second).algoName() );
+	  if(firstEv){
+	     L1BitTree->Branch(trigName.c_str(),&L1Bits[nBits],(trigName+"/O").c_str());
+	  }
+	  L1Bits[nBits] = ttdWord.at(itrig);
 	  nBits++;
        }
        firstEv=false;
