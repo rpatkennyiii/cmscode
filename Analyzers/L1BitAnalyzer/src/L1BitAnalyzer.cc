@@ -56,7 +56,7 @@ void L1BitAnalyzer::analyze(edm::Event const& e, edm::EventSetup const& iSetup){
 	  string trigName = string( (l1Trig->second).algoName() );
 	  if(firstEv){
 	     L1BitTree->Branch(trigName.c_str(),&L1Bits[nBits],(trigName+"/O").c_str());
-	     L1BitTree->Branch(trigName.c_str(),&L1BitsPs[nBits],(trigName+"_Prescl/i").c_str());
+	     L1BitTree->Branch((trigName+"_Prescl").c_str(),&L1BitsPs[nBits],(trigName+"_Prescl/i").c_str());
 	  }
 	  L1Bits[nBits] = dWord.at(itrig);
 	  L1BitsPs[nBits] = m_l1GtUtils.prescaleFactor(e,trigName,iErrorCode);
@@ -67,7 +67,7 @@ void L1BitAnalyzer::analyze(edm::Event const& e, edm::EventSetup const& iSetup){
 	  string trigName = string( (l1Trig->second).algoName() );
 	  if(firstEv){
 	     L1BitTree->Branch(trigName.c_str(),&L1Bits[nBits],(trigName+"/O").c_str());
-	     L1BitTree->Branch(trigName.c_str(),&L1BitsPs[nBits],(trigName+"_Prescl/i").c_str());
+	     L1BitTree->Branch((trigName+"_Prescl").c_str(),&L1BitsPs[nBits],(trigName+"_Prescl/i").c_str());
 	  }
 	  L1Bits[nBits] = ttdWord.at(itrig);
 	  L1BitsPs[nBits] = m_l1GtUtils.prescaleFactor(e,trigName,iErrorCode);
@@ -81,7 +81,7 @@ void L1BitAnalyzer::analyze(edm::Event const& e, edm::EventSetup const& iSetup){
               TString trigName = triggerNames.triggerName(itrig);
 	      if (firstEv){
                  L1BitTree->Branch(trigName,&L1Bits[nBits],trigName+"/O");
-	         L1BitTree->Branch(trigName,&L1BitsPs[nBits],trigName+"_Prescl/i");
+	         L1BitTree->Branch(trigName+"_Prescl",&L1BitsPs[nBits],trigName+"_Prescl/i");
               }
 	      L1Bits[nBits] = hltresults->accept(itrig);
 	      L1Bits[nBits] = hltConfig_.prescaleValue(e, iSetup, trigName.Data());
