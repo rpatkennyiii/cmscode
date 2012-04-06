@@ -10,6 +10,9 @@
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "FWCore/Framework/interface/ESHandle.h"
+#include "FWCore/Common/interface/TriggerNames.h"
+
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 
@@ -17,6 +20,7 @@
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutRecord.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutSetupFwd.h"
+#include "DataFormats/Common/interface/TriggerResults.h"
 
 #include "CondFormats/L1TObjects/interface/L1GtTriggerMenu.h"
 #include "CondFormats/L1TObjects/interface/L1GtTriggerMenuFwd.h"
@@ -38,10 +42,11 @@ public:
 private:
   edm::Service<TFileService> mFileServer;
   TTree *L1BitTree;
-  unsigned int RunData[4], nBits;
+  unsigned int RunData[4], nBits, L1BitsPs[400];
   bool L1Bits[400], firstEv;
-  edm::InputTag l1GtRR_;
+  edm::InputTag l1GtRR_, hltresults_;
   L1GtUtils m_l1GtUtils;
+  HLTConfigProvider hltConfig_;
 };
 DEFINE_FWK_MODULE(L1BitAnalyzer);
 

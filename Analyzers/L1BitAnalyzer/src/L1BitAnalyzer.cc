@@ -2,7 +2,9 @@
 
 using namespace std;
 
-L1BitAnalyzer::L1BitAnalyzer(edm::ParameterSet const& conf):l1GtRR_(conf.getParameter<edm::InputTag>("l1GtRR")){
+L1BitAnalyzer::L1BitAnalyzer(edm::ParameterSet const& conf):l1GtRR_(conf.getParameter<edm::InputTag>("l1GtRR")),
+   hltresults_(conf.getParameter<edm::InputTag>("hltresults"))
+{
    mFileServer->file().SetCompressionLevel(9);
    mFileServer->file().cd();
 
@@ -17,7 +19,9 @@ L1BitAnalyzer::L1BitAnalyzer(edm::ParameterSet const& conf):l1GtRR_(conf.getPara
 
 L1BitAnalyzer::~L1BitAnalyzer(){}
 
-void L1BitAnalyzer::beginRun(const edm::Run& e, const edm::EventSetup& iSetup){}
+void L1BitAnalyzer::beginRun(const edm::Run& e, const edm::EventSetup& iSetup){
+   hltConfig_.init(e,iSetup,hltresults_.process(),firstEv);
+}
 
 void L1BitAnalyzer::analyze(edm::Event const& e, edm::EventSetup const& iSetup){
    RunData[0]=e.bunchCrossing();
@@ -30,21 +34,32 @@ void L1BitAnalyzer::analyze(edm::Event const& e, edm::EventSetup const& iSetup){
    iSetup.get<L1GtTriggerMenuRcd>().get(menuRcd) ;
    const L1GtTriggerMenu* menu = menuRcd.product();
 
+   int iErrorCode = -1;
+   L1GtUtils::TriggerCategory trigCategory = L1GtUtils::AlgorithmTrigger;
+   const int pfSetIndexAlgorithmTrigger = m_l1GtUtils.prescaleFactorSetIndex(
+             e, trigCategory, iErrorCode);
+
    edm::Handle<L1GlobalTriggerReadoutRecord> l1GtRR; 
+   edm::Handle<edm::TriggerResults> hltresults;
+
    e.getByLabel(l1GtRR_, l1GtRR);
+   e.getByLabel(hltresults_, hltresults);
+
+   nBits=0;
 
    if (l1GtRR.isValid()) {
        const DecisionWord&  dWord = l1GtRR->decisionWord();
        const TechnicalTriggerWord&  ttdWord = l1GtRR->technicalTriggerWord();
 
-       nBits=0;
        for (CItAlgo l1Trig = menu->gtAlgorithmAliasMap().begin(); l1Trig != menu->gtAlgorithmAliasMap().end(); ++l1Trig) {
 	  int itrig = (l1Trig->second).algoBitNumber();
 	  string trigName = string( (l1Trig->second).algoName() );
 	  if(firstEv){
 	     L1BitTree->Branch(trigName.c_str(),&L1Bits[nBits],(trigName+"/O").c_str());
+	     L1BitTree->Branch(trigName.c_str(),&L1BitsPs[nBits],(trigName+"_Prescl/i").c_str());
 	  }
 	  L1Bits[nBits] = dWord.at(itrig);
+	  L1BitsPs[nBits] = m_l1GtUtils.prescaleFactor(e,trigName,iErrorCode);
 	  nBits++;
        }
        for (CItAlgo l1Trig = menu->gtTechnicalTriggerMap().begin(); l1Trig != menu->gtTechnicalTriggerMap().end(); ++l1Trig) {
@@ -52,12 +67,29 @@ void L1BitAnalyzer::analyze(edm::Event const& e, edm::EventSetup const& iSetup){
 	  string trigName = string( (l1Trig->second).algoName() );
 	  if(firstEv){
 	     L1BitTree->Branch(trigName.c_str(),&L1Bits[nBits],(trigName+"/O").c_str());
+	     L1BitTree->Branch(trigName.c_str(),&L1BitsPs[nBits],(trigName+"_Prescl/i").c_str());
 	  }
 	  L1Bits[nBits] = ttdWord.at(itrig);
+	  L1BitsPs[nBits] = m_l1GtUtils.prescaleFactor(e,trigName,iErrorCode);
 	  nBits++;
        }
-       firstEv=false;
    }
+
+   if(hltresults.isValid()){
+	edm::TriggerNames const& triggerNames = e.triggerNames(*hltresults);
+        for (unsigned int itrig = 0; itrig != hltresults->size(); ++itrig) {
+              TString trigName = triggerNames.triggerName(itrig);
+	      if (firstEv){
+                 L1BitTree->Branch(trigName,&L1Bits[nBits],trigName+"/O");
+	         L1BitTree->Branch(trigName,&L1BitsPs[nBits],trigName+"_Prescl/i");
+              }
+	      L1Bits[nBits] = hltresults->accept(itrig);
+	      L1Bits[nBits] = hltConfig_.prescaleValue(e, iSetup, trigName.Data());
+	      nBits++;
+         }
+   }
+   
+   firstEv=false;
    L1BitTree->Fill();
 }
 
