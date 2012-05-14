@@ -1,8 +1,10 @@
 <use   name="FWCore/Framework"/>
 <use   name="FWCore/ParameterSet"/>
 <use   name="FWCore/ServiceRegistry"/>
-<use   name="DataFormats/TrackReco"/>
 <use   name="DataFormats/HeavyIonEvent"/>
+<use   name="DataFormats/Math"/>
+<use   name="DataFormats/PatCandidates"/>
+<use   name="DataFormats/TrackReco"/>
 <use   name="DataFormats/VertexReco"/>
 <use   name="Geometry/TrackerGeometryBuilder"/>
 <use   name="Geometry/CommonTopologies"/>
