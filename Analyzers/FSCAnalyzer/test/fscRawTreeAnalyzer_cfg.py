@@ -25,14 +25,14 @@ if len(sys.argv) > 2:
 	    fileNames = cms.untracked.vstring(infile)
 	)
 
-	process.GlobalTag.globaltag = 'GR_R_44_V4::All'
+	process.GlobalTag.globaltag = 'GR_R_50_V13::All'
 
 	process.TFileService = cms.Service("TFileService",
 	    fileName = cms.string(outfile)
 	)
 
 	process.GtDigis = cms.EDProducer( "L1GlobalTriggerRawToDigi",
-	    DaqGtInputTag = cms.InputTag( "source" ),
+	    DaqGtInputTag = cms.InputTag( "rawDataCollector" ),
 	    DaqGtFedId = cms.untracked.int32( 813 ),
 	    ActiveBoardsMask = cms.uint32( 0xffff ),
 	    UnpackBxInEvent = cms.int32( 5 ),
@@ -40,7 +40,11 @@ if len(sys.argv) > 2:
 	)
 
 	process.fscAna = cms.EDAnalyzer('FSCAnalyzer',
-		l1GtRR=cms.InputTag("GtDigis")
+		l1GtRR = cms.InputTag("GtDigis")
+	)
+	
+	process.l1Ana = cms.EDAnalyzer('L1BitAnalyzer',
+		l1GtRR = cms.InputTag("GtGigis")
 	)
 
 	process.path = cms.Path(process.GtDigis+process.fscAna)
