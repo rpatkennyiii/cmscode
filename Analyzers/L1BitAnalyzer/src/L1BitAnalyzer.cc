@@ -84,7 +84,7 @@ void L1BitAnalyzer::analyze(edm::Event const& e, edm::EventSetup const& iSetup){
 	         L1BitTree->Branch(trigName+"_Prescl",&L1BitsPs[nBits],trigName+"_Prescl/i");
               }
 	      L1Bits[nBits] = hltresults->accept(itrig);
-	      L1Bits[nBits] = hltConfig_.prescaleValue(e, iSetup, trigName.Data());
+	      L1BitsPs[nBits] = hltConfig_.prescaleValue(e, iSetup, trigName.Data());
 	      nBits++;
          }
    }
