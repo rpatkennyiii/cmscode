@@ -73,6 +73,7 @@ class UPCPatCandidateAnalyzer : public edm::EDAnalyzer {
       float muon1_dB[100000];
       float muon1_numberOfMatchedStations[100000];
       float muon1_ndof[100000];
+      float muon1_trkArbit[100000];
 
       float muon2_pt[100000];
       float muon2_eta[100000];
@@ -82,6 +83,7 @@ class UPCPatCandidateAnalyzer : public edm::EDAnalyzer {
       int muon2_StandAlone[100000];
       int muon2_Global[100000];
       int muon2_Tracker[100000];
+      float muon2_rapidity[100000];
       float muon2_numberOfValidHits[100000];
       float muon2_pixelLayersWithMeasurement[100000];
       float muon2_normalizedChi2[100000];
@@ -89,7 +91,7 @@ class UPCPatCandidateAnalyzer : public edm::EDAnalyzer {
       float muon2_dB[100000];
       float muon2_numberOfMatchedStations[100000];
       float muon2_ndof[100000];
-      float muon2_rapidity[100000];
+      float muon2_trkArbit[100000];
 
       float cand_dPhi[100000];
       float cand_vProb[100000];

@@ -48,6 +48,7 @@ void UPCPatCandidateAnalyzer::beginJob(){
   candTree->Branch("muon1_dB",muon1_dB,"muon1_dB[acceptedCand]/F");
   candTree->Branch("muon1_numberOfMatchedStations",muon1_numberOfMatchedStations,"muon1_numberOfMatchedStations[acceptedCand]/F");
   candTree->Branch("muon1_ndof",muon1_ndof,"muon1_ndof[acceptedCand]/F");
+  candTree->Branch("muon1_trkArbit",muon1_trkArbit,"muon1_trkArbit[acceptedCand]/F");
 
   candTree->Branch("muon2_pt", muon2_pt, "muon2_pt[acceptedCand]/F");
   candTree->Branch("muon2_eta", muon2_eta, "muon2_eta[acceptedCand]/F");
@@ -65,6 +66,7 @@ void UPCPatCandidateAnalyzer::beginJob(){
   candTree->Branch("muon2_dB",muon2_dB,"muon2_dB[acceptedCand]/F");
   candTree->Branch("muon2_numberOfMatchedStations",muon2_numberOfMatchedStations,"muon2_numberOfMatchedStations[acceptedCand]/F");
   candTree->Branch("muon2_ndof",muon2_ndof,"muon2_ndof[acceptedCand]/F");
+  candTree->Branch("muon2_trkArbit",muon2_trkArbit,"muon2_trkArbit[acceptedCand]/F");
 }
 
 void UPCPatCandidateAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
@@ -123,6 +125,7 @@ void UPCPatCandidateAnalyzer::analyze(const edm::Event& iEvent, const edm::Event
       muon1_dB[cand_size]=muon1->dB();
       muon1_numberOfMatchedStations[cand_size]=muon1->numberOfMatchedStations();
       muon1_ndof[cand_size]=muon1->innerTrack()->ndof();
+      muon1_trkArbit[cand_size]=muon1->muonID("TrackerMuonArbitrated");
 
       muon2_pt[cand_size]=muon2->pt();
       muon2_eta[cand_size] = muon2->eta();
@@ -140,7 +143,7 @@ void UPCPatCandidateAnalyzer::analyze(const edm::Event& iEvent, const edm::Event
       muon2_dB[cand_size]=muon2->dB();
       muon2_numberOfMatchedStations[cand_size]=muon2->numberOfMatchedStations();
       muon2_ndof[cand_size]=muon2->innerTrack()->ndof();
-
+      muon2_trkArbit[cand_size]=muon2->muonID("TrackerMuonArbitrated");
 
       cand_size++;
     }
