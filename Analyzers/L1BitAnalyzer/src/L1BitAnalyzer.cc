@@ -1,4 +1,5 @@
 #include "Analyzers/L1BitAnalyzer/interface/L1BitAnalyzer.h"
+#include <iostream>
 
 using namespace std;
 
@@ -85,6 +86,8 @@ void L1BitAnalyzer::analyze(edm::Event const& e, edm::EventSetup const& iSetup){
               }
 	      L1Bits[nBits] = hltresults->accept(itrig);
 	      L1BitsPs[nBits] = hltConfig_.prescaleValue(e, iSetup, trigName.Data());
+	      L1BitTree->SetBranchAddress(trigName,&L1Bits[nBits]);
+	      L1BitTree->SetBranchAddress(trigName+"_Prescl",&L1BitsPs[nBits]);
 	      nBits++;
          }
    }
