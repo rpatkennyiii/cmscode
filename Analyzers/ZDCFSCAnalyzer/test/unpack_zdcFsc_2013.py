@@ -43,11 +43,15 @@ process.hcalDigis = cms.EDProducer("HcalRawToDigi",
     ComplainEmptyData = cms.untracked.bool(True)
 )
 
-# Change reconstruction
-process.load("RecoLocalCalo.Configuration.RecoLocalCalo_cff")
+process.triggerSelection = cms.EDFilter( "TriggerResultsFilter",
+	triggerConditions = cms.vstring("(HLT_PAZeroBiasPixel_SingleTrack_v1)"),
+	hltResults = cms.InputTag("TriggerResults::HLT"),
+	l1tResults = cms.InputTag("gtDigis"),
+	daqPartitions = cms.uint32( 0x01 ),
+	l1tIgnoreMask = cms.bool( False ),
+	l1techIgnorePrescales = cms.bool( False ),
+	throw = cms.bool( True )
+)
 
-#then you can have first last ts for reconstruction e.g.
-process.hfreco.firstSample  = 1
-process.hfreco.samplesToAdd = 6
 
 process.p = cms.Path(process.hcalDigis * process.plots)

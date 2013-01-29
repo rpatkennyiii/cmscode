@@ -87,25 +87,10 @@ void ZDCFSCAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 			   }
 			}
 		}
-		ZDCFSCDigiTree->Fill();
+		ZDCDigiTree->Fill();
+		FSCDigiTree->Fill();
 	}
 
-	if(zdc_recHits){
-
-		for(int i=0; i<34; i++){RecData[i]=0;}
-
-		for (ZDCRecHitCollection::const_iterator zhit=zdc_recHits->begin();zhit!=zdc_recHits->end();zhit++){		
-			int iSide      = (zhit->id()).zside();
-			int iSection   = (zhit->id()).section();
-			int iChannel   = (zhit->id()).channel();
-			int chid = (iSection-1)*5+(iSide+1)/2*9+(iChannel-1);
-
-			RecData[chid]=zhit->energy();
-			RecData[chid+18]=zhit->time();
-		}
-		
-		ZDCFSCRecoTree->Fill();
-	}
 }
 
 
@@ -122,17 +107,20 @@ void ZDCFSCAnalyzer::beginJob(){
 			   "posFSC1","posFSC2","posFSC3","posFSC4",
 			   "posFSC5","posFSC6","posFSC7","posFSC8"};
 	BranchNames=bnames;
-   	ZDCFSCDigiTree = new TTree("ZDCFSCDigiTree","ZDC Digi Tree");
-   	ZDCFSCRecoTree = new TTree("ZDCFSCRecoTree","ZDC Rec Tree");
+   	ZDCDigiTree = new TTree("ZDCDigiTree","ZDC Digi Tree");
+   	FSCDigiTree = new TTree("FSCDigiTree","ZDC Digi Tree");
 	BeamTree = new TTree("BeamTree","Beam Tree");
 
 	BeamTree->Branch("BunchXing",&BeamData[0],"BunchXing/I");
 	BeamTree->Branch("LumiBlock",&BeamData[1],"LumiBlock/I");
 
 	for(int i=0; i<34; i++){
-		ZDCFSCDigiTree->Branch((bnames[i]+"fC").c_str(),&DigiDatafC[i*10],(bnames[i]+"cFtsz[10]/F").c_str());
-		ZDCFSCDigiTree->Branch((bnames[i]+"ADC").c_str(),&DigiDataADC[i*10],(bnames[i]+"ADCtsz[10]/I").c_str());
-		ZDCFSCRecoTree->Branch((bnames[i]+"energy").c_str(),&RecData[i],(bnames[i]+"energy/F").c_str());
-		ZDCFSCRecoTree->Branch((bnames[i]+"timing").c_str(),&RecData[i+18],(bnames[i]+"timing/F").c_str());
+		if(i<9||(i>16&&i<26)){
+		   ZDCDigiTree->Branch((bnames[i]+"fC").c_str(),&DigiDatafC[i*10],(bnames[i]+"cFtsz[10]/F").c_str());
+		   ZDCDigiTree->Branch((bnames[i]+"ADC").c_str(),&DigiDataADC[i*10],(bnames[i]+"ADCtsz[10]/I").c_str());
+		}else{
+		   FSCDigiTree->Branch((bnames[i]+"fC").c_str(),&DigiDatafC[i*10],(bnames[i]+"cFtsz[10]/F").c_str());
+		   FSCDigiTree->Branch((bnames[i]+"ADC").c_str(),&DigiDataADC[i*10],(bnames[i]+"ADCtsz[10]/I").c_str());
+		}
 	}	
 }

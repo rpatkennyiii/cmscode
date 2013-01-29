@@ -46,8 +46,8 @@ private:
 	int Runno;
 	edm::Service<TFileService> mFileServer;
 	
-	TTree* ZDCFSCDigiTree;
-	TTree* ZDCFSCRecoTree;
+	TTree* ZDCDigiTree;
+	TTree* FSCDigiTree;
 	TTree* BeamTree;
 };
 DEFINE_FWK_MODULE(ZDCFSCAnalyzer);
