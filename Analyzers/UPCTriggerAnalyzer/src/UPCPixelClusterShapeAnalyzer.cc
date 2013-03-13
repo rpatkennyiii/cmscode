@@ -39,6 +39,7 @@ private:
 
   std::vector<double> clusterPars_;   //pixel cluster polynomial pars for vertex compatibility cut
   int                 nhitsTrunc_;    //maximum pixel clusters to apply compatibility check
+  int                 nPxlHits;
   double              clusterTrunc_;  //maximum vertex compatibility value for event rejection
   bool                accept;
 
@@ -85,6 +86,7 @@ void UPCPixelClusterShapeAnalyzer::beginJob(){
   ClusterShapeTree = new TTree("ClusterShapeTree","ClusterShapeTree");
 
   ClusterShapeTree->Branch("Accept",&accept,"Accept/O");
+  ClusterShapeTree->Branch("nPxlHits",&nPxlHits,"nPxlHits/I");
 }
 //
 // member functions
@@ -112,7 +114,7 @@ void UPCPixelClusterShapeAnalyzer::analyze(const edm::Event& event, const edm::E
     const SiPixelRecHitCollection *hits = hRecHits.product();
 
     // loop over pixel rechits
-    int nPxlHits=0;
+    nPxlHits=0;
     std::vector<VertexHit> vhits;
     for(SiPixelRecHitCollection::DataContainer::const_iterator hit = hits->data().begin(), 
           end = hits->data().end(); hit != end; ++hit) {
