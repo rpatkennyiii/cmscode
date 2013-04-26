@@ -53,6 +53,7 @@ void L1BitAnalyzer::analyze(edm::Event const& e, edm::EventSetup const& iSetup){
 
    if (l1GtRR.isValid()) {
        const DecisionWord&  dWord = l1GtRR->decisionWord();
+       const TechnicalTriggerWord&  ttdWord = l1GtRR->technicalTriggerWord();
 
        for (CItAlgo l1Trig = menu->gtAlgorithmAliasMap().begin(); l1Trig != menu->gtAlgorithmAliasMap().end(); ++l1Trig) {
 	  int itrig = (l1Trig->second).algoBitNumber();
