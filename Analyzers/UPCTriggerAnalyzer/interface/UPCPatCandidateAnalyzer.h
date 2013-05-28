@@ -19,6 +19,7 @@
 //Root Classes
 #include "TTree.h"
 #include "TFile.h"
+#include "TString.h"
 
 using namespace reco;
 using namespace std;
@@ -73,7 +74,7 @@ class UPCPatCandidateAnalyzer : public edm::EDAnalyzer {
       float muon1_dB[100000];
       float muon1_numberOfMatchedStations[100000];
       float muon1_ndof[100000];
-      float muon1_trkArbit[100000];
+      bool muon1_trkArbit[100000];
 
       float muon2_pt[100000];
       float muon2_eta[100000];
@@ -91,7 +92,7 @@ class UPCPatCandidateAnalyzer : public edm::EDAnalyzer {
       float muon2_dB[100000];
       float muon2_numberOfMatchedStations[100000];
       float muon2_ndof[100000];
-      float muon2_trkArbit[100000];
+      bool muon2_trkArbit[100000];
 
       float cand_dPhi[100000];
       float cand_vProb[100000];

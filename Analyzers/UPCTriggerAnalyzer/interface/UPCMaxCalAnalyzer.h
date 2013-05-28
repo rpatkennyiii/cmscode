@@ -1,8 +1,7 @@
-#ifndef UPCCALENERGYANALYZER_H
-#define UPCCALENERGYANALYZER_H
+#ifndef UPCMAXCALANALYZER_H
+#define UPCMAXCALANALYZER_H
 
 // system include files
-#include <vector>
 #include <cmath>
 
 // user include files
@@ -28,30 +27,50 @@
 using namespace reco;
 using namespace std;
 
-class UPCCalEnergyAnalyzer : public edm::EDAnalyzer {
+class UPCMaxCalAnalyzer : public edm::EDAnalyzer {
 public:
-	explicit UPCCalEnergyAnalyzer(const edm::ParameterSet&);
-	~UPCCalEnergyAnalyzer();
+	explicit UPCMaxCalAnalyzer(const edm::ParameterSet&);
+	~UPCMaxCalAnalyzer();
 
 private:
 	virtual void beginJob();
 	virtual void analyze(const edm::Event&, const edm::EventSetup&);
 
-	int CaloSize;
-	float CaloEta[10000];
-	float CaloPhi[10000];
-	float CaloHadEnergy[10000];
-	float CaloEmEnergy[10000];
-	float CaloEnergy[10000];
-	bool CaloIsHF[10000];
-	bool CaloIsHB[10000];
-	bool CaloIsHE[10000];
-	bool CaloIsEB[10000];
-	bool CaloIsEE[10000];
+	float MaxEBEnergy;
+	float MaxEEEnergy;
+	float MaxHBEnergy;
+	float MaxHEEnergy;
+	float MaxHFEnergy;
+	float MaxEBEta;
+	float MaxEEEta;
+	float MaxHBEta;
+	float MaxHEEta;
+	float MaxHFEta;
+	float MaxEBPhi;
+	float MaxEEPhi;
+	float MaxHBPhi;
+	float MaxHEPhi;
+	float MaxHFPhi;
+
+	float SumEBEnergy;
+	float SumEEEnergy;
+	float SumHBEnergy;
+	float SumHEEnergy;
+	float SumHFEnergy;
+	float AverageEBEta;
+	float AverageEEEta;
+	float AverageHBEta;
+	float AverageHEEta;
+	float AverageHFEta;
+	float AverageEBPhi;
+	float AverageEEPhi;
+	float AverageHBPhi;
+	float AverageHEPhi;
+	float AverageHFPhi;
 	
 	edm::Service<TFileService> mFileServer;
 	TTree* CaloTree;
 };
-DEFINE_FWK_MODULE(UPCCalEnergyAnalyzer);
+DEFINE_FWK_MODULE(UPCMaxCalAnalyzer);
 
 #endif
