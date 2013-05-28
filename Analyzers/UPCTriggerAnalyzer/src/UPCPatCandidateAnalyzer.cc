@@ -8,10 +8,9 @@ UPCPatCandidateAnalyzer::UPCPatCandidateAnalyzer(const edm::ParameterSet& iConfi
 UPCPatCandidateAnalyzer::~UPCPatCandidateAnalyzer(){}
 
 void UPCPatCandidateAnalyzer::beginJob(){
-  mFileServer->file().SetCompressionLevel(9);
   mFileServer->file().cd();
 
-  candTree = new TTree("UPCPatCandidateTree","UPCPatCandidateTree");
+  candTree = new TTree(TString(_patDiMuon.label())+"Tree",TString(_patDiMuon.label())+"Tree");
 
   candTree->Branch("acceptedCand",&acceptedCand,"acceptedCand/I");
   candTree->Branch("cand_pt", cand_pt, "cand_pt[acceptedCand]/F");

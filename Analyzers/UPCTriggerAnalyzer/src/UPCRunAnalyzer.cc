@@ -7,7 +7,6 @@ UPCRunAnalyzer::UPCRunAnalyzer(const edm::ParameterSet& iConfig){}
 UPCRunAnalyzer::~UPCRunAnalyzer(){}
 
 void UPCRunAnalyzer::beginJob(){
-	mFileServer->file().SetCompressionLevel(9);
 	mFileServer->file().cd();
 	
 	RunTree = new TTree("RunTree","RunTree");

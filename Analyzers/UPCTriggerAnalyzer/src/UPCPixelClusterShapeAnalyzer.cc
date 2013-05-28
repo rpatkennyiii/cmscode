@@ -80,7 +80,6 @@ UPCPixelClusterShapeAnalyzer::~UPCPixelClusterShapeAnalyzer()
 }
 
 void UPCPixelClusterShapeAnalyzer::beginJob(){
-  mFileServer->file().SetCompressionLevel(9);
   mFileServer->file().cd();
 
   ClusterShapeTree = new TTree("ClusterShapeTree","ClusterShapeTree");

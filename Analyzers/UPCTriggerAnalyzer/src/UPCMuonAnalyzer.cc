@@ -8,7 +8,6 @@ UPCMuonAnalyzer::UPCMuonAnalyzer(const edm::ParameterSet& iConfig):muonLabel(iCo
 UPCMuonAnalyzer::~UPCMuonAnalyzer(){}
 
 void UPCMuonAnalyzer::beginJob(){
-	mFileServer->file().SetCompressionLevel(9);
 	mFileServer->file().cd();
 	
 	MuonTree = new TTree("MuonTree","MuonTree");

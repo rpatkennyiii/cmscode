@@ -8,7 +8,6 @@ UPCTriggerAnalyzer::UPCTriggerAnalyzer(const edm::ParameterSet& iConfig){}
 UPCTriggerAnalyzer::~UPCTriggerAnalyzer(){}
 
 void UPCTriggerAnalyzer::beginJob(){
-	mFileServer->file().SetCompressionLevel(9);
 	mFileServer->file().cd();
 	
 	TrakTree = new TTree("TrackTree","TrackTree");

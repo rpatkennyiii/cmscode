@@ -7,7 +7,6 @@ UPCGenParticleAnalyzer::UPCGenParticleAnalyzer(const edm::ParameterSet& iConfig)
 UPCGenParticleAnalyzer::~UPCGenParticleAnalyzer(){}
 
 void UPCGenParticleAnalyzer::beginJob(){
-	mFileServer->file().SetCompressionLevel(9);
 	mFileServer->file().cd();
 	
 	string tName(genParticleCollection+"Tree");

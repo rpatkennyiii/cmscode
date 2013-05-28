@@ -9,7 +9,6 @@ UPCEcalAnalyzer::UPCEcalAnalyzer(const ParameterSet& iConfig):
 UPCEcalAnalyzer::~UPCEcalAnalyzer(){}
 
 void UPCEcalAnalyzer::beginJob(){
-	mFileServer->file().SetCompressionLevel(9);
 	mFileServer->file().cd();
 	
 	string EcalSecName = EcalColName.substr(11);

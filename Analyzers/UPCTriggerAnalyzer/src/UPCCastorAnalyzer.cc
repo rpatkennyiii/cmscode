@@ -51,7 +51,6 @@ void UPCCastorAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 
 
 void UPCCastorAnalyzer::beginJob(){
-	mFileServer->file().SetCompressionLevel(9);
 	mFileServer->file().cd();
 		
    	CastorDigiTree = new TTree("CastorDigiTree","CastorDigiTree");

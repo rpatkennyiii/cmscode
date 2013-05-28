@@ -7,7 +7,6 @@ UPCCentralityAnalyzer::UPCCentralityAnalyzer(const edm::ParameterSet& iConfig):c
 UPCCentralityAnalyzer::~UPCCentralityAnalyzer(){}
 
 void UPCCentralityAnalyzer::beginJob(){
-	mFileServer->file().SetCompressionLevel(9);
 	mFileServer->file().cd();
 
 	string tName(centV+"CentralityTree");	

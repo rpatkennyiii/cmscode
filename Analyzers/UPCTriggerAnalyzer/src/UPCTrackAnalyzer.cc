@@ -7,7 +7,6 @@ UPCTrackAnalyzer::UPCTrackAnalyzer(const edm::ParameterSet& iConfig):trackCollec
 UPCTrackAnalyzer::~UPCTrackAnalyzer(){}
 
 void UPCTrackAnalyzer::beginJob(){
-	mFileServer->file().SetCompressionLevel(9);
 	mFileServer->file().cd();
 	
 	string tName(trackCollection+"Tree");

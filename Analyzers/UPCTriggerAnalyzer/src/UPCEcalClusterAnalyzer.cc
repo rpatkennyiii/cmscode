@@ -10,7 +10,6 @@ UPCEcalClusterAnalyzer::UPCEcalClusterAnalyzer(const ParameterSet& iConfig):
 UPCEcalClusterAnalyzer::~UPCEcalClusterAnalyzer(){}
 
 void UPCEcalClusterAnalyzer::beginJob(){
-	mFileServer->file().SetCompressionLevel(9);
 	mFileServer->file().cd();
 	
 	string EcalSecName;

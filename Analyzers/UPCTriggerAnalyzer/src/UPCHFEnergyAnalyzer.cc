@@ -8,7 +8,6 @@ UPCHFEnergyAnalyzer::UPCHFEnergyAnalyzer(const ParameterSet& iConfig){}
 UPCHFEnergyAnalyzer::~UPCHFEnergyAnalyzer(){}
 
 void UPCHFEnergyAnalyzer::beginJob(){
-	mFileServer->file().SetCompressionLevel(9);
 	mFileServer->file().cd();
 
 	CaloTree = new TTree("CaloTree","CaloTree");
