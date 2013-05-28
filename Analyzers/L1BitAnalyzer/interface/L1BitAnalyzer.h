@@ -30,6 +30,7 @@
 
 #include "TTree.h"
 #include "TFile.h"
+#include "TString.h"
 
 class L1BitAnalyzer : public edm::EDAnalyzer {
 public:
@@ -42,7 +43,7 @@ public:
 private:
   edm::Service<TFileService> mFileServer;
   TTree *L1BitTree;
-  unsigned int RunData[4], nBits, L1BitsPs[400];
+  unsigned int RunData[5], nBits, L1BitsPs[400];
   bool L1Bits[400], firstEv;
   edm::InputTag l1GtRR_, hltresults_;
   L1GtUtils m_l1GtUtils;
