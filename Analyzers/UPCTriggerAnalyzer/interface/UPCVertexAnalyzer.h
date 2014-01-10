@@ -28,20 +28,14 @@ public:
 private:
 	virtual void beginJob();
 	virtual void analyze(const edm::Event&, const edm::EventSetup&);
-        void getVertexData(const VertexCollection*,float*,float*,float*,float*,float*,float*,bool*,int*);
+	void getVertexData(const VertexCollection*, float*);
 
 	edm::Service<TFileService> mFileServer;
 	
 	string vertexCName;
-	int nVert;
-	float x[10];
-	float xError[10];
-	float y[10];
-	float yError[10];
-	float z[10];
-	float zError[10];
-	bool isFake[10];
-	int nTracks[10];
+	float VertData[6];
+	bool isFake;
+	unsigned int nTracks;
 	TTree* VertTree;
 };
 DEFINE_FWK_MODULE(UPCVertexAnalyzer);

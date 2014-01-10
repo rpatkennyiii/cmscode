@@ -2,14 +2,14 @@
 
 using namespace edm;
 
-UPCGenParticleAnalyzer::UPCGenParticleAnalyzer(const edm::ParameterSet& iConfig):genParticleCollection(iConfig.getParameter<string>("genParticleCollection")){}
+UPCGenParticleAnalyzer::UPCGenParticleAnalyzer(const edm::ParameterSet& iConfig):genParticleCollection(iConfig.getParameter<string>("genParticleCollection")),treeName(iConfig.getParameter<string>("treeName")){}
 
 UPCGenParticleAnalyzer::~UPCGenParticleAnalyzer(){}
 
 void UPCGenParticleAnalyzer::beginJob(){
 	mFileServer->file().cd();
 	
-	string tName(genParticleCollection+"Tree");
+	string tName(treeName);
 	GenPartTree = new TTree(tName.c_str(),tName.c_str());
 
 	GenPartTree->Branch("nParticles",&nParticles,"nParticles/I");

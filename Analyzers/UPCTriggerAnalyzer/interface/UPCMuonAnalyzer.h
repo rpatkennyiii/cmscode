@@ -12,7 +12,9 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/MuonReco/interface/Muon.h"
+#include "DataFormats/MuonReco/interface/MuonSelectors.h"
 #include "FWCore/Utilities/interface/InputTag.h"
+#include "DataFormats/PatCandidates/interface/Muon.h"
 
 //TFile Service
 #include "FWCore/ServiceRegistry/interface/Service.h"
@@ -34,7 +36,7 @@ public:
 private:
 	virtual void beginJob();
 	virtual void analyze(const edm::Event&, const edm::EventSetup&);
-	void getTrack(const Track *trax,unsigned int &ndof, float &chi2,
+	void getTrack(const Track *trax,unsigned int &ndof, float &chi2,unsigned int &vHits, unsigned int &pixHits,
 	   float &x, float &y, float &z,
 	   float &p, float &qoverp, float &lambda, float &phi,
 	   float &varqoverp, float &varlambda, float &varphi,
@@ -52,9 +54,24 @@ private:
 	nCaloMuon;
 	
 	unsigned int
+	l1QualityTracker[100],
+	l1QualityGlobal[100],
+	l1QualityStandAlone[100],
 	ndofTracker[100],
 	ndofGlobal[100],
-	ndofStandAlone[100];
+	ndofStandAlone[100],
+	numberOfValidTrackerHitsTracker[100],
+	numberOfValidTrackerHitsGlobal[100],
+	numberOfValidTrackerHitsStandAlone[100],
+	pixelLayersWithMeasurementTracker[100],
+	pixelLayersWithMeasurementGlobal[100],
+	pixelLayersWithMeasurementStandAlone[100];
+
+	bool
+	isPat,
+	isGoodMuonTracker[100],
+	isGoodMuonGlobal[100],
+	isGoodMuonStandAlone[100];	
 	
 	float
 	CaloMuonEnergy;
@@ -62,7 +79,10 @@ private:
 	float
 	chi2Tracker[100],
 	chi2Global[100],
-	chi2StandAlone[100];
+	chi2StandAlone[100],
+	l1DeltaRTracker[100],
+	l1DeltaRGlobal[100],
+	l1DeltaRStandAlone[100];
 	
 	float
 	pTracker[100],

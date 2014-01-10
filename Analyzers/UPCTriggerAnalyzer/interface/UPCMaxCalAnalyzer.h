@@ -41,6 +41,16 @@ private:
 	float MaxHBEnergy;
 	float MaxHEEnergy;
 	float MaxHFEnergy;
+	float MaxEBEMEnergy;
+	float MaxEEEMEnergy;
+	float MaxHBEMEnergy;
+	float MaxHEEMEnergy;
+	float MaxHFEMEnergy;
+	float MaxEBHadEnergy;
+	float MaxEEHadEnergy;
+	float MaxHBHadEnergy;
+	float MaxHEHadEnergy;
+	float MaxHFHadEnergy;
 	float MaxEBEta;
 	float MaxEEEta;
 	float MaxHBEta;

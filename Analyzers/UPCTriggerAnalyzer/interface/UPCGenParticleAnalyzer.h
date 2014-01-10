@@ -36,8 +36,10 @@ private:
 	edm::Service<TFileService> mFileServer;
 
 	string genParticleCollection; 
+	string treeName; 
 
 	int nParticles;
+        double polCosTheta;
 	vector<double>  x, y, z, 
 			px, py, pz,
 			mass, charge;
