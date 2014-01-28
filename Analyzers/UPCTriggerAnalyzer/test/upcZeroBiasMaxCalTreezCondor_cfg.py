@@ -93,34 +93,19 @@ if len(sys.argv) > 2:
 		ecalCollection=cms.string("EcalRecHitsEB")
 	)
 
-	process.hfana = cms.EDAnalyzer('UPCHFEnergyAnalyzer')	
-
-	process.candtraana = cms.EDAnalyzer("UPCPatCandidateAnalyzer",
-		patDiMuon=cms.InputTag("onia2MuMuPatTraTra"),
-		hltTrigger=cms.string("HLT_HIUPCNeuMuPixel_SingleTrack_v1")
-	)
+	process.hfana = cms.EDAnalyzer('UPCHFEnergyAnalyzer')
+	
+	process.maxcalana = cms.EDAnalyzer('UPCMaxCalAnalyzer')
 
 	process.siTrackSeq = cms.Sequence(process.siPixSeq+process.upctrackpix)
 	process.trackSeq = cms.Sequence(process.upctrackselana)
-	process.runSeq = cms.Sequence(process.siPixelRecHits+process.upcPixelClusterShapeAnalyzer+process.upcvertexana+process.upccentralityana)
-        process.zdcSeq = cms.Sequence(process.zdcana)
-	process.ecalSeq = cms.Sequence(process.ecalesana+process.ecaleeana+process.ecalebana)
-	process.ecalclustSeq = cms.Sequence(process.eclustbana+process.eclusteana)
-	process.muSeq = cms.Sequence(process.upcmuana)
-	process.hfSeq= cms.Sequence(process.hfana)
+	process.maxcalSeq= cms.Sequence(process.maxcalana)
 	process.triggerSeq = cms.Sequence(process.l1bitana)
-	process.candSeq = cms.Sequence(process.candtraana)
 
-	process.path = cms.Path(process.triggerSelection+
-					process.triggerSeq+
-					process.runSeq+
-					process.muSeq+
+	process.path = cms.Path(process.triggerSeq+
 					process.siTrackSeq+
 					process.trackSeq+
-					process.zdcSeq+
-					process.candSeq+
-					process.hfSeq
-	#				process.ecalclustSeq
+					process.maxcalSeq
 	)
 else:
 	print 'error: no input file'	

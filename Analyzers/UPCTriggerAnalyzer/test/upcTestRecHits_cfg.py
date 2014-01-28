@@ -17,7 +17,7 @@ if len(sys.argv) > 2:
 	process.load("Analyzers.UPCTriggerAnalyzer.upcPixelClusterShapeAnalyzer_cfi")
 	process.load("Analyzers.UPCTriggerAnalyzer.upcPixelTrack_cff")
 
-	process.MessageLogger.cerr.FwkReport.reportEvery = 10
+	process.MessageLogger.cerr.FwkReport.reportEvery = 100
 	process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1)); 
 
 	process.source = cms.Source("PoolSource",
@@ -93,7 +93,18 @@ if len(sys.argv) > 2:
 		ecalCollection=cms.string("EcalRecHitsEB")
 	)
 
-	process.hfana = cms.EDAnalyzer('UPCHFEnergyAnalyzer')	
+	process.rechitana = cms.EDAnalyzer('UPCRecHitAnalyzer',
+		TotalChargeThreshold=cms.untracked.double(0.0),
+		FillEB=cms.untracked.bool(True),	
+		FillEE=cms.untracked.bool(True),
+		FillHBHESumOnly=cms.untracked.bool(True),
+		FillHFSumOnly=cms.untracked.bool(True),
+		FillEBSumOnly=cms.untracked.bool(True),
+		FillEESumOnly=cms.untracked.bool(True)
+	)
+
+	
+	process.calana = cms.EDAnalyzer('UPCCalEnergyAnalyzer')	
 
 	process.candtraana = cms.EDAnalyzer("UPCPatCandidateAnalyzer",
 		patDiMuon=cms.InputTag("onia2MuMuPatTraTra"),
@@ -107,9 +118,9 @@ if len(sys.argv) > 2:
 	process.ecalSeq = cms.Sequence(process.ecalesana+process.ecaleeana+process.ecalebana)
 	process.ecalclustSeq = cms.Sequence(process.eclustbana+process.eclusteana)
 	process.muSeq = cms.Sequence(process.upcmuana)
-	process.hfSeq= cms.Sequence(process.hfana)
 	process.triggerSeq = cms.Sequence(process.l1bitana)
 	process.candSeq = cms.Sequence(process.candtraana)
+	process.rechitSeq = cms.Sequence(process.rechitana+process.calana)
 
 	process.path = cms.Path(process.triggerSelection+
 					process.triggerSeq+
@@ -119,7 +130,8 @@ if len(sys.argv) > 2:
 					process.trackSeq+
 					process.zdcSeq+
 					process.candSeq+
-					process.hfSeq
+					process.rechitSeq
+	#				process.hfSeq
 	#				process.ecalclustSeq
 	)
 else:

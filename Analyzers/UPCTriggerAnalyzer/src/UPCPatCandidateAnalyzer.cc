@@ -42,6 +42,7 @@ void UPCPatCandidateAnalyzer::beginJob(){
   candTree->Branch("muon1_rapidity", muon1_rapidity, "muon1_rapidity[acceptedCand]/F");
   candTree->Branch("muon1_numberOfValidHits",muon1_numberOfValidHits,"muon1_numberOfValidHits[acceptedCand]/F");
   candTree->Branch("muon1_pixelLayersWithMeasurement",muon1_pixelLayersWithMeasurement,"muon1_pixelLayersWithMeasurement[acceptedCand]/F");
+  candTree->Branch("muon1_trackerLayersWithMeasurement",muon1_trackerLayersWithMeasurement,"muon1_trackerLayersWithMeasurement[acceptedCand]/F");
   candTree->Branch("muon1_normalizedChi2",muon1_normalizedChi2,"muon1_normalizedChi2[acceptedCand]/F");
   candTree->Branch("muon1_dz",muon1_dz,"muon1_dz[acceptedCand]/F");
   candTree->Branch("muon1_dB",muon1_dB,"muon1_dB[acceptedCand]/F");
@@ -64,6 +65,7 @@ void UPCPatCandidateAnalyzer::beginJob(){
   candTree->Branch("muon2_rapidity", muon2_rapidity, "muon2_rapidity[acceptedCand]/F");
   candTree->Branch("muon2_numberOfValidHits",muon2_numberOfValidHits,"muon2_numberOfValidHits[acceptedCand]/F");
   candTree->Branch("muon2_pixelLayersWithMeasurement",muon2_pixelLayersWithMeasurement,"muon2_pixelLayersWithMeasurement[acceptedCand]/F");
+  candTree->Branch("muon2_trackerLayersWithMeasurement",muon2_trackerLayersWithMeasurement,"muon2_trackerLayersWithMeasurement[acceptedCand]/F");
   candTree->Branch("muon2_normalizedChi2",muon2_normalizedChi2,"muon2_normalizedChi2[acceptedCand]/F");
   candTree->Branch("muon2_dz",muon2_dz,"muon2_dz[acceptedCand]/F");
   candTree->Branch("muon2_dB",muon2_dB,"muon2_dB[acceptedCand]/F");
@@ -138,6 +140,7 @@ void UPCPatCandidateAnalyzer::analyze(const edm::Event& iEvent, const edm::Event
       muon1_rapidity[cand_size] = muon1->rapidity();
       muon1_numberOfValidHits[cand_size]=muon1->innerTrack()->numberOfValidHits();
       muon1_pixelLayersWithMeasurement[cand_size]=muon1->innerTrack()->hitPattern().pixelLayersWithMeasurement();
+      muon1_trackerLayersWithMeasurement[cand_size]=muon1->innerTrack()->hitPattern().trackerLayersWithMeasurement();
       muon1_normalizedChi2[cand_size]=muon1->innerTrack()->normalizedChi2();
       muon1_dz[cand_size]=muon1->innerTrack()->dz();
       muon1_dB[cand_size]=muon1->dB();
@@ -160,6 +163,7 @@ void UPCPatCandidateAnalyzer::analyze(const edm::Event& iEvent, const edm::Event
       muon2_rapidity[cand_size] = muon2->rapidity();
       muon2_numberOfValidHits[cand_size]=muon2->innerTrack()->numberOfValidHits();
       muon2_pixelLayersWithMeasurement[cand_size]=muon2->innerTrack()->hitPattern().pixelLayersWithMeasurement();
+      muon2_trackerLayersWithMeasurement[cand_size]=muon2->innerTrack()->hitPattern().trackerLayersWithMeasurement();
       muon2_normalizedChi2[cand_size]=muon2->innerTrack()->normalizedChi2();
       muon2_dz[cand_size]=muon2->innerTrack()->dz();
       muon2_dB[cand_size]=muon2->dB();
