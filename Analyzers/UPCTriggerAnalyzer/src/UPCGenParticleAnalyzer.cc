@@ -19,6 +19,7 @@ void UPCGenParticleAnalyzer::beginJob(){
 	GenPartTree->Branch("px",&px[0],"px[nParticles]/D");
 	GenPartTree->Branch("py",&py[0],"py[nParticles]/D");
 	GenPartTree->Branch("pz",&pz[0],"pz[nParticles]/D");
+	GenPartTree->Branch("eta",&eta[0],"eta[nParticles]/D");
 	GenPartTree->Branch("charge",&charge[0],"charge[nParticles]/D");
 	GenPartTree->Branch("mass",&mass[0],"mass[nParticles]/D");
 }
@@ -28,11 +29,12 @@ void UPCGenParticleAnalyzer::analyze(const edm::Event& iEvent, const edm::EventS
 	iEvent.getByLabel(genParticleCollection.c_str(),genPartz);
 	
 	x.clear(); y.clear(); z.clear(); 
-	px.clear(); py.clear(); pz.clear(); 
+	px.clear(); py.clear(); pz.clear();
+	eta.clear(); 
 	charge.clear(); mass.clear();
 
 	if(!genPartz.failedToGet()){getParticles(genPartz,x,y,z,
-						px,py,pz,charge,mass);}
+						px,py,pz,eta,charge,mass);}
 	nParticles=x.size();
 
 	GenPartTree->SetBranchAddress("nParticles",&nParticles);
@@ -42,6 +44,7 @@ void UPCGenParticleAnalyzer::analyze(const edm::Event& iEvent, const edm::EventS
 	GenPartTree->SetBranchAddress("px",&px[0]);
 	GenPartTree->SetBranchAddress("py",&py[0]);
 	GenPartTree->SetBranchAddress("pz",&pz[0]);
+	GenPartTree->SetBranchAddress("eta",&eta[0]);
 	GenPartTree->SetBranchAddress("charge",&charge[0]);
 	GenPartTree->SetBranchAddress("mass",&mass[0]);
 	
@@ -51,6 +54,7 @@ void UPCGenParticleAnalyzer::analyze(const edm::Event& iEvent, const edm::EventS
 void UPCGenParticleAnalyzer::getParticles(Handle<vector<reco::GenParticle> > ParticleCol,
 	vector<double> &x, vector<double> &y, vector<double> &z,
 	vector<double> &px, vector<double> &py, vector<double> &pz,
+	vector<double> &eta,
 	vector<double> &charge, vector<double> &mass)
 {
 	for(vector<reco::GenParticle>::const_iterator trax=(&*ParticleCol)->begin();
@@ -61,6 +65,7 @@ void UPCGenParticleAnalyzer::getParticles(Handle<vector<reco::GenParticle> > Par
 		px.push_back(trax->px());
 		py.push_back(trax->py());
 		pz.push_back(trax->pz());
+		eta.push_back(trax->eta());
 		charge.push_back(trax->charge());
 		mass.push_back(trax->mass());
 	 }  

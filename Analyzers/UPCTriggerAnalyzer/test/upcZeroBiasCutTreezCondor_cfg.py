@@ -33,13 +33,18 @@ if len(sys.argv) > 2:
 	)
 	
 	process.triggerSelection = cms.EDFilter( "TriggerResultsFilter",
-		 triggerConditions = cms.vstring("HLT_HIUPCNeuMuPixel_SingleTrack_v1"),
+		 triggerConditions = cms.vstring("HLT_HIMinBiasZDC_Calo_PlusOrMinus_v1 && !L1_BscMinBiasThreshold2_BptxAND"),
 		 hltResults = cms.InputTag("TriggerResults::HLT"),
 		 l1tResults = cms.InputTag("gtDigis"),
 		 daqPartitions = cms.uint32( 0x01 ),
 		 l1tIgnoreMask = cms.bool( False ),
 		 l1techIgnorePrescales = cms.bool( False ),
 		 throw = cms.bool( True )
+	)
+
+	process.trackCount = cms.EDFilter("CandViewCountFilter",
+		src = cms.InputTag("hiSelectedTracks"),
+		minNumber = cms.uint32(1)
 	)
 
 	process.GlobalTag.globaltag = 'GR_R_44_V12::All'
@@ -95,9 +100,14 @@ if len(sys.argv) > 2:
 
 	process.hfana = cms.EDAnalyzer('UPCHFEnergyAnalyzer')	
 
-	process.candtraana = cms.EDAnalyzer("UPCPatCandidateAnalyzer",
-		patDiMuon=cms.InputTag("onia2MuMuPatTraTra"),
-		hltTrigger=cms.string("HLT_HIUPCNeuMuPixel_SingleTrack_v1")
+	process.rechitana = cms.EDAnalyzer('UPCRecHitAnalyzer',
+		TotalChargeThreshold=cms.untracked.double(0.0),
+		FillEB=cms.untracked.bool(True),	
+		FillEE=cms.untracked.bool(True),
+		FillHBHESumOnly=cms.untracked.bool(True),	
+		FillHFSumOnly=cms.untracked.bool(True),
+		FillEBSumOnly=cms.untracked.bool(True),	
+		FillEESumOnly=cms.untracked.bool(True)
 	)
 
 	process.siTrackSeq = cms.Sequence(process.siPixSeq+process.upctrackpix)
@@ -107,19 +117,17 @@ if len(sys.argv) > 2:
 	process.ecalSeq = cms.Sequence(process.ecalesana+process.ecaleeana+process.ecalebana)
 	process.ecalclustSeq = cms.Sequence(process.eclustbana+process.eclusteana)
 	process.muSeq = cms.Sequence(process.upcmuana)
-	process.hfSeq= cms.Sequence(process.hfana)
 	process.triggerSeq = cms.Sequence(process.l1bitana)
-	process.candSeq = cms.Sequence(process.candtraana)
+	process.rechitSeq = cms.Sequence(process.rechitana)
 
-	process.path = cms.Path(process.triggerSelection+
+	process.path = cms.Path(process.triggerSelection+~process.trackCount+ 
 					process.triggerSeq+
 					process.runSeq+
 					process.muSeq+
 					process.siTrackSeq+
 					process.trackSeq+
 					process.zdcSeq+
-					process.candSeq+
-					process.hfSeq
+					process.rechitSeq
 	#				process.ecalclustSeq
 	)
 else:

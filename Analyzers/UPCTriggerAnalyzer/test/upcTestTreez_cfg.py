@@ -48,6 +48,25 @@ if len(sys.argv) > 2:
 		l1GtRR=cms.InputTag("gtDigis"),
 		hltresults=cms.InputTag("TriggerResults::HLT")	
 	)
+
+	process.hltbitanalysis = cms.EDAnalyzer("HLTBitAnalyzer",
+	    ### Trigger objects
+	    l1GctHFBitCounts                = cms.InputTag("gctDigis"),
+	    l1GctHFRingSums                 = cms.InputTag("gctDigis"),
+	    l1GtObjectMapRecord             = cms.InputTag("hltL1GtObjectMap::HLT"),
+	    l1GtReadoutRecord               = cms.InputTag("gtDigis::RECO"),
+
+	    l1extramc                       = cms.string('l1extraParticles'),
+	    l1extramu                       = cms.string('l1extraParticles'),
+	    hltresults                      = cms.InputTag("TriggerResults::HLT"),
+	    HLTProcessName                  = cms.string("HLT"),
+	    UseTFileService 		    = cms.untracked.bool(True),
+		
+	    ### Run parameters
+            RunParameters = cms.PSet(
+            HistogramFile = cms.untracked.string('hltbitanalysis.root')
+            )	
+	)
 	
 	process.eclustbana = cms.EDAnalyzer('UPCEcalClusterAnalyzer',
         	ecalClusterCollection=cms.string("islandBarrelSuperClusters")
@@ -95,11 +114,6 @@ if len(sys.argv) > 2:
 
 	process.hfana = cms.EDAnalyzer('UPCHFEnergyAnalyzer')	
 
-	process.candtraana = cms.EDAnalyzer("UPCPatCandidateAnalyzer",
-		patDiMuon=cms.InputTag("onia2MuMuPatTraTra"),
-		hltTrigger=cms.string("HLT_HIUPCNeuMuPixel_SingleTrack_v1")
-	)
-
 	process.siTrackSeq = cms.Sequence(process.siPixSeq+process.upctrackpix)
 	process.trackSeq = cms.Sequence(process.upctrackselana)
 	process.runSeq = cms.Sequence(process.siPixelRecHits+process.upcPixelClusterShapeAnalyzer+process.upcvertexana+process.upccentralityana)
@@ -108,8 +122,8 @@ if len(sys.argv) > 2:
 	process.ecalclustSeq = cms.Sequence(process.eclustbana+process.eclusteana)
 	process.muSeq = cms.Sequence(process.upcmuana)
 	process.hfSeq= cms.Sequence(process.hfana)
-	process.triggerSeq = cms.Sequence(process.l1bitana)
-	process.candSeq = cms.Sequence(process.candtraana)
+	process.triggerSeq = cms.Sequence(process.hltbitanalysis)
+		#process.l1bitana)
 
 	process.path = cms.Path(process.triggerSelection+
 					process.triggerSeq+
@@ -118,7 +132,6 @@ if len(sys.argv) > 2:
 					process.siTrackSeq+
 					process.trackSeq+
 					process.zdcSeq+
-					process.candSeq+
 					process.hfSeq
 	#				process.ecalclustSeq
 	)

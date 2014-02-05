@@ -95,10 +95,17 @@ if len(sys.argv) > 2:
 
 	process.hfana = cms.EDAnalyzer('UPCHFEnergyAnalyzer')	
 
-	process.candtraana = cms.EDAnalyzer("UPCPatCandidateAnalyzer",
-		patDiMuon=cms.InputTag("onia2MuMuPatTraTra"),
-		hltTrigger=cms.string("HLT_HIUPCNeuMuPixel_SingleTrack_v1")
+	process.rechitana = cms.EDAnalyzer('UPCRecHitAnalyzer',
+		TotalChargeThreshold=cms.untracked.double(0.0),
+		FillEB=cms.untracked.bool(True),	
+		FillEE=cms.untracked.bool(True),
+		FillHBHESumOnly=cms.untracked.bool(True),	
+		FillHFSumOnly=cms.untracked.bool(True),
+		FillEBSumOnly=cms.untracked.bool(True),	
+		FillEESumOnly=cms.untracked.bool(True)
 	)
+
+	process.maxcalana = cms.EDAnalyzer('UPCMaxCalAnalyzer')
 
 	process.siTrackSeq = cms.Sequence(process.siPixSeq+process.upctrackpix)
 	process.trackSeq = cms.Sequence(process.upctrackselana)
@@ -107,19 +114,18 @@ if len(sys.argv) > 2:
 	process.ecalSeq = cms.Sequence(process.ecalesana+process.ecaleeana+process.ecalebana)
 	process.ecalclustSeq = cms.Sequence(process.eclustbana+process.eclusteana)
 	process.muSeq = cms.Sequence(process.upcmuana)
-	process.hfSeq= cms.Sequence(process.hfana)
 	process.triggerSeq = cms.Sequence(process.l1bitana)
-	process.candSeq = cms.Sequence(process.candtraana)
+	process.rechitSeq = cms.Sequence(process.rechitana)
 
-	process.path = cms.Path(process.triggerSelection+
+	process.path = cms.Path(#process.triggerSelection+
+					process.maxcalana+ 
 					process.triggerSeq+
 					process.runSeq+
 					process.muSeq+
 					process.siTrackSeq+
 					process.trackSeq+
 					process.zdcSeq+
-					process.candSeq+
-					process.hfSeq
+					process.rechitSeq
 	#				process.ecalclustSeq
 	)
 else:

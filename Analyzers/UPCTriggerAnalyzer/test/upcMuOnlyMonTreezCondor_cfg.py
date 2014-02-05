@@ -1,13 +1,13 @@
 import FWCore.ParameterSet.Config as cms
+from MuonAnalysis.MuonAssociators.patMuonsWithTrigger_cff import addMCinfo, changeRecoMuonInput, useL1MatchingWindowForSinglets, changeTriggerProcessName, switchOffAmbiguityResolution, addL1UserData
 import sys
-import FWCore.ParameterSet.Types as CfgTypes
-import PhysicsTools.PythonAnalysis.LumiList as LumiList
 
 if len(sys.argv) > 2:
 	infile=open(sys.argv[2])
 	outfile=(sys.argv[3])
 	process = cms.Process("UPCTreeMaker")
 
+	process.load("MuonAnalysis.MuonAssociators.patMuonsWithTrigger_cff")
 	process.load("FWCore.MessageService.MessageLogger_cfi")
 	process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 	process.load("Configuration.StandardSequences.ReconstructionHeavyIons_cff")
@@ -17,7 +17,16 @@ if len(sys.argv) > 2:
 	process.load("Analyzers.UPCTriggerAnalyzer.upcPixelClusterShapeAnalyzer_cfi")
 	process.load("Analyzers.UPCTriggerAnalyzer.upcPixelTrack_cff")
 
-	process.MessageLogger.cerr.FwkReport.reportEvery = 10
+	changeTriggerProcessName(process, "HLT")
+	switchOffAmbiguityResolution(process)
+	process.patMuonsWithoutTrigger.pvSrc = "hiSelectedVertex"
+
+	process.muonL1Info.maxDeltaR = 0.3
+	process.muonL1Info.fallbackToME1 = True
+	process.muonMatchHLTL1.maxDeltaR = 0.3
+	process.muonMatchHLTL1.fallbackToME1 = True
+
+	process.MessageLogger.cerr.FwkReport.reportEvery = 100
 	process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1)); 
 
 	process.source = cms.Source("PoolSource",
@@ -32,8 +41,12 @@ if len(sys.argv) > 2:
 		centralitySrc = cms.InputTag("hiCentrality")
 	)
 	
+	process.upcpatmuana = cms.EDAnalyzer('UPCPatMuonAnalyzer',
+		muonLabel=cms.InputTag("patMuonsWithTrigger")
+	)
+	
 	process.triggerSelection = cms.EDFilter( "TriggerResultsFilter",
-		 triggerConditions = cms.vstring("HLT_HIUPCNeuMuPixel_SingleTrack_v1"),
+		 triggerConditions = cms.vstring("( HLT_HIMinBiasZDC_Calo_PlusOrMinus_v1 OR HLT_HIMinBiasZDC_PlusOrMinusPixel_SingleTrack_v1 )"),
 		 hltResults = cms.InputTag("TriggerResults::HLT"),
 		 l1tResults = cms.InputTag("gtDigis"),
 		 daqPartitions = cms.uint32( 0x01 ),
@@ -42,12 +55,31 @@ if len(sys.argv) > 2:
 		 throw = cms.bool( True )
 	)
 
-	process.GlobalTag.globaltag = 'GR_R_44_V12::All'
+	process.GlobalTag.globaltag = 'GR_R_44_V13::All'
 
 	process.l1bitana = cms.EDAnalyzer('L1BitAnalyzer',
 		l1GtRR=cms.InputTag("gtDigis"),
 		hltresults=cms.InputTag("TriggerResults::HLT")	
 	)
+		
+        process.hltbitanalysis = cms.EDAnalyzer("HLTBitAnalyzer",
+            ### Trigger objects
+            l1GctHFBitCounts                = cms.InputTag("gctDigis"),
+            l1GctHFRingSums                 = cms.InputTag("gctDigis"),
+            l1GtObjectMapRecord             = cms.InputTag("hltL1GtObjectMap::HLT"),
+            l1GtReadoutRecord               = cms.InputTag("gtDigis::RECO"),
+
+            l1extramc                       = cms.string('l1extraParticles'),
+            l1extramu                       = cms.string('l1extraParticles'),
+            hltresults                      = cms.InputTag("TriggerResults::HLT"),
+            HLTProcessName                  = cms.string("HLT"),
+            UseTFileService                 = cms.untracked.bool(True),
+
+            ### Run parameters
+            RunParameters = cms.PSet(
+            HistogramFile = cms.untracked.string('hltbitanalysis.root')
+            )
+        ) 	
 	
 	process.eclustbana = cms.EDAnalyzer('UPCEcalClusterAnalyzer',
         	ecalClusterCollection=cms.string("islandBarrelSuperClusters")
@@ -60,7 +92,7 @@ if len(sys.argv) > 2:
 	process.upcmuana = cms.EDAnalyzer('UPCMuonAnalyzer',
 		muonLabel=cms.InputTag("muons")
 	)	
-	
+
 	process.upctrackpix=cms.EDAnalyzer('UPCTrackAnalyzer',
 		trackCollection=cms.string("hiPixelTracks")
 	)
@@ -93,33 +125,32 @@ if len(sys.argv) > 2:
 		ecalCollection=cms.string("EcalRecHitsEB")
 	)
 
+	process.calana = cms.EDAnalyzer('UPCCalEnergyAnalyzer')	
+	
+	process.castorana = cms.EDAnalyzer('UPCCastorAnalyzer')	
+	
 	process.hfana = cms.EDAnalyzer('UPCHFEnergyAnalyzer')	
-
-	process.candtraana = cms.EDAnalyzer("UPCPatCandidateAnalyzer",
-		patDiMuon=cms.InputTag("onia2MuMuPatTraTra"),
-		hltTrigger=cms.string("HLT_HIUPCNeuMuPixel_SingleTrack_v1")
-	)
 
 	process.siTrackSeq = cms.Sequence(process.siPixSeq+process.upctrackpix)
 	process.trackSeq = cms.Sequence(process.upctrackselana)
 	process.runSeq = cms.Sequence(process.siPixelRecHits+process.upcPixelClusterShapeAnalyzer+process.upcvertexana+process.upccentralityana)
         process.zdcSeq = cms.Sequence(process.zdcana)
+	process.calSeq= cms.Sequence(process.calana+process.castorana)
 	process.ecalSeq = cms.Sequence(process.ecalesana+process.ecaleeana+process.ecalebana)
 	process.ecalclustSeq = cms.Sequence(process.eclustbana+process.eclusteana)
-	process.muSeq = cms.Sequence(process.upcmuana)
+	process.muSeq = cms.Sequence(process.patMuonsWithTriggerSequence+process.upcpatmuana)
 	process.hfSeq= cms.Sequence(process.hfana)
 	process.triggerSeq = cms.Sequence(process.l1bitana)
-	process.candSeq = cms.Sequence(process.candtraana)
 
 	process.path = cms.Path(process.triggerSelection+
 					process.triggerSeq+
 					process.runSeq+
 					process.muSeq+
-					process.siTrackSeq+
+				#	process.siTrackSeq+
 					process.trackSeq+
-					process.zdcSeq+
-					process.candSeq+
-					process.hfSeq
+				#	process.hfSeq+
+					process.zdcSeq
+#					process.hfSeq
 	#				process.ecalclustSeq
 	)
 else:

@@ -5,7 +5,9 @@ import PhysicsTools.PythonAnalysis.LumiList as LumiList
 
 if len(sys.argv) > 2:
 	infile=open(sys.argv[2])
-	outfile=(sys.argv[3])
+
+	outfile='UPCTree.root'
+
 	process = cms.Process("UPCTreeMaker")
 
 	process.load("FWCore.MessageService.MessageLogger_cfi")
@@ -13,12 +15,14 @@ if len(sys.argv) > 2:
 	process.load("Configuration.StandardSequences.ReconstructionHeavyIons_cff")
 	process.load("Configuration.StandardSequences.GeometryDB_cff")
 	process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-	process.load("HeavyIonsAnalysis.Configuration.collisionEventSelection_cff")
+#	process.load("HeavyIonsAnalysis.Configuration.collisionEventSelection_cff")
+	process.load("HLTrigger.HLTanalyzers.HI_HLTAnalyser_cff")
 	process.load("Analyzers.UPCTriggerAnalyzer.upcPixelClusterShapeAnalyzer_cfi")
-	process.load("Analyzers.UPCTriggerAnalyzer.upcPixelTrack_cff")
 
 	process.MessageLogger.cerr.FwkReport.reportEvery = 10
-	process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1)); 
+	nEventz=int(sys.argv[len(sys.argv)-1])
+	process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(nEventz))
+	process.hltanalysis.RunParameters.DoHeavyIon = cms.untracked.bool(False)
 
 	process.source = cms.Source("PoolSource",
 	    fileNames = cms.untracked.vstring(infile.readlines())
@@ -28,12 +32,12 @@ if len(sys.argv) > 2:
 	    fileName = cms.string(outfile)
 	)
 
-	process.HeavyIonGlobalParameters=cms.PSet(centralityVariable= cms.string("PixelHits"),#HFhits"),#"PixelHits"),
+	process.HeavyIonGlobalParameters=cms.PSet(centralityVariable= cms.string("HFtowers"),#HFhits"),#"PixelHits"),
 		centralitySrc = cms.InputTag("hiCentrality")
 	)
 	
 	process.triggerSelection = cms.EDFilter( "TriggerResultsFilter",
-		 triggerConditions = cms.vstring("HLT_HIUPCNeuMuPixel_SingleTrack_v1"),
+		 triggerConditions = cms.vstring("(HLT_HIUPCNeuEG2Pixel_SingleTrack_v1 OR HLT_HIUPCNeuEG5Pixel_SingleTrack_v1 OR HLT_HIUPCNeuMuPixel_SingleTrack_v1)"),
 		 hltResults = cms.InputTag("TriggerResults::HLT"),
 		 l1tResults = cms.InputTag("gtDigis"),
 		 daqPartitions = cms.uint32( 0x01 ),
@@ -42,13 +46,19 @@ if len(sys.argv) > 2:
 		 throw = cms.bool( True )
 	)
 
-	process.GlobalTag.globaltag = 'GR_R_44_V12::All'
-
+	process.GlobalTag.globaltag = 'STARTHI44_V12::All'
+	
 	process.l1bitana = cms.EDAnalyzer('L1BitAnalyzer',
 		l1GtRR=cms.InputTag("gtDigis"),
-		hltresults=cms.InputTag("TriggerResults::HLT")	
+		hltresults=cms.InputTag("TriggerResults::HLT")
 	)
 	
+	process.hfana = cms.EDAnalyzer('UPCHFEnergyAnalyzer')
+
+	process.genpartana = cms.EDAnalyzer('UPCGenParticleAnalyzer',
+		genParticleCollection = cms.string("hiGenParticles")
+	)
+		
 	process.eclustbana = cms.EDAnalyzer('UPCEcalClusterAnalyzer',
         	ecalClusterCollection=cms.string("islandBarrelSuperClusters")
 	)
@@ -61,12 +71,12 @@ if len(sys.argv) > 2:
 		muonLabel=cms.InputTag("muons")
 	)	
 	
-	process.upctrackpix=cms.EDAnalyzer('UPCTrackAnalyzer',
-		trackCollection=cms.string("hiPixelTracks")
-	)
-
 	process.upctrackselana = cms.EDAnalyzer('UPCTrackAnalyzer',
 		trackCollection=cms.string("hiSelectedTracks")
+	)
+
+	process.upctrackgpana = cms.EDAnalyzer('UPCTrackAnalyzer',
+		trackCollection=cms.string("hiGlobalPrimTracks")
 	)
 
 	process.upcvertexana = cms.EDAnalyzer('UPCVertexAnalyzer',
@@ -92,35 +102,26 @@ if len(sys.argv) > 2:
 	process.ecalebana = cms.EDAnalyzer('UPCEcalAnalyzer',
 		ecalCollection=cms.string("EcalRecHitsEB")
 	)
+	
+	process.genpartSequence = cms.Sequence(process.genpartana)
+	process.trackSequence = cms.Sequence(process.upctrackselana+process.upctrackgpana)
+        process.zdcSequence = cms.Sequence(process.zdcana)
+	process.ecalSequence = cms.Sequence(process.ecalesana+process.ecaleeana+process.ecalebana)
+	process.ecalclustSequence = cms.Sequence(process.eclustbana+process.eclusteana)
+	process.muSequence = cms.Sequence(process.upcmuana)
+	process.hfSequence= cms.Sequence(process.hfana)
+	process.triggerSequence = cms.Sequence(process.l1bitana)
+	process.runSequence = cms.Sequence(process.upcvertexana+process.siPixelRecHits+process.upcPixelClusterShapeAnalyzer)
+#		+process.upccentralityana+process.siPixelRecHits+process.upcPixelClusterShapeAnalyzer
 
-	process.hfana = cms.EDAnalyzer('UPCHFEnergyAnalyzer')	
-
-	process.candtraana = cms.EDAnalyzer("UPCPatCandidateAnalyzer",
-		patDiMuon=cms.InputTag("onia2MuMuPatTraTra"),
-		hltTrigger=cms.string("HLT_HIUPCNeuMuPixel_SingleTrack_v1")
-	)
-
-	process.siTrackSeq = cms.Sequence(process.siPixSeq+process.upctrackpix)
-	process.trackSeq = cms.Sequence(process.upctrackselana)
-	process.runSeq = cms.Sequence(process.siPixelRecHits+process.upcPixelClusterShapeAnalyzer+process.upcvertexana+process.upccentralityana)
-        process.zdcSeq = cms.Sequence(process.zdcana)
-	process.ecalSeq = cms.Sequence(process.ecalesana+process.ecaleeana+process.ecalebana)
-	process.ecalclustSeq = cms.Sequence(process.eclustbana+process.eclusteana)
-	process.muSeq = cms.Sequence(process.upcmuana)
-	process.hfSeq= cms.Sequence(process.hfana)
-	process.triggerSeq = cms.Sequence(process.l1bitana)
-	process.candSeq = cms.Sequence(process.candtraana)
-
-	process.path = cms.Path(process.triggerSelection+
-					process.triggerSeq+
-					process.runSeq+
-					process.muSeq+
-					process.siTrackSeq+
-					process.trackSeq+
-					process.zdcSeq+
-					process.candSeq+
-					process.hfSeq
-	#				process.ecalclustSeq
-	)
+	process.path = cms.Path(process.triggerSequence
+					+process.genpartSequence
+					+process.runSequence
+					+process.muSequence
+					+process.trackSequence
+					+process.zdcSequence
+					+process.hfSequence
+#					+process.ecalclustSequence
+        )
 else:
 	print 'error: no input file'	

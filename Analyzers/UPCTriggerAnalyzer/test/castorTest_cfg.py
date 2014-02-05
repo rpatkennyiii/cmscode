@@ -95,6 +95,8 @@ if len(sys.argv) > 2:
 
 	process.hfana = cms.EDAnalyzer('UPCHFEnergyAnalyzer')	
 
+	process.castorana = cms.EDAnalyzer('UPCCastorAnalyzer')	
+
 	process.candtraana = cms.EDAnalyzer("UPCPatCandidateAnalyzer",
 		patDiMuon=cms.InputTag("onia2MuMuPatTraTra"),
 		hltTrigger=cms.string("HLT_HIUPCNeuMuPixel_SingleTrack_v1")
@@ -110,16 +112,19 @@ if len(sys.argv) > 2:
 	process.hfSeq= cms.Sequence(process.hfana)
 	process.triggerSeq = cms.Sequence(process.l1bitana)
 	process.candSeq = cms.Sequence(process.candtraana)
+	process.castorSeq = cms.Sequence(process.castorana)
 
-	process.path = cms.Path(process.triggerSelection+
-					process.triggerSeq+
-					process.runSeq+
-					process.muSeq+
-					process.siTrackSeq+
-					process.trackSeq+
-					process.zdcSeq+
-					process.candSeq+
-					process.hfSeq
+	process.path = cms.Path(#process.triggerSelection+
+#					process.triggerSeq+
+#					process.runSeq+
+#					process.muSeq+
+#					process.siTrackSeq+
+#					process.trackSeq+
+#					process.zdcSeq+
+#					process.candSeq+
+#					process.candSeq+
+					process.castorSeq
+#					process.hfSeq
 	#				process.ecalclustSeq
 	)
 else:

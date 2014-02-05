@@ -42,7 +42,11 @@ if len(sys.argv) > 2:
 		 throw = cms.bool( True )
 	)
 
-	process.GlobalTag.globaltag = 'GR_R_44_V12::All'
+	process.GlobalTag.globaltag = 'STARTHI44_V12::All'
+
+	process.genpartana = cms.EDAnalyzer('UPCGenParticleAnalyzer',
+		genParticleCollection = cms.string("hiGenParticles")
+	)
 
 	process.l1bitana = cms.EDAnalyzer('L1BitAnalyzer',
 		l1GtRR=cms.InputTag("gtDigis"),
@@ -97,12 +101,13 @@ if len(sys.argv) > 2:
 
 	process.candtraana = cms.EDAnalyzer("UPCPatCandidateAnalyzer",
 		patDiMuon=cms.InputTag("onia2MuMuPatTraTra"),
-		hltTrigger=cms.string("HLT_HIUPCNeuMuPixel_SingleTrack_v1")
+		hltTrigger=cms.string("HLT_HIL1DoubleMuOpen_v1")
 	)
 
+	process.genpartSequence = cms.Sequence(process.genpartana)
 	process.siTrackSeq = cms.Sequence(process.siPixSeq+process.upctrackpix)
 	process.trackSeq = cms.Sequence(process.upctrackselana)
-	process.runSeq = cms.Sequence(process.siPixelRecHits+process.upcPixelClusterShapeAnalyzer+process.upcvertexana+process.upccentralityana)
+	process.runSeq = cms.Sequence(process.siPixelRecHits+process.upcPixelClusterShapeAnalyzer+process.upcvertexana)
         process.zdcSeq = cms.Sequence(process.zdcana)
 	process.ecalSeq = cms.Sequence(process.ecalesana+process.ecaleeana+process.ecalebana)
 	process.ecalclustSeq = cms.Sequence(process.eclustbana+process.eclusteana)
@@ -111,7 +116,8 @@ if len(sys.argv) > 2:
 	process.triggerSeq = cms.Sequence(process.l1bitana)
 	process.candSeq = cms.Sequence(process.candtraana)
 
-	process.path = cms.Path(process.triggerSelection+
+	process.path = cms.Path(#process.triggerSelection+
+					process.genpartSequence+
 					process.triggerSeq+
 					process.runSeq+
 					process.muSeq+
