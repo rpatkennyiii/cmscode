@@ -39,6 +39,17 @@ void UPCPatCandidateAnalyzer::beginJob(){
   candTree->Branch("muon1_StandAlone", muon1_StandAlone, "muon1_StandAlone[acceptedCand]/I");
   candTree->Branch("muon1_Global", muon1_Global, "muon1_Global[acceptedCand]/I");
   candTree->Branch("muon1_Tracker", muon1_Tracker, "muon1_Tracker[acceptedCand]/I");
+  candTree->Branch("muon1_Calo", muon1_Calo, "muon1_Calo[acceptedCand]/I");
+  candTree->Branch("muon1_caloMuonTower",muon1_caloMuonTower,"muon1_caloMuonTower[acceptedCand]/F");
+  candTree->Branch("muon1_caloMuonTowerS9",muon1_caloMuonTowerS9,"muon1_caloMuonTowerS9[acceptedCand]/F");
+  candTree->Branch("muon1_caloMuonEm",muon1_caloMuonEm,"muon1_caloMuonEm[acceptedCand]/F");
+  candTree->Branch("muon1_caloMuonEmS9",muon1_caloMuonEmS9,"muon1_caloMuonEmS9[acceptedCand]/F");
+  candTree->Branch("muon1_caloMuonEmS25",muon1_caloMuonEmS25,"muon1_caloMuonEmS25[acceptedCand]/F");
+  candTree->Branch("muon1_caloMuonEmMax",muon1_caloMuonEmMax,"muon1_caloMuonEmMax[acceptedCand]/F");
+  candTree->Branch("muon1_caloMuonHad",muon1_caloMuonHad,"muon1_caloMuonHad[acceptedCand]/F");
+  candTree->Branch("muon1_caloMuonHadS9",muon1_caloMuonHadS9,"muon1_caloMuonHadS9[acceptedCand]/F");
+  candTree->Branch("muon1_caloMuonHadMax",muon1_caloMuonHadMax,"muon1_caloMuonHadMax[acceptedCand]/F");
+  candTree->Branch("muon1_caloMuonCompatibility", muon1_caloMuonCompatibility, "muon1_caloMuonCompatibility[acceptedCand]/F");
   candTree->Branch("muon1_rapidity", muon1_rapidity, "muon1_rapidity[acceptedCand]/F");
   candTree->Branch("muon1_numberOfValidHits",muon1_numberOfValidHits,"muon1_numberOfValidHits[acceptedCand]/F");
   candTree->Branch("muon1_pixelLayersWithMeasurement",muon1_pixelLayersWithMeasurement,"muon1_pixelLayersWithMeasurement[acceptedCand]/F");
@@ -62,6 +73,17 @@ void UPCPatCandidateAnalyzer::beginJob(){
   candTree->Branch("muon2_StandAlone", muon2_StandAlone, "muon2_StandAlone[acceptedCand]/I");
   candTree->Branch("muon2_Global", muon2_Global, "muon2_Global[acceptedCand]/I");
   candTree->Branch("muon2_Tracker", muon2_Tracker, "muon2_Tracker[acceptedCand]/I");
+  candTree->Branch("muon2_Calo", muon2_Calo, "muon2_Calo[acceptedCand]/I");
+  candTree->Branch("muon2_caloMuonTower",muon1_caloMuonTower,"muon1_caloMuonTower[acceptedCand]/F");
+  candTree->Branch("muon2_caloMuonTowerS9",muon1_caloMuonTowerS9,"muon1_caloMuonTowerS9[acceptedCand]/F");
+  candTree->Branch("muon2_caloMuonEm",muon1_caloMuonEm,"muon1_caloMuonEm[acceptedCand]/F");
+  candTree->Branch("muon2_caloMuonEmS9",muon1_caloMuonEmS9,"muon1_caloMuonEmS9[acceptedCand]/F");
+  candTree->Branch("muon2_caloMuonEmS25",muon1_caloMuonEmS25,"muon1_caloMuonEmS25[acceptedCand]/F");
+  candTree->Branch("muon2_caloMuonEmMax",muon1_caloMuonEmMax,"muon1_caloMuonEmMax[acceptedCand]/F");
+  candTree->Branch("muon2_caloMuonHad",muon1_caloMuonHad,"muon1_caloMuonHad[acceptedCand]/F");
+  candTree->Branch("muon2_caloMuonHadS9",muon1_caloMuonHadS9,"muon1_caloMuonHadS9[acceptedCand]/F");
+  candTree->Branch("muon2_caloMuonHadMax",muon1_caloMuonHadMax,"muon1_caloMuonHadMax[acceptedCand]/F");
+  candTree->Branch("muon2_caloMuonCompatibility", muon2_caloMuonCompatibility, "muon2_caloMuonCompatibility[acceptedCand]/F");
   candTree->Branch("muon2_rapidity", muon2_rapidity, "muon2_rapidity[acceptedCand]/F");
   candTree->Branch("muon2_numberOfValidHits",muon2_numberOfValidHits,"muon2_numberOfValidHits[acceptedCand]/F");
   candTree->Branch("muon2_pixelLayersWithMeasurement",muon2_pixelLayersWithMeasurement,"muon2_pixelLayersWithMeasurement[acceptedCand]/F");
@@ -93,7 +115,7 @@ void UPCPatCandidateAnalyzer::analyze(const edm::Event& iEvent, const edm::Event
       
       const pat::Muon* muon1 = dynamic_cast<const pat::Muon*>(cand->daughter("muon1"));
       const pat::Muon* muon2 = dynamic_cast<const pat::Muon*>(cand->daughter("muon2"));
-
+      
       const pat::TriggerObjectStandAloneCollection mu1HLTMatchesPath = muon1->triggerObjectMatchesByPath(_hltTrigger.c_str());
       const pat::TriggerObjectStandAloneCollection mu2HLTMatchesPath = muon2->triggerObjectMatchesByPath(_hltTrigger.c_str());
 
@@ -137,20 +159,37 @@ void UPCPatCandidateAnalyzer::analyze(const edm::Event& iEvent, const edm::Event
       muon1_StandAlone[cand_size] = muon1->isStandAloneMuon();
       muon1_Global[cand_size] = muon1->isGlobalMuon();
       muon1_Tracker[cand_size] = muon1->isTrackerMuon();
+      muon1_Calo[cand_size] = muon1->isCaloMuon();
       muon1_rapidity[cand_size] = muon1->rapidity();
-      muon1_numberOfValidHits[cand_size]=muon1->innerTrack()->numberOfValidHits();
-      muon1_pixelLayersWithMeasurement[cand_size]=muon1->innerTrack()->hitPattern().pixelLayersWithMeasurement();
-      muon1_trackerLayersWithMeasurement[cand_size]=muon1->innerTrack()->hitPattern().trackerLayersWithMeasurement();
-      muon1_normalizedChi2[cand_size]=muon1->innerTrack()->normalizedChi2();
-      muon1_dz[cand_size]=muon1->innerTrack()->dz();
+      muon1_caloMuonCompatibility[cand_size] = muon1->caloCompatibility();
       muon1_dB[cand_size]=muon1->dB();
       muon1_numberOfMatchedStations[cand_size]=muon1->numberOfMatchedStations();
-      muon1_ndof[cand_size]=muon1->innerTrack()->ndof();
       muon1_trkArbit[cand_size]=bool(muon1->muonID("TrackerMuonArbitrated"));
       muon1_isGoodMuon[cand_size]=bool(muon::isGoodMuon((*muon1),muon::TMOneStationTight));
       muon1_l1DeltaR[cand_size]=muon1->userFloat("muonL1Info:deltaR");
       muon1_l1Quality[cand_size]=muon1->userInt("muonL1Info:quality");
       muon1_pass[cand_size] = bool(mu1HLTMatchesPath.size());
+//track variables
+      const Track *track;
+      if (muon1_StandAlone[cand_size] && !(muon1_Global[cand_size])) track=(muon1->standAloneMuon()).get();
+      else  track=(muon1->track()).get();
+      muon1_numberOfValidHits[cand_size]=track->numberOfValidHits();
+      muon1_pixelLayersWithMeasurement[cand_size]=track->hitPattern().pixelLayersWithMeasurement();
+      muon1_trackerLayersWithMeasurement[cand_size]=track->hitPattern().trackerLayersWithMeasurement();
+      muon1_normalizedChi2[cand_size]=track->normalizedChi2();
+      muon1_dz[cand_size]=track->dz();
+      muon1_ndof[cand_size]=track->ndof();
+//calo muon variables 
+      MuonEnergy muE=muon1->calEnergy();
+      muon1_caloMuonTower[cand_size]=muE.tower;
+      muon1_caloMuonTowerS9[cand_size]=muE.towerS9;
+      muon1_caloMuonEm[cand_size]=muE.em;
+      muon1_caloMuonEmS9[cand_size]=muE.emS9;
+      muon1_caloMuonEmS25[cand_size]=muE.emS25;
+      muon1_caloMuonEmMax[cand_size]=muE.emMax;
+      muon1_caloMuonHad[cand_size]=muE.had;
+      muon1_caloMuonHadS9[cand_size]=muE.hadS9;
+      muon1_caloMuonHadMax[cand_size]=muE.hadMax;
 
       muon2_pt[cand_size]=muon2->pt();
       muon2_eta[cand_size] = muon2->eta();
@@ -160,20 +199,36 @@ void UPCPatCandidateAnalyzer::analyze(const edm::Event& iEvent, const edm::Event
       muon2_StandAlone[cand_size] = muon2->isStandAloneMuon();
       muon2_Global[cand_size] = muon2->isGlobalMuon();
       muon2_Tracker[cand_size] = muon2->isTrackerMuon();
+      muon2_Calo[cand_size] = muon2->isCaloMuon();
       muon2_rapidity[cand_size] = muon2->rapidity();
-      muon2_numberOfValidHits[cand_size]=muon2->innerTrack()->numberOfValidHits();
-      muon2_pixelLayersWithMeasurement[cand_size]=muon2->innerTrack()->hitPattern().pixelLayersWithMeasurement();
-      muon2_trackerLayersWithMeasurement[cand_size]=muon2->innerTrack()->hitPattern().trackerLayersWithMeasurement();
-      muon2_normalizedChi2[cand_size]=muon2->innerTrack()->normalizedChi2();
-      muon2_dz[cand_size]=muon2->innerTrack()->dz();
+      muon2_caloMuonCompatibility[cand_size] = muon2->caloCompatibility();
       muon2_dB[cand_size]=muon2->dB();
       muon2_numberOfMatchedStations[cand_size]=muon2->numberOfMatchedStations();
-      muon2_ndof[cand_size]=muon2->innerTrack()->ndof();
       muon2_trkArbit[cand_size]=bool(muon2->muonID("TrackerMuonArbitrated"));
       muon2_isGoodMuon[cand_size]=bool(muon::isGoodMuon((*muon2),muon::TMOneStationTight));
       muon2_l1DeltaR[cand_size]=muon2->userFloat("muonL1Info:deltaR");
       muon2_l1Quality[cand_size]=muon2->userInt("muonL1Info:quality");
       muon2_pass[cand_size] = bool(mu2HLTMatchesPath.size());
+//track varriables
+      if (muon2_StandAlone[cand_size] && !(muon2_Global[cand_size])) track=(muon2->standAloneMuon()).get();
+      else  track=(muon2->track()).get();
+      muon2_numberOfValidHits[cand_size]=track->numberOfValidHits();
+      muon2_pixelLayersWithMeasurement[cand_size]=track->hitPattern().pixelLayersWithMeasurement();
+      muon2_trackerLayersWithMeasurement[cand_size]=track->hitPattern().trackerLayersWithMeasurement();
+      muon2_normalizedChi2[cand_size]=track->normalizedChi2();
+      muon2_dz[cand_size]=track->dz();
+      muon2_ndof[cand_size]=track->ndof();
+// calo muon varriables
+      muE=muon2->calEnergy();
+      muon2_caloMuonTower[cand_size]=muE.tower;
+      muon2_caloMuonTowerS9[cand_size]=muE.towerS9;
+      muon2_caloMuonEm[cand_size]=muE.em;
+      muon2_caloMuonEmS9[cand_size]=muE.emS9;
+      muon2_caloMuonEmS25[cand_size]=muE.emS25;
+      muon2_caloMuonEmMax[cand_size]=muE.emMax;
+      muon2_caloMuonHad[cand_size]=muE.had;
+      muon2_caloMuonHadS9[cand_size]=muE.hadS9;
+      muon2_caloMuonHadMax[cand_size]=muE.hadMax;
 
       cand_size++;
     }

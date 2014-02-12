@@ -1,5 +1,96 @@
-#include "Analyzers/UPCTriggerAnalyzer/interface/UPCPatMuonAnalyzer.h"
+#ifndef UPCPATMUONANALYZER_H
+#define UPCPATMUONANALYZER_H
+
+#include "FWCore/Framework/interface/EDAnalyzer.h"
+#include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/EventSetup.h"
+#include "FWCore/Framework/interface/MakerMacros.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "DataFormats/TrackReco/interface/Track.h"
+#include "DataFormats/TrackReco/interface/TrackFwd.h"
+#include "DataFormats/HeavyIonEvent/interface/CentralityProvider.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
+#include "DataFormats/VertexReco/interface/VertexFwd.h"
+#include "DataFormats/MuonReco/interface/Muon.h"
+#include "DataFormats/MuonReco/interface/MuonSelectors.h"
+#include "FWCore/Utilities/interface/InputTag.h"
+#include "DataFormats/PatCandidates/interface/Muon.h"
 #include <iostream>
+
+//TFile Service
+#include "FWCore/ServiceRegistry/interface/Service.h"
+#include "CommonTools/UtilAlgos/interface/TFileService.h"
+
+//Root Classes
+#include "TTree.h"
+#include "TFile.h"
+#include "TVectorT.h"
+#include "TList.h"
+
+using namespace reco;
+using namespace std;
+
+class UPCPatMuonAnalyzer : public edm::EDAnalyzer{
+public:
+	explicit UPCPatMuonAnalyzer(const edm::ParameterSet&);
+	~UPCPatMuonAnalyzer();
+private:
+	virtual void beginJob();
+	virtual void analyze(const edm::Event&, const edm::EventSetup&);
+	void getTrack(const Track *trax,unsigned int &ndof, float &chi2,unsigned int &vHits, unsigned int &pixHits, unsigned int &traxHits,
+	   float &x, float &y, float &z,
+	   float &p, float &qoverp, float &lambda, float &phi,
+	   float &varqoverp, float &varlambda, float &varphi,
+	   float &covarqoverplambda, float &covarqoverpphi, float &covarlambdaphi);
+
+	edm::InputTag muonLabel;
+	edm::Service<TFileService> mFileServer;
+
+	TTree* MuonTree;
+
+	bool	
+	isGlobalMuon[100],
+	isTrackerMuon[100],
+	isStandAloneMuon[100],
+	isCaloMuon[100],
+	isGoodMuon[100];
+	
+	unsigned int
+	nMuon,
+	l1Quality[100],
+	ndof[100],
+	numberOfValidTrackerHits[100],
+	pixelLayersWithMeasurement[100],
+	trackerLayersWithMeasurement[100];
+
+	float
+	caloMuonTower[100],
+	caloMuonTowerS9[100],
+	caloMuonEm[100],
+	caloMuonEmS9[100],
+	caloMuonEmS25[100],
+	caloMuonEmMax[100],
+	caloMuonHad[100],
+	caloMuonHadS9[100],
+	caloMuonHadMax[100],
+	caloMuonCompatibility[100],
+	chi2[100],
+	l1DeltaR[100],
+	p[100],
+	qoverp[100],
+	lambda[100],
+	phi[100],
+	varQoverp[100],
+	varLambda[100],
+	varPhi[100],
+	covarQoverpLambda[100],
+	covarQoverpPhi[100],
+	covarLambdaPhi[100],
+	x[100],
+	y[100],
+	z[100];
+};
+DEFINE_FWK_MODULE(UPCPatMuonAnalyzer);
 
 using namespace edm;
 
@@ -10,141 +101,85 @@ UPCPatMuonAnalyzer::~UPCPatMuonAnalyzer(){}
 void UPCPatMuonAnalyzer::beginJob(){
 	mFileServer->file().cd();
 
-	isPat=((muonLabel.label()).substr(0,3)=="pat");
-
 	MuonTree = new TTree(TString(muonLabel.label())+"Tree",TString(muonLabel.label())+"Tree");
-	MuonTree->Branch("nGlobalMuon",&nGlobalMuon,"nGlobalMuon/i");
-	MuonTree->Branch("nTrackerMuon",&nTrackerMuon,"nTrackerMuon/i");
-	MuonTree->Branch("nStandAloneMuon",&nStandAloneMuon,"nStandAloneMuon/i");
-	MuonTree->Branch("nCaloMuon",&nCaloMuon,"nCaloMuon/i");
+	MuonTree->Branch("nMuon",&nMuon,"nMuon/i");
 
-	MuonTree->Branch("CaloMuonEnergy",&CaloMuonEnergy,"CaloMuonEnergy[nCaloMuon]/F");
+	MuonTree->Branch("isGlobalMuon",isGlobalMuon,"isGlobalMuon[nMuon]/O");
+	MuonTree->Branch("isTrackerMuon",isTrackerMuon,"isTrackerMuon[nMuon]/O");
+	MuonTree->Branch("isStandAloneMuon",isStandAloneMuon,"isStandAloneMuon[nMuon]/O");
+	MuonTree->Branch("isCaloMuon",isCaloMuon,"isCaloMuon[nMuon]/O");
 
-	MuonTree->Branch("ndofTracker",ndofTracker,"ndofTracker[nTrackerMuon]/i");
-	MuonTree->Branch("numberOfValidTrackerHitsTracker",numberOfValidTrackerHitsTracker,"numberOfValidTrackerHitsTracker[nTrackerMuon]/i");
-	MuonTree->Branch("pixelLayersWithMeasurementTracker",pixelLayersWithMeasurementTracker,"pixelLayersWithMeasurementTracker[nTrackerMuon]/i");
-	MuonTree->Branch("trackerLayersWithMeasurementTracker",trackerLayersWithMeasurementTracker,"trackerLayersWithMeasurementTracker[nTrackerMuon]/i");
-	MuonTree->Branch("chi2Tracker",chi2Tracker,"chi2Tracker[nTrackerMuon]/F");
-	MuonTree->Branch("isGoodMuonTracker",isGoodMuonTracker,"isGoodMuonTracker[nTrackerMuon]/O");
-	
-	MuonTree->Branch("pTracker",pTracker,"pTracker[nTrackerMuon]/F");
-	MuonTree->Branch("qoverpTracker",qoverpTracker,"qoverpTracker[nTrackerMuon]/F");
-	MuonTree->Branch("lambdaTracker",lambdaTracker,"lambdaTracker[nTrackerMuon]/F");
-	MuonTree->Branch("phiTracker",phiTracker,"phiTracker[nTrackerMuon]/F");
-	MuonTree->Branch("varQoverpTracker",varQoverpTracker,"varQoverpTracker[nTrackerMuon]/F");
-	MuonTree->Branch("varLambdaTracker",varLambdaTracker,"varLambdaTracker[nTrackerMuon]/F");
-	MuonTree->Branch("varPhiTracker",varPhiTracker,"varPhiTracker[nTrackerMuon]/F");
-	MuonTree->Branch("covarQoverpLambdaTracker",covarQoverpLambdaTracker,"covarQoverpLambdaTracker[nTrackerMuon]/F");
-	MuonTree->Branch("covarQoverpPhiTracker",covarQoverpPhiTracker,"covarQoverpPhiTracker[nTrackerMuon]/F");
-	MuonTree->Branch("covarLambdaPhiTracker",covarLambdaPhiTracker,"covarLambdaPhiTracker[nTrackerMuon]/F");
-	MuonTree->Branch("xTracker",xTracker,"xTracker[nTrackerMuon]/F");
-	MuonTree->Branch("yTracker",yTracker,"yTracker[nTrackerMuon]/F");
-	MuonTree->Branch("zTracker",zTracker,"zTracker[nTrackerMuon]/F");
+	MuonTree->Branch("caloMuonTower",caloMuonTower,"caloMuonTower[nMuon]/F");
+	MuonTree->Branch("caloMuonTowerS9",caloMuonTowerS9,"caloMuonTowerS9[nMuon]/F");
+	MuonTree->Branch("caloMuonEm",caloMuonEm,"caloMuonEm[nMuon]/F");
+	MuonTree->Branch("caloMuonEmS9",caloMuonEmS9,"caloMuonEmS9[nMuon]/F");
+	MuonTree->Branch("caloMuonEmS25",caloMuonEmS25,"caloMuonEmS25[nMuon]/F");
+	MuonTree->Branch("caloMuonEmMax",caloMuonEmMax,"caloMuonEmMax[nMuon]/F");
+	MuonTree->Branch("caloMuonHad",caloMuonHad,"caloMuonHad[nMuon]/F");
+	MuonTree->Branch("caloMuonHadS9",caloMuonHadS9,"caloMuonHadS9[nMuon]/F");
+	MuonTree->Branch("caloMuonHadMax",caloMuonHadMax,"caloMuonHadMax[nMuon]/F");
+	MuonTree->Branch("caloMuonCompatibility",caloMuonCompatibility,"caloMuonCompatibility[nMuon]/F");
 
-	MuonTree->Branch("ndofGlobal",ndofGlobal,"ndofGlobal[nGlobalMuon]/i");
-	MuonTree->Branch("numberOfValidTrackerHitsGlobal",numberOfValidTrackerHitsGlobal,"numberOfValidTrackerHitsGlobal[nGlobalMuon]/i");
-	MuonTree->Branch("pixelLayersWithMeasurementGlobal",pixelLayersWithMeasurementGlobal,"pixelLayersWithMeasurementGlobal[nGlobalMuon]/i");
-	MuonTree->Branch("trackerLayersWithMeasurementGlobal",trackerLayersWithMeasurementGlobal,"trackerLayersWithMeasurementGlobal[nGlobalMuon]/i");
-	MuonTree->Branch("chi2Global",chi2Global,"chi2Global[nGlobalMuon]/F");
-	MuonTree->Branch("isGoodMuonGlobal",isGoodMuonGlobal,"isGoodMuonGlobal[nGlobalMuon]/O");
+        MuonTree->Branch("ndof",ndof,"ndof[nMuon]/i");
+	MuonTree->Branch("numberOfValidTrackerHits",numberOfValidTrackerHits,"numberOfValidTrackerHits[nMuon]/i");
+	MuonTree->Branch("pixelLayersWithMeasurement",pixelLayersWithMeasurement,"pixelLayersWithMeasurement[nMuon]/i");
+	MuonTree->Branch("trackerLayersWithMeasurement",trackerLayersWithMeasurement,"trackerLayersWithMeasurement[nMuon]/i");
+	MuonTree->Branch("chi2",chi2,"chi2[nMuon]/F");
+	MuonTree->Branch("isGoodMuon",isGoodMuon,"isGoodMuon[nMuon]/O");
 
-	MuonTree->Branch("pGlobal",pGlobal,"pGlobal[nGlobalMuon]/F");
-	MuonTree->Branch("qoverpGlobal",qoverpGlobal,"qoverpGlobal[nGlobalMuon]/F");
-	MuonTree->Branch("lambdaGlobal",lambdaGlobal,"lambdaGlobal[nGlobalMuon]/F");
-	MuonTree->Branch("phiGlobal",phiGlobal,"phiGlobal[nGlobalMuon]/F");
-	MuonTree->Branch("varQoverpGlobal",varQoverpGlobal,"varQoverpGlobal[nGlobalMuon]/F");
-	MuonTree->Branch("varLambdaGlobal",varLambdaGlobal,"varLambdaGlobal[nGlobalMuon]/F");
-	MuonTree->Branch("varPhiGlobal",varPhiGlobal,"varPhiGlobal[nGlobalMuon]/F");
-	MuonTree->Branch("covarQoverpLambdaGlobal",covarQoverpLambdaGlobal,"covarQoverpLambdaGlobal[nGlobalMuon]/F");
-	MuonTree->Branch("covarQoverpPhiGlobal",covarQoverpPhiGlobal,"covarQoverpPhiGlobal[nGlobalMuon]/F");
-	MuonTree->Branch("covarLambdaPhiGlobal",covarLambdaPhiGlobal,"covarLambdaPhiGlobal[nGlobalMuon]/F");
-	MuonTree->Branch("xGlobal",xGlobal,"xGlobal[nGlobalMuon]/F");
-	MuonTree->Branch("yGlobal",yGlobal,"yGlobal[nGlobalMuon]/F");
-	MuonTree->Branch("zGlobal",zGlobal,"zGlobal[nGlobalMuon]/F");
+	MuonTree->Branch("p",p,"p[nMuon]/F");
+	MuonTree->Branch("qoverp",qoverp,"qoverp[nMuon]/F");
+	MuonTree->Branch("lambda",lambda,"lambda[nMuon]/F");
+	MuonTree->Branch("phi",phi,"phi[nMuon]/F");
+	MuonTree->Branch("varQoverp",varQoverp,"varQoverp[nMuon]/F");
+	MuonTree->Branch("varLambda",varLambda,"varLambda[nMuon]/F");
+	MuonTree->Branch("varPhi",varPhi,"varPhi[nMuon]/F");
+	MuonTree->Branch("covarQoverpLambda",covarQoverpLambda,"covarQoverpLambda[nMuon]/F");
+	MuonTree->Branch("covarQoverpPhi",covarQoverpPhi,"covarQoverpPhi[nMuon]/F");
+	MuonTree->Branch("covarLambdaPhi",covarLambdaPhi,"covarLambdaPhi[nMuon]/F");
+	MuonTree->Branch("x",x,"x[nMuon]/F");
+	MuonTree->Branch("y",y,"y[nMuon]/F");
+	MuonTree->Branch("z",z,"z[nMuon]/F");
 
-	MuonTree->Branch("ndofStandAlone",ndofStandAlone,"ndofStandAlone[nStandAloneMuon]/i");
-	MuonTree->Branch("numberOfValidTrackerHitsStandAlone",numberOfValidTrackerHitsStandAlone,"numberOfValidTrackerHitsStandAlone[nStandAloneMuon]/i");
-	MuonTree->Branch("pixelLayersWithMeasurementStandAlone",pixelLayersWithMeasurementStandAlone,"pixelLayersWithMeasurementStandAlone[nStandAloneMuon]/i");
-	MuonTree->Branch("trackerLayersWithMeasurementStandAlone",trackerLayersWithMeasurementStandAlone,"trackerLayersWithMeasurementStandAlone[nStandAloneMuon]/i");
-	MuonTree->Branch("chi2StandAlone",chi2StandAlone,"chi2StandAlone[nStandAloneMuon]/F");
-	MuonTree->Branch("isGoodMuonStandAlone",isGoodMuonStandAlone,"isGoodMuonStandAlone[nStandAloneMuon]/O");
-
-	MuonTree->Branch("pStandAlone",pStandAlone,"pStandAlone[nStandAloneMuon]/F");
-	MuonTree->Branch("qoverpStandAlone",qoverpStandAlone,"qoverpStandAlone[nStandAloneMuon]/F");
-	MuonTree->Branch("lambdaStandAlone",lambdaStandAlone,"lambdaStandAlone[nStandAloneMuon]/F");
-	MuonTree->Branch("phiStandAlone",phiStandAlone,"phiStandAlone[nStandAloneMuon]/F");
-	MuonTree->Branch("varQoverpStandAlone",varQoverpStandAlone,"varQoverpStandAlone[nStandAloneMuon]/F");
-	MuonTree->Branch("varLambdaStandAlone",varLambdaStandAlone,"varLambdaStandAlone[nStandAloneMuon]/F");
-	MuonTree->Branch("varPhiStandAlone",varPhiStandAlone,"varPhiStandAlone[nStandAloneMuon]/F");
-	MuonTree->Branch("covarQoverpLambdaStandAlone",covarQoverpLambdaStandAlone,"covarQoverpLambdaStandAlone[nStandAloneMuon]/F");
-	MuonTree->Branch("covarQoverpPhiStandAlone",covarQoverpPhiStandAlone,"covarQoverpPhiStandAlone[nStandAloneMuon]/F");
-	MuonTree->Branch("covarLambdaPhiStandAlone",covarLambdaPhiStandAlone,"covarLambdaPhiStandAlone[nStandAloneMuon]/F");
-	MuonTree->Branch("xStandAlone",xStandAlone,"xStandAlone[nStandAloneMuon]/F");
-	MuonTree->Branch("yStandAlone",yStandAlone,"yStandAlone[nStandAloneMuon]/F");
-	MuonTree->Branch("zStandAlone",zStandAlone,"zStandAlone[nStandAloneMuon]/F");
-
-	if(isPat){
-		MuonTree->Branch("l1DeltaRGlobal",l1DeltaRGlobal,"l1DeltaRGlobal[nGlobalMuon]/F");
-		MuonTree->Branch("l1QualityGlobal",l1QualityGlobal,"l1QualityGlobal[nGlobalMuon]/i");
-		MuonTree->Branch("l1DeltaRTracker",l1DeltaRTracker,"l1DeltaRTracker[nTrackerMuon]/F");
-		MuonTree->Branch("l1QualityTracker",l1QualityTracker,"l1QualityTracker[nTrackerMuon]/i");
-		MuonTree->Branch("l1DeltaRStandAlone",l1DeltaRStandAlone,"l1DeltaRStandAlone[nStandAloneMuon]/F");
-		MuonTree->Branch("l1QualityStandAlone",l1QualityStandAlone,"l1QualityStandAlone[nStandAloneMuon]/i");
-	}
+        MuonTree->Branch("l1DeltaR",l1DeltaR,"l1DeltaR[nMuon]/F");
+        MuonTree->Branch("l1Quality",l1Quality,"l1Quality[nMuon]/i");
 }
 
 void UPCPatMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 	Handle<vector<pat::Muon> > muons;
 	iEvent.getByLabel(muonLabel,muons);
 
-	nGlobalMuon=0;
-	nTrackerMuon=0;
-	nStandAloneMuon=0;
-	nCaloMuon=0;
-	
 	if(!muons.failedToGet()){
-		for(unsigned int i=0; i<(*muons).size();i++){
-			bool isGood=muon::isGoodMuon((*muons)[i],muon::TMOneStationTight);
-			float deltaR(0);
-			int quality(0);
+		nMuon=0;
+		for(unsigned int i=0; i<(*muons).size() && i<100; i++){
+		        isGlobalMuon[i]=(*muons)[i].isGlobalMuon();
+		        isTrackerMuon[i]=(*muons)[i].isTrackerMuon();
+		        isStandAloneMuon[i]=(*muons)[i].isStandAloneMuon();
+		        isCaloMuon[i]=(*muons)[i].isCaloMuon();
+			isGoodMuon[i]=muon::isGoodMuon((*muons)[i],muon::TMOneStationTight);
 
-			if(isPat){ 
-				const pat::Muon muon1 = (*muons)[i];
-				deltaR=muon1.userFloat("muonL1Info:deltaR");
-				quality=muon1.userInt("muonL1Info:quality");
-			}
+			MuonEnergy muE=(*muons)[i].calEnergy();
+			
+			caloMuonTower[i]=muE.tower;
+			caloMuonTowerS9[i]=muE.towerS9;
+			caloMuonEm[i]=muE.em;
+			caloMuonEmS9[i]=muE.emS9;
+			caloMuonEmS25[i]=muE.emS25;
+			caloMuonEmMax[i]=muE.emMax;
+			caloMuonHad[i]=muE.had;
+			caloMuonHadS9[i]=muE.hadS9;
+			caloMuonHadMax[i]=muE.hadMax;
+		        caloMuonCompatibility[i]=(*muons)[i].caloCompatibility();
 
-			if(((*muons)[i]).isGlobalMuon()&&nGlobalMuon<100){
-				isGoodMuonGlobal[nGlobalMuon]=isGood;
-				l1DeltaRGlobal[nGlobalMuon]=deltaR;
-				l1QualityGlobal[nGlobalMuon]=quality;
+		        l1DeltaR[i]=(*muons)[i].userFloat("muonL1Info:deltaR");
+		        l1Quality[i]=(*muons)[i].userInt("muonL1Info:quality");
 
-				getTrack(((*muons)[i].globalTrack()).get(),ndofGlobal[nGlobalMuon],chi2Global[nGlobalMuon],numberOfValidTrackerHitsGlobal[nGlobalMuon],pixelLayersWithMeasurementGlobal[nGlobalMuon],trackerLayersWithMeasurementGlobal[nGlobalMuon],xGlobal[nGlobalMuon],yGlobal[nGlobalMuon],zGlobal[nGlobalMuon],pGlobal[nGlobalMuon],qoverpGlobal[nGlobalMuon],lambdaGlobal[nGlobalMuon],phiGlobal[nGlobalMuon],varQoverpGlobal[nGlobalMuon],varLambdaGlobal[nGlobalMuon],varPhiGlobal[nGlobalMuon],
-                                           covarQoverpLambdaGlobal[nGlobalMuon],covarQoverpPhiGlobal[nGlobalMuon],covarLambdaPhiGlobal[nGlobalMuon]);
-				nGlobalMuon++;
-			}
-			if(((*muons)[i]).isTrackerMuon()&&nTrackerMuon<100){
-				isGoodMuonTracker[nTrackerMuon]=isGood;
-				l1DeltaRTracker[nTrackerMuon]=deltaR;
-				l1QualityTracker[nTrackerMuon]=quality;
-		
-				getTrack(((*muons)[i].track()).get(),ndofTracker[nTrackerMuon],chi2Tracker[nTrackerMuon],numberOfValidTrackerHitsTracker[nTrackerMuon],pixelLayersWithMeasurementTracker[nTrackerMuon],trackerLayersWithMeasurementTracker[nTrackerMuon],xTracker[nTrackerMuon],yTracker[nTrackerMuon],zTracker[nTrackerMuon],pTracker[nTrackerMuon],qoverpTracker[nTrackerMuon],lambdaTracker[nTrackerMuon],phiTracker[nTrackerMuon],varQoverpTracker[nTrackerMuon],varLambdaTracker[nTrackerMuon],varPhiTracker[nTrackerMuon],
-                                           covarQoverpLambdaTracker[nTrackerMuon],covarQoverpPhiTracker[nTrackerMuon],covarLambdaPhiTracker[nTrackerMuon]);
-				nTrackerMuon++;
-			}
-			if(((*muons)[i]).isStandAloneMuon()&&nStandAloneMuon<100){
-				isGoodMuonStandAlone[nStandAloneMuon]=isGood;
-				l1DeltaRStandAlone[nStandAloneMuon]=deltaR;
-				l1QualityStandAlone[nStandAloneMuon]=quality;
-
-				getTrack(((*muons)[i].standAloneMuon()).get(),ndofStandAlone[nStandAloneMuon],chi2StandAlone[nStandAloneMuon],numberOfValidTrackerHitsStandAlone[nStandAloneMuon],pixelLayersWithMeasurementStandAlone[nStandAloneMuon],trackerLayersWithMeasurementStandAlone[nStandAloneMuon],xStandAlone[nStandAloneMuon],yStandAlone[nStandAloneMuon],zStandAlone[nStandAloneMuon],pStandAlone[nStandAloneMuon],qoverpStandAlone[nStandAloneMuon],lambdaStandAlone[nStandAloneMuon],phiStandAlone[nStandAloneMuon],varQoverpStandAlone[nStandAloneMuon],varLambdaStandAlone[nStandAloneMuon],varPhiStandAlone[nStandAloneMuon],
-                                           covarQoverpLambdaStandAlone[nStandAloneMuon],covarQoverpPhiStandAlone[nStandAloneMuon],covarLambdaPhiStandAlone[nStandAloneMuon]);
-				nStandAloneMuon++;
-			}
-			if(((*muons)[i]).isCaloMuon()){
-				nCaloMuon++;
-				CaloMuonEnergy=((*muons)[i].calEnergy()).tower;
-			}
+			const Track *track;
+			if (isStandAloneMuon[i] && !(isGlobalMuon[i])) track=((*muons)[i].standAloneMuon()).get();
+			else  track=((*muons)[i].track()).get();
+		        getTrack(track,ndof[nMuon],chi2[nMuon],numberOfValidTrackerHits[nMuon],pixelLayersWithMeasurement[nMuon],trackerLayersWithMeasurement[nMuon],x[nMuon],y[nMuon],z[nMuon],p[nMuon],qoverp[nMuon],lambda[nMuon],phi[nMuon],varQoverp[nMuon],varLambda[nMuon],varPhi[nMuon],
+				  covarQoverpLambda[nMuon],covarQoverpPhi[nMuon],covarLambdaPhi[nMuon]);
+			nMuon++;
 		}
 	}
 
@@ -175,3 +210,5 @@ void UPCPatMuonAnalyzer::getTrack(const Track *trax, unsigned int &ndof, float &
 	pixHits=trax->hitPattern().pixelLayersWithMeasurement();
 	traxHits=trax->hitPattern().trackerLayersWithMeasurement();
 }
+
+#endif
