@@ -1,0 +1,23 @@
+@(#)CERN job starter $Date: 2010/06/23 14:22:16 $
+Working directory is </pool/lsf/mojoe137/503072102.324> on <>
+
+/pool/lsf/mojoe137/503072102.324
+
+Process and cross-section statistics
+------------------------------------
+Process	events	tried	xsec [pb]		accepted [%]
+0	2500	2500	1.051e+00 +/- 9.653e-03	100.0
+Total	2500	2500	1.051e+00 +/- 9.653e-03	100.0
+Will overwrite /store/caf/user/mojoe137/STARlightData//OniaPPRECO/JPsi/MuMu/Xn0n/Co/STARlight_JPsiMuMuXn0nCo_NZSRECOnia44YPPRECO_324.root due to force flag.
+Will overwrite /store/caf/user/mojoe137/STARlightData//UPCTrees/UPCSTARlightJPsiCo2MuMuXn0nNZSPPRECO_324.root due to force flag.
+Will overwrite /store/caf/user/mojoe137/logs//jobLogPPRECOJPsiMuMuXn0nCo324 due to force flag.
+
+Job finished at Wed Feb 19 05:32:39 CET 2014 on node 
+ under linux version Scientific Linux CERN SLC release 6.5 (Carbon)
+
+
+CERN statistics: This job used 2:57:39 NCU hours (10659 NCU seconds)
+
+CERN statistics: This job used 2:57:39 KSI2K hours (10659 KSI2K seconds)
+
+KSI2K = kilo-SpecInt2000 benchmark units = 1.00 NCU

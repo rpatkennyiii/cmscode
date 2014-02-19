@@ -1,0 +1,27 @@
+@(#)CERN job starter $Date: 2010/06/23 14:22:16 $
+quota: Cannot open quotafile /pool/aquota.user: No such file or directory
+quota: Cannot open quotafile /tmp/aquota.user: Permission denied
+quota: Cannot open quotafile /tmp/aquota.user: Permission denied
+quota: Cannot open quotafile /tmp/quota.user: No such file or directory
+Working directory is </pool/lsf/mojoe137/503072102.615> on <>
+
+/pool/lsf/mojoe137/503072102.615
+
+Process and cross-section statistics
+------------------------------------
+Process	events	tried	xsec [pb]		accepted [%]
+0	2500	2500	1.051e+00 +/- 9.653e-03	100.0
+Total	2500	2500	1.051e+00 +/- 9.653e-03	100.0
+Will overwrite /store/caf/user/mojoe137/STARlightData//OniaPPRECO/JPsi/MuMu/Xn0n/Co/STARlight_JPsiMuMuXn0nCo_NZSRECOnia44YPPRECO_615.root due to force flag.
+Will overwrite /store/caf/user/mojoe137/STARlightData//UPCTrees/UPCSTARlightJPsiCo2MuMuXn0nNZSPPRECO_615.root due to force flag.
+Will overwrite /store/caf/user/mojoe137/logs//jobLogPPRECOJPsiMuMuXn0nCo615 due to force flag.
+
+Job finished at Wed Feb 19 05:15:49 CET 2014 on node 
+ under linux version Scientific Linux CERN SLC release 6.5 (Carbon)
+
+
+CERN statistics: This job used 2:29:25 NCU hours (8965 NCU seconds)
+
+CERN statistics: This job used 2:29:25 KSI2K hours (8965 KSI2K seconds)
+
+KSI2K = kilo-SpecInt2000 benchmark units = 1.00 NCU
