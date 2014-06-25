@@ -15,8 +15,8 @@ process.load("HeavyIonsAnalysis.Configuration.collisionEventSelection_cff")
 process.load("Analyzers.UPCTriggerAnalyzer.upcPixelClusterShapeAnalyzer_cfi")
 process.load("Analyzers.UPCTriggerAnalyzer.upcPixelTrack_cff")
 process.load("Analyzers.UPCTriggerAnalyzer.upcExCaloCuts_cff")
-process.load("HiSkim.HiDiTrksUpcOnia2MuMu.upcOnia2MuMuDiTrk_cfi")
-process.load("HiSkim.HiDiTrksUpcOnia2MuMu.upcPatMuonsWithTrigger_cff")
+process.load("HiSkim.HiOnia2MuMu.upcOnia2MuMuDiTrk_cfi")
+process.load("HiSkim.HiOnia2MuMu.upcPatMuonsWithTrigger_cff")
 
 process.MessageLogger.cerr.FwkReport.reportEvery = 1
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1)); 
@@ -49,7 +49,8 @@ process.GlobalTag.globaltag = 'GR_R_44_V13::All'
 
 process.l1bitana = cms.EDAnalyzer('L1BitAnalyzer',
 	l1GtRR=cms.InputTag("gtDigis"),
-	hltresults=cms.InputTag("TriggerResults::HLT")	
+	hltresults=cms.InputTag("TriggerResults::HLT"),
+	treeName=cms.string("L1BitTree")
 )
 
 process.eclustbana = cms.EDAnalyzer('UPCEcalClusterAnalyzer',
@@ -81,7 +82,7 @@ process.upctrackselana = cms.EDAnalyzer('UPCTrackAnalyzer',
 )
 
 process.upcvertexana = cms.EDAnalyzer('UPCVertexAnalyzer',
-	vertexCollection=cms.string("hiSelectedVertex")
+	vertexCollection=cms.string("offlinePrimaryVertices")
 )
 
 process.upccentralityana = cms.EDAnalyzer('UPCCentralityAnalyzer',
@@ -195,7 +196,7 @@ process.path = cms.Path(process.triggerSelection+
 				process.muSeq+
 				process.trackSeq+
 				process.zdcSeq+
-				process.candSeq
+				process.candSeq+
 #				process.siTrackSeq+
 				process.calSeq+
 #				process.hfSeq+

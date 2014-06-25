@@ -4,12 +4,12 @@
 using namespace std;
 
 L1BitAnalyzer::L1BitAnalyzer(edm::ParameterSet const& conf):l1GtRR_(conf.getParameter<edm::InputTag>("l1GtRR")),
-   hltresults_(conf.getParameter<edm::InputTag>("hltresults"))
+   hltresults_(conf.getParameter<edm::InputTag>("hltresults")),treeName(conf.getParameter<string>("treeName"))
 {
    mFileServer->file().SetCompressionLevel(9);
    mFileServer->file().cd();
 
-   L1BitTree = new TTree("L1BitTree","L1BitTree");
+   L1BitTree = new TTree(treeName.c_str(),treeName.c_str());
    firstEv=true;
 
    L1BitTree->Branch("BunchXing",&RunData[0],"BunchXing/i");

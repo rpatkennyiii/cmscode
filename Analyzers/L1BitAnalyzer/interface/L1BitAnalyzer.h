@@ -46,6 +46,7 @@ private:
   unsigned int RunData[5], nBits, L1BitsPs[400];
   bool L1Bits[400], firstEv;
   edm::InputTag l1GtRR_, hltresults_;
+  std::string treeName;
   L1GtUtils m_l1GtUtils;
   HLTConfigProvider hltConfig_;
 };
