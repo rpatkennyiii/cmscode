@@ -171,7 +171,7 @@ void UPCPatCandidateAnalyzer::analyze(const edm::Event& iEvent, const edm::Event
       muon1_pass[cand_size] = bool(mu1HLTMatchesPath.size());
 //track variables
       const Track *track;
-      if (muon1_StandAlone[cand_size] && !(muon1_Global[cand_size])) track=(muon1->standAloneMuon()).get();
+      if (muon1_StandAlone[cand_size] && !(muon1_Tracker[cand_size])) track=(muon1->standAloneMuon()).get();
       else  track=(muon1->track()).get();
       muon1_numberOfValidHits[cand_size]=track->numberOfValidHits();
       muon1_pixelLayersWithMeasurement[cand_size]=track->hitPattern().pixelLayersWithMeasurement();
@@ -210,7 +210,7 @@ void UPCPatCandidateAnalyzer::analyze(const edm::Event& iEvent, const edm::Event
       muon2_l1Quality[cand_size]=muon2->userInt("muonL1Info:quality");
       muon2_pass[cand_size] = bool(mu2HLTMatchesPath.size());
 //track varriables
-      if (muon2_StandAlone[cand_size] && !(muon2_Global[cand_size])) track=(muon2->standAloneMuon()).get();
+      if (muon2_StandAlone[cand_size] && !(muon2_Tracker[cand_size])) track=(muon2->standAloneMuon()).get();
       else  track=(muon2->track()).get();
       muon2_numberOfValidHits[cand_size]=track->numberOfValidHits();
       muon2_pixelLayersWithMeasurement[cand_size]=track->hitPattern().pixelLayersWithMeasurement();
