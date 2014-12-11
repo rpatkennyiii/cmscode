@@ -1,0 +1,310 @@
+Executable      = muonUpcMc.sh
+Universe        = vanilla
+Error           = logs/err.$(Process)
+Output          = logs/out.$(Process)
+Log             = logs/log.$(Process)
+Rank            = kflops
+Requirements    = Arch == "X86_64"
+Getenv          = True
++AccountingGroup = "group_cmshi.mojoe137"
+
+Arguments = inputFiles/jpsiMcInco0.txt UPCJpsiIncoMcTree0.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco1.txt UPCJpsiIncoMcTree1.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco10.txt UPCJpsiIncoMcTree2.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco11.txt UPCJpsiIncoMcTree3.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco12.txt UPCJpsiIncoMcTree4.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco13.txt UPCJpsiIncoMcTree5.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco14.txt UPCJpsiIncoMcTree6.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco15.txt UPCJpsiIncoMcTree7.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco16.txt UPCJpsiIncoMcTree8.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco17.txt UPCJpsiIncoMcTree9.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco18.txt UPCJpsiIncoMcTree10.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco19.txt UPCJpsiIncoMcTree11.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco2.txt UPCJpsiIncoMcTree12.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco20.txt UPCJpsiIncoMcTree13.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco21.txt UPCJpsiIncoMcTree14.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco22.txt UPCJpsiIncoMcTree15.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco23.txt UPCJpsiIncoMcTree16.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco24.txt UPCJpsiIncoMcTree17.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco25.txt UPCJpsiIncoMcTree18.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco26.txt UPCJpsiIncoMcTree19.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco27.txt UPCJpsiIncoMcTree20.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco28.txt UPCJpsiIncoMcTree21.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco29.txt UPCJpsiIncoMcTree22.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco3.txt UPCJpsiIncoMcTree23.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco30.txt UPCJpsiIncoMcTree24.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco31.txt UPCJpsiIncoMcTree25.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco32.txt UPCJpsiIncoMcTree26.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco33.txt UPCJpsiIncoMcTree27.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco34.txt UPCJpsiIncoMcTree28.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco35.txt UPCJpsiIncoMcTree29.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco36.txt UPCJpsiIncoMcTree30.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco37.txt UPCJpsiIncoMcTree31.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco38.txt UPCJpsiIncoMcTree32.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco39.txt UPCJpsiIncoMcTree33.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco4.txt UPCJpsiIncoMcTree34.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco40.txt UPCJpsiIncoMcTree35.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco41.txt UPCJpsiIncoMcTree36.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco42.txt UPCJpsiIncoMcTree37.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco43.txt UPCJpsiIncoMcTree38.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco44.txt UPCJpsiIncoMcTree39.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco45.txt UPCJpsiIncoMcTree40.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco46.txt UPCJpsiIncoMcTree41.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco47.txt UPCJpsiIncoMcTree42.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco48.txt UPCJpsiIncoMcTree43.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco49.txt UPCJpsiIncoMcTree44.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco5.txt UPCJpsiIncoMcTree45.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco50.txt UPCJpsiIncoMcTree46.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco51.txt UPCJpsiIncoMcTree47.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco52.txt UPCJpsiIncoMcTree48.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco53.txt UPCJpsiIncoMcTree49.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco54.txt UPCJpsiIncoMcTree50.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco55.txt UPCJpsiIncoMcTree51.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco56.txt UPCJpsiIncoMcTree52.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco57.txt UPCJpsiIncoMcTree53.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco58.txt UPCJpsiIncoMcTree54.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco59.txt UPCJpsiIncoMcTree55.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco6.txt UPCJpsiIncoMcTree56.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco60.txt UPCJpsiIncoMcTree57.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco61.txt UPCJpsiIncoMcTree58.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco62.txt UPCJpsiIncoMcTree59.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco63.txt UPCJpsiIncoMcTree60.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco64.txt UPCJpsiIncoMcTree61.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco65.txt UPCJpsiIncoMcTree62.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco66.txt UPCJpsiIncoMcTree63.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco67.txt UPCJpsiIncoMcTree64.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco68.txt UPCJpsiIncoMcTree65.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco69.txt UPCJpsiIncoMcTree66.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco7.txt UPCJpsiIncoMcTree67.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco70.txt UPCJpsiIncoMcTree68.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco71.txt UPCJpsiIncoMcTree69.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco72.txt UPCJpsiIncoMcTree70.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco73.txt UPCJpsiIncoMcTree71.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco74.txt UPCJpsiIncoMcTree72.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco75.txt UPCJpsiIncoMcTree73.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco76.txt UPCJpsiIncoMcTree74.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco77.txt UPCJpsiIncoMcTree75.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco78.txt UPCJpsiIncoMcTree76.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco79.txt UPCJpsiIncoMcTree77.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco8.txt UPCJpsiIncoMcTree78.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco80.txt UPCJpsiIncoMcTree79.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco81.txt UPCJpsiIncoMcTree80.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco82.txt UPCJpsiIncoMcTree81.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco83.txt UPCJpsiIncoMcTree82.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco84.txt UPCJpsiIncoMcTree83.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco85.txt UPCJpsiIncoMcTree84.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco86.txt UPCJpsiIncoMcTree85.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco87.txt UPCJpsiIncoMcTree86.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco88.txt UPCJpsiIncoMcTree87.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco89.txt UPCJpsiIncoMcTree88.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco9.txt UPCJpsiIncoMcTree89.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco90.txt UPCJpsiIncoMcTree90.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco91.txt UPCJpsiIncoMcTree91.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco92.txt UPCJpsiIncoMcTree92.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco93.txt UPCJpsiIncoMcTree93.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco94.txt UPCJpsiIncoMcTree94.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco95.txt UPCJpsiIncoMcTree95.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco96.txt UPCJpsiIncoMcTree96.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco97.txt UPCJpsiIncoMcTree97.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco98.txt UPCJpsiIncoMcTree98.root
+Queue
+
+Arguments = inputFiles/jpsiMcInco99.txt UPCJpsiIncoMcTree99.root
+Queue
+

@@ -1,0 +1,13 @@
+Executable      = muonOnlyUpcMon.sh
+Universe        = vanilla
+should_transfer_files   = NO
+#Error           = logs/errMcSplit.$(Process)
+#Output          = logs/outMcSplit.$(Process)
+#Log             = logs/logMcSplit.$(Process)
+Rank            = kflops
+Requirements    = Arch == "X86_64"
+Getenv          = True
++AccountingGroup = "group_cmshi.mojoe137"
+
+Arguments = inputFiles/upcSLJPsiCoOniaFile$(Process).txt muOnlySTARlightJPsiCo2MuMuXn0nNZS_$(Process).root
+Queue 800

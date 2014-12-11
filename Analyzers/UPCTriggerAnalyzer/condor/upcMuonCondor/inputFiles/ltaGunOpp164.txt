@@ -1,0 +1,4 @@
+/store/user/pkenny/STARlightData/OniaRECO/JPsi/MuMu/Gun/jPsiGun2mumuLTAOpp_RECOnia44Y_239.root
+/store/user/pkenny/STARlightData/OniaRECO/JPsi/MuMu/Gun/jPsiGun2mumuLTAOpp_RECOnia44Y_24.root
+/store/user/pkenny/STARlightData/OniaRECO/JPsi/MuMu/Gun/jPsiGun2mumuLTAOpp_RECOnia44Y_240.root
+/store/user/pkenny/STARlightData/OniaRECO/JPsi/MuMu/Gun/jPsiGun2mumuLTAOpp_RECOnia44Y_241.root

@@ -61,6 +61,7 @@ void UPCPatCandidateAnalyzer::beginJob(){
   candTree->Branch("muon1_ndof",muon1_ndof,"muon1_ndof[acceptedCand]/F");
   candTree->Branch("muon1_trkArbit",muon1_trkArbit,"muon1_trkArbit[acceptedCand]/O");
   candTree->Branch("muon1_isGoodMuon",muon1_isGoodMuon,"muon1_isGoodMuon[acceptedCand]/O");
+  candTree->Branch("muon1_isHighPurity",muon1_isHighPurity,"muon1_isHighPurity[acceptedCand]/O");
   candTree->Branch("muon1_l1DeltaR",muon1_l1DeltaR,"muon1_l1DeltaR[acceptedCand]/F");
   candTree->Branch("muon1_l1Quality",muon1_l1Quality,"muon1_l1Quality[acceptedCand]/I");
   candTree->Branch("muon1_pass",muon1_pass,"muon1_pass[acceptedCand]/O");
@@ -95,6 +96,7 @@ void UPCPatCandidateAnalyzer::beginJob(){
   candTree->Branch("muon2_ndof",muon2_ndof,"muon2_ndof[acceptedCand]/F");
   candTree->Branch("muon2_trkArbit",muon2_trkArbit,"muon2_trkArbit[acceptedCand]/O");
   candTree->Branch("muon2_isGoodMuon",muon2_isGoodMuon,"muon2_isGoodMuon[acceptedCand]/O");
+  candTree->Branch("muon2_isHighPurity",muon2_isHighPurity,"muon2_isHighPurity[acceptedCand]/O");
   candTree->Branch("muon2_l1DeltaR",muon2_l1DeltaR,"muon2_l1DeltaR[acceptedCand]/F");
   candTree->Branch("muon2_l1Quality",muon2_l1Quality,"muon2_l1Quality[acceptedCand]/I");
   candTree->Branch("muon2_pass",muon2_pass,"muon2_pass[acceptedCand]/O");
@@ -179,6 +181,7 @@ void UPCPatCandidateAnalyzer::analyze(const edm::Event& iEvent, const edm::Event
       muon1_normalizedChi2[cand_size]=track->normalizedChi2();
       muon1_dz[cand_size]=track->dz();
       muon1_ndof[cand_size]=track->ndof();
+      muon1_isHighPurity[cand_size]=track->quality(reco::TrackBase::highPurity);
 //calo muon variables 
       MuonEnergy muE=muon1->calEnergy();
       muon1_caloMuonTower[cand_size]=muE.tower;
@@ -218,6 +221,7 @@ void UPCPatCandidateAnalyzer::analyze(const edm::Event& iEvent, const edm::Event
       muon2_normalizedChi2[cand_size]=track->normalizedChi2();
       muon2_dz[cand_size]=track->dz();
       muon2_ndof[cand_size]=track->ndof();
+      muon2_isHighPurity[cand_size]=track->quality(reco::TrackBase::highPurity);
 // calo muon varriables
       muE=muon2->calEnergy();
       muon2_caloMuonTower[cand_size]=muE.tower;

@@ -1,0 +1,148 @@
+/net/hidsk0001/d00/scratch/mojoe137/CMSSW_4_4_3/src/Analyzers/UPCTriggerAnalyzer/condor/upcMuonCondor/muonUpcSplitMc.sh: line 9: scram: command not found
+/net/hidsk0001/d00/scratch/mojoe137/CMSSW_4_4_3/src/Analyzers/UPCTriggerAnalyzer/condor/upcMuonCondor/muonUpcSplitMc.sh: line 12: cmsRun: command not found
+mv: cannot stat `/condor/execute/dir_4166/UPCSTARlightGammaCo2MuMuXn0nNZS_589.root': No such file or directory
+Begin processing the 1241st record. Run 1, Event 1241, LumiSection 1 at 28-Sep-2013 12:34:56.588 EDT
+Begin processing the 1251st record. Run 1, Event 1251, LumiSection 1 at 28-Sep-2013 12:35:00.050 EDT
+Begin processing the 1261st record. Run 1, Event 1261, LumiSection 1 at 28-Sep-2013 12:35:00.178 EDT
+Begin processing the 1271st record. Run 1, Event 1271, LumiSection 1 at 28-Sep-2013 12:35:00.366 EDT
+Begin processing the 1281st record. Run 1, Event 1281, LumiSection 1 at 28-Sep-2013 12:35:00.843 EDT
+Begin processing the 1291st record. Run 1, Event 1291, LumiSection 1 at 28-Sep-2013 12:35:01.194 EDT
+Begin processing the 1301st record. Run 1, Event 1301, LumiSection 1 at 28-Sep-2013 12:35:01.257 EDT
+Begin processing the 1311th record. Run 1, Event 1311, LumiSection 1 at 28-Sep-2013 12:35:01.382 EDT
+Begin processing the 1321st record. Run 1, Event 1321, LumiSection 1 at 28-Sep-2013 12:35:01.561 EDT
+Begin processing the 1331st record. Run 1, Event 1331, LumiSection 1 at 28-Sep-2013 12:35:01.744 EDT
+Begin processing the 1341st record. Run 1, Event 1341, LumiSection 1 at 28-Sep-2013 12:35:01.874 EDT
+Begin processing the 1351st record. Run 1, Event 1351, LumiSection 1 at 28-Sep-2013 12:35:02.180 EDT
+Begin processing the 1361st record. Run 1, Event 1361, LumiSection 1 at 28-Sep-2013 12:35:02.308 EDT
+Begin processing the 1371st record. Run 1, Event 1371, LumiSection 1 at 28-Sep-2013 12:35:02.376 EDT
+Begin processing the 1381st record. Run 1, Event 1381, LumiSection 1 at 28-Sep-2013 12:35:02.745 EDT
+Begin processing the 1391st record. Run 1, Event 1391, LumiSection 1 at 28-Sep-2013 12:35:02.935 EDT
+Begin processing the 1401st record. Run 1, Event 1401, LumiSection 1 at 28-Sep-2013 12:35:03.184 EDT
+Begin processing the 1411th record. Run 1, Event 1411, LumiSection 1 at 28-Sep-2013 12:35:03.382 EDT
+Begin processing the 1421st record. Run 1, Event 1421, LumiSection 1 at 28-Sep-2013 12:35:03.706 EDT
+Begin processing the 1431st record. Run 1, Event 1431, LumiSection 1 at 28-Sep-2013 12:35:07.228 EDT
+Begin processing the 1441st record. Run 1, Event 1441, LumiSection 1 at 28-Sep-2013 12:45:35.822 EDT
+Begin processing the 1451st record. Run 1, Event 1451, LumiSection 1 at 28-Sep-2013 12:45:36.071 EDT
+Begin processing the 1461st record. Run 1, Event 1461, LumiSection 1 at 28-Sep-2013 12:45:36.319 EDT
+Begin processing the 1471st record. Run 1, Event 1471, LumiSection 1 at 28-Sep-2013 12:45:36.571 EDT
+Begin processing the 1481st record. Run 1, Event 1481, LumiSection 1 at 28-Sep-2013 12:45:36.881 EDT
+Begin processing the 1491st record. Run 1, Event 1491, LumiSection 1 at 28-Sep-2013 12:45:37.188 EDT
+Begin processing the 1501st record. Run 1, Event 1501, LumiSection 1 at 28-Sep-2013 12:45:37.498 EDT
+Begin processing the 1511th record. Run 1, Event 1511, LumiSection 1 at 28-Sep-2013 12:45:37.625 EDT
+Begin processing the 1521st record. Run 1, Event 1521, LumiSection 1 at 28-Sep-2013 12:45:37.813 EDT
+Begin processing the 1531st record. Run 1, Event 1531, LumiSection 1 at 28-Sep-2013 12:45:38.061 EDT
+Begin processing the 1541st record. Run 1, Event 1541, LumiSection 1 at 28-Sep-2013 12:45:38.250 EDT
+Begin processing the 1551st record. Run 1, Event 1551, LumiSection 1 at 28-Sep-2013 12:45:38.318 EDT
+Begin processing the 1561st record. Run 1, Event 1561, LumiSection 1 at 28-Sep-2013 12:45:38.507 EDT
+Begin processing the 1571st record. Run 1, Event 1571, LumiSection 1 at 28-Sep-2013 12:45:38.635 EDT
+Begin processing the 1581st record. Run 1, Event 1581, LumiSection 1 at 28-Sep-2013 12:45:38.705 EDT
+Begin processing the 1591st record. Run 1, Event 1591, LumiSection 1 at 28-Sep-2013 12:45:39.015 EDT
+Begin processing the 1601st record. Run 1, Event 1601, LumiSection 1 at 28-Sep-2013 12:45:39.263 EDT
+Begin processing the 1611th record. Run 1, Event 1611, LumiSection 1 at 28-Sep-2013 12:45:39.330 EDT
+Begin processing the 1621st record. Run 1, Event 1621, LumiSection 1 at 28-Sep-2013 12:45:42.819 EDT
+Begin processing the 1631st record. Run 1, Event 1631, LumiSection 1 at 28-Sep-2013 12:45:42.887 EDT
+Begin processing the 1641st record. Run 1, Event 1641, LumiSection 1 at 28-Sep-2013 12:55:48.146 EDT
+Begin processing the 1651st record. Run 1, Event 1651, LumiSection 1 at 28-Sep-2013 12:55:48.337 EDT
+Begin processing the 1661st record. Run 1, Event 1661, LumiSection 1 at 28-Sep-2013 12:55:48.527 EDT
+Begin processing the 1671st record. Run 1, Event 1671, LumiSection 1 at 28-Sep-2013 12:55:48.778 EDT
+Begin processing the 1681st record. Run 1, Event 1681, LumiSection 1 at 28-Sep-2013 12:55:49.092 EDT
+Begin processing the 1691st record. Run 1, Event 1691, LumiSection 1 at 28-Sep-2013 12:55:49.220 EDT
+Begin processing the 1701st record. Run 1, Event 1701, LumiSection 1 at 28-Sep-2013 12:55:52.544 EDT
+Begin processing the 1711th record. Run 1, Event 1711, LumiSection 1 at 28-Sep-2013 12:55:52.907 EDT
+Begin processing the 1721st record. Run 1, Event 1721, LumiSection 1 at 28-Sep-2013 12:55:52.976 EDT
+Begin processing the 1731st record. Run 1, Event 1731, LumiSection 1 at 28-Sep-2013 12:55:53.227 EDT
+Begin processing the 1741st record. Run 1, Event 1741, LumiSection 1 at 28-Sep-2013 12:55:53.540 EDT
+Begin processing the 1751st record. Run 1, Event 1751, LumiSection 1 at 28-Sep-2013 12:55:53.668 EDT
+Begin processing the 1761st record. Run 1, Event 1761, LumiSection 1 at 28-Sep-2013 12:55:53.858 EDT
+Begin processing the 1771st record. Run 1, Event 1771, LumiSection 1 at 28-Sep-2013 12:55:53.865 EDT
+Begin processing the 1781st record. Run 1, Event 1781, LumiSection 1 at 28-Sep-2013 12:55:53.993 EDT
+Begin processing the 1791st record. Run 1, Event 1791, LumiSection 1 at 28-Sep-2013 12:55:54.061 EDT
+Begin processing the 1801st record. Run 1, Event 1801, LumiSection 1 at 28-Sep-2013 12:55:54.436 EDT
+Begin processing the 1811th record. Run 1, Event 1811, LumiSection 1 at 28-Sep-2013 12:55:54.626 EDT
+Begin processing the 1821st record. Run 1, Event 1821, LumiSection 1 at 28-Sep-2013 12:55:54.938 EDT
+Begin processing the 1831st record. Run 1, Event 1831, LumiSection 1 at 28-Sep-2013 12:55:55.250 EDT
+Begin processing the 1841st record. Run 1, Event 1841, LumiSection 1 at 28-Sep-2013 12:55:55.439 EDT
+Begin processing the 1851st record. Run 1, Event 1851, LumiSection 1 at 28-Sep-2013 12:55:55.445 EDT
+Begin processing the 1861st record. Run 1, Event 1861, LumiSection 1 at 28-Sep-2013 13:03:03.338 EDT
+Begin processing the 1871st record. Run 1, Event 1871, LumiSection 1 at 28-Sep-2013 13:03:03.468 EDT
+Begin processing the 1881st record. Run 1, Event 1881, LumiSection 1 at 28-Sep-2013 13:03:03.658 EDT
+Begin processing the 1891st record. Run 1, Event 1891, LumiSection 1 at 28-Sep-2013 13:03:03.846 EDT
+Begin processing the 1901st record. Run 1, Event 1901, LumiSection 1 at 28-Sep-2013 13:03:03.973 EDT
+Begin processing the 1911th record. Run 1, Event 1911, LumiSection 1 at 28-Sep-2013 13:03:04.160 EDT
+Begin processing the 1921st record. Run 1, Event 1921, LumiSection 1 at 28-Sep-2013 13:03:04.342 EDT
+Begin processing the 1931st record. Run 1, Event 1931, LumiSection 1 at 28-Sep-2013 13:03:04.583 EDT
+Begin processing the 1941st record. Run 1, Event 1941, LumiSection 1 at 28-Sep-2013 13:03:04.812 EDT
+Begin processing the 1951st record. Run 1, Event 1951, LumiSection 1 at 28-Sep-2013 13:03:04.995 EDT
+Begin processing the 1961st record. Run 1, Event 1961, LumiSection 1 at 28-Sep-2013 13:03:05.235 EDT
+Begin processing the 1971st record. Run 1, Event 1971, LumiSection 1 at 28-Sep-2013 13:03:05.476 EDT
+Begin processing the 1981st record. Run 1, Event 1981, LumiSection 1 at 28-Sep-2013 13:03:05.658 EDT
+Begin processing the 1991st record. Run 1, Event 1991, LumiSection 1 at 28-Sep-2013 13:03:05.845 EDT
+Begin processing the 2001st record. Run 1, Event 2001, LumiSection 1 at 28-Sep-2013 13:03:06.117 EDT
+Begin processing the 2011th record. Run 1, Event 2011, LumiSection 1 at 28-Sep-2013 13:03:06.241 EDT
+Begin processing the 2021st record. Run 1, Event 2021, LumiSection 1 at 28-Sep-2013 13:03:06.364 EDT
+Begin processing the 2031st record. Run 1, Event 2031, LumiSection 1 at 28-Sep-2013 13:03:06.605 EDT
+Begin processing the 2041st record. Run 1, Event 2041, LumiSection 1 at 28-Sep-2013 13:03:06.731 EDT
+Begin processing the 2051st record. Run 1, Event 2051, LumiSection 1 at 28-Sep-2013 13:03:06.972 EDT
+Begin processing the 2061st record. Run 1, Event 2061, LumiSection 1 at 28-Sep-2013 13:03:10.652 EDT
+Begin processing the 2071st record. Run 1, Event 2071, LumiSection 1 at 28-Sep-2013 13:03:10.719 EDT
+Begin processing the 2081st record. Run 1, Event 2081, LumiSection 1 at 28-Sep-2013 13:03:11.026 EDT
+Begin processing the 2091st record. Run 1, Event 2091, LumiSection 1 at 28-Sep-2013 13:03:11.153 EDT
+Begin processing the 2101st record. Run 1, Event 2101, LumiSection 1 at 28-Sep-2013 13:03:11.461 EDT
+Begin processing the 2111th record. Run 1, Event 2111, LumiSection 1 at 28-Sep-2013 13:03:11.528 EDT
+Begin processing the 2121st record. Run 1, Event 2121, LumiSection 1 at 28-Sep-2013 13:03:11.716 EDT
+Begin processing the 2131st record. Run 1, Event 2131, LumiSection 1 at 28-Sep-2013 13:03:11.784 EDT
+Begin processing the 2141st record. Run 1, Event 2141, LumiSection 1 at 28-Sep-2013 13:03:12.031 EDT
+Begin processing the 2151st record. Run 1, Event 2151, LumiSection 1 at 28-Sep-2013 13:03:12.219 EDT
+Begin processing the 2161st record. Run 1, Event 2161, LumiSection 1 at 28-Sep-2013 13:03:12.349 EDT
+Begin processing the 2171st record. Run 1, Event 2171, LumiSection 1 at 28-Sep-2013 13:03:12.718 EDT
+Begin processing the 2181st record. Run 1, Event 2181, LumiSection 1 at 28-Sep-2013 13:03:12.848 EDT
+Begin processing the 2191st record. Run 1, Event 2191, LumiSection 1 at 28-Sep-2013 13:03:13.098 EDT
+Begin processing the 2201st record. Run 1, Event 2201, LumiSection 1 at 28-Sep-2013 13:03:13.283 EDT
+Begin processing the 2211th record. Run 1, Event 2211, LumiSection 1 at 28-Sep-2013 13:03:13.477 EDT
+Begin processing the 2221st record. Run 1, Event 2221, LumiSection 1 at 28-Sep-2013 13:03:13.609 EDT
+Begin processing the 2231st record. Run 1, Event 2231, LumiSection 1 at 28-Sep-2013 13:03:13.737 EDT
+Begin processing the 2241st record. Run 1, Event 2241, LumiSection 1 at 28-Sep-2013 13:03:13.804 EDT
+Begin processing the 2251st record. Run 1, Event 2251, LumiSection 1 at 28-Sep-2013 13:03:13.932 EDT
+Begin processing the 2261st record. Run 1, Event 2261, LumiSection 1 at 28-Sep-2013 13:03:14.059 EDT
+Begin processing the 2271st record. Run 1, Event 2271, LumiSection 1 at 28-Sep-2013 13:03:16.179 EDT
+Begin processing the 2281st record. Run 1, Event 2281, LumiSection 1 at 28-Sep-2013 13:03:16.423 EDT
+Begin processing the 2291st record. Run 1, Event 2291, LumiSection 1 at 28-Sep-2013 13:03:16.613 EDT
+Begin processing the 2301st record. Run 1, Event 2301, LumiSection 1 at 28-Sep-2013 13:03:16.680 EDT
+Begin processing the 2311th record. Run 1, Event 2311, LumiSection 1 at 28-Sep-2013 13:03:16.866 EDT
+Begin processing the 2321st record. Run 1, Event 2321, LumiSection 1 at 28-Sep-2013 13:03:17.173 EDT
+Begin processing the 2331st record. Run 1, Event 2331, LumiSection 1 at 28-Sep-2013 13:03:17.483 EDT
+Begin processing the 2341st record. Run 1, Event 2341, LumiSection 1 at 28-Sep-2013 13:03:17.792 EDT
+Begin processing the 2351st record. Run 1, Event 2351, LumiSection 1 at 28-Sep-2013 13:03:17.922 EDT
+Begin processing the 2361st record. Run 1, Event 2361, LumiSection 1 at 28-Sep-2013 13:03:18.110 EDT
+Begin processing the 2371st record. Run 1, Event 2371, LumiSection 1 at 28-Sep-2013 13:03:18.417 EDT
+Begin processing the 2381st record. Run 1, Event 2381, LumiSection 1 at 28-Sep-2013 13:03:18.605 EDT
+Begin processing the 2391st record. Run 1, Event 2391, LumiSection 1 at 28-Sep-2013 13:03:18.795 EDT
+Begin processing the 2401st record. Run 1, Event 2401, LumiSection 1 at 28-Sep-2013 13:03:19.162 EDT
+Begin processing the 2411th record. Run 1, Event 2411, LumiSection 1 at 28-Sep-2013 13:03:19.289 EDT
+Begin processing the 2421st record. Run 1, Event 2421, LumiSection 1 at 28-Sep-2013 13:03:19.537 EDT
+Begin processing the 2431st record. Run 1, Event 2431, LumiSection 1 at 28-Sep-2013 13:03:19.723 EDT
+Begin processing the 2441st record. Run 1, Event 2441, LumiSection 1 at 28-Sep-2013 13:03:19.912 EDT
+Begin processing the 2451st record. Run 1, Event 2451, LumiSection 1 at 28-Sep-2013 13:03:20.040 EDT
+Begin processing the 2461st record. Run 1, Event 2461, LumiSection 1 at 28-Sep-2013 13:03:20.286 EDT
+Begin processing the 2471st record. Run 1, Event 2471, LumiSection 1 at 28-Sep-2013 13:03:20.846 EDT
+Begin processing the 2481st record. Run 1, Event 2481, LumiSection 1 at 28-Sep-2013 13:03:21.093 EDT
+Begin processing the 2491st record. Run 1, Event 2491, LumiSection 1 at 28-Sep-2013 13:03:21.343 EDT
+28-Sep-2013 13:03:21 EDT  Closed file file:/mnt/hadoop/cms/store/user/pkenny/STARlightData/OniaRECO/JPsi/MuMu/Xn0n/InCo/STARlight_JPsiMuMuXn0nInCo_NZSRECOnia44Y_1589.root
+
+=============================================
+
+MessageLogger Summary
+
+ type     category        sev    module        subroutine        count    total
+ ---- -------------------- -- ---------------- ----------------  -----    -----
+    1 fileAction           -s file_close                             1        1
+    2 fileAction           -s file_open                              2        2
+
+ type    category    Examples: run/evt        run/evt          run/evt
+ ---- -------------------- ---------------- ---------------- ----------------
+    1 fileAction           PostEndRun                        
+    2 fileAction           pre-events       pre-events       
+
+Severity    # Occurrences   Total Occurrences
+--------    -------------   -----------------
+System                  3                   3

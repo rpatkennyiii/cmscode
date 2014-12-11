@@ -1,0 +1,10 @@
+Executable      = muonUpcSplitMc.sh
+Universe        = vanilla
+should_transfer_files   = NO
+Rank            = kflops
+Requirements    = Arch == "X86_64"
+Getenv          = True
++AccountingGroup = "group_cmshi.mojoe137"
+
+Arguments = inputFiles/flatPtGunXroot$(Process).txt jPsiGun2MuMu_$(Process).root
+Queue 500

@@ -95,6 +95,7 @@ class UPCPatCandidateAnalyzer : public edm::EDAnalyzer {
       float muon1_ndof[100000];
       bool muon1_trkArbit[100000];
       bool muon1_isGoodMuon[100000];
+      bool muon1_isHighPurity[100000];
       bool muon1_pass[100000];
 
       float muon2_pt[100000];
@@ -129,6 +130,7 @@ class UPCPatCandidateAnalyzer : public edm::EDAnalyzer {
       float muon2_ndof[100000];
       bool muon2_trkArbit[100000];
       bool muon2_isGoodMuon[100000];
+      bool muon2_isHighPurity[100000];
       bool muon2_pass[100000];
 
       float cand_dPhi[100000];

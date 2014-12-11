@@ -1,0 +1,6 @@
+/mnt/hadoop/cms/store/user/pkenny/UPCData/UPCTrees/UPCEGMonTree105.root
+/mnt/hadoop/cms/store/user/pkenny/UPCData/UPCTrees/UPCEGMonTree110.root
+/mnt/hadoop/cms/store/user/pkenny/UPCData/UPCTrees/UPCEGMonTree119.root
+/mnt/hadoop/cms/store/user/pkenny/UPCData/UPCTrees/UPCEGMonTree72.root
+/mnt/hadoop/cms/store/user/pkenny/UPCData/UPCTrees/UPCEGMonTree94.root
+/mnt/hadoop/cms/store/user/pkenny/UPCData/UPCTrees/UPCEGMonTree97.root

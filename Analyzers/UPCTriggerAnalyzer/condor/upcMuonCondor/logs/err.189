@@ -1,0 +1,215 @@
+17-Sep-2013 17:32:36 EDT  Initiating request to open file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_2_1_Kqh.root
+17-Sep-2013 17:32:43 EDT  Successfully opened file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_2_1_Kqh.root
+Begin processing the 1st record. Run 181611, Event 164923, LumiSection 30 at 17-Sep-2013 17:32:53.847 EDT
+Begin processing the 11th record. Run 181611, Event 216382, LumiSection 40 at 17-Sep-2013 17:33:24.172 EDT
+Begin processing the 21st record. Run 181611, Event 168475, LumiSection 31 at 17-Sep-2013 17:33:24.441 EDT
+Begin processing the 31st record. Run 181611, Event 181887, LumiSection 33 at 17-Sep-2013 17:33:25.381 EDT
+Begin processing the 41st record. Run 181611, Event 185727, LumiSection 34 at 17-Sep-2013 17:33:25.933 EDT
+Begin processing the 51st record. Run 181611, Event 192960, LumiSection 35 at 17-Sep-2013 17:33:26.494 EDT
+Begin processing the 61st record. Run 181611, Event 197879, LumiSection 36 at 17-Sep-2013 17:33:27.128 EDT
+Begin processing the 71st record. Run 181611, Event 213677, LumiSection 39 at 17-Sep-2013 17:33:28.426 EDT
+Begin processing the 81st record. Run 181611, Event 224263, LumiSection 41 at 17-Sep-2013 17:33:29.211 EDT
+Begin processing the 91st record. Run 181611, Event 229990, LumiSection 42 at 17-Sep-2013 17:33:31.301 EDT
+Begin processing the 101st record. Run 181611, Event 240879, LumiSection 44 at 17-Sep-2013 17:33:31.933 EDT
+Begin processing the 111th record. Run 181611, Event 248883, LumiSection 45 at 17-Sep-2013 17:33:32.677 EDT
+Begin processing the 121st record. Run 181611, Event 250275, LumiSection 46 at 17-Sep-2013 17:33:34.966 EDT
+Begin processing the 131st record. Run 181611, Event 259084, LumiSection 47 at 17-Sep-2013 17:33:35.429 EDT
+Begin processing the 141st record. Run 181611, Event 268482, LumiSection 49 at 17-Sep-2013 17:33:35.829 EDT
+Begin processing the 151st record. Run 181611, Event 280643, LumiSection 51 at 17-Sep-2013 17:33:36.685 EDT
+Begin processing the 161st record. Run 181611, Event 287317, LumiSection 52 at 17-Sep-2013 17:33:38.069 EDT
+Begin processing the 171st record. Run 181611, Event 300435, LumiSection 55 at 17-Sep-2013 17:33:38.649 EDT
+Begin processing the 181st record. Run 181611, Event 308166, LumiSection 56 at 17-Sep-2013 17:33:38.997 EDT
+Begin processing the 191st record. Run 181611, Event 316435, LumiSection 58 at 17-Sep-2013 17:33:39.765 EDT
+Begin processing the 201st record. Run 181611, Event 320632, LumiSection 59 at 17-Sep-2013 17:33:41.332 EDT
+Begin processing the 211th record. Run 181611, Event 335038, LumiSection 61 at 17-Sep-2013 17:33:41.559 EDT
+17-Sep-2013 17:33:41 EDT  Closed file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_2_1_Kqh.root
+17-Sep-2013 17:33:41 EDT  Initiating request to open file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_2_1_8fG.root
+17-Sep-2013 17:33:42 EDT  Successfully opened file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_2_1_8fG.root
+Begin processing the 221st record. Run 181693, Event 1599682, LumiSection 142 at 17-Sep-2013 17:33:52.255 EDT
+Begin processing the 231st record. Run 181693, Event 1596384, LumiSection 142 at 17-Sep-2013 17:33:54.587 EDT
+Begin processing the 241st record. Run 181693, Event 1601468, LumiSection 142 at 17-Sep-2013 17:33:58.314 EDT
+Begin processing the 251st record. Run 181693, Event 1619193, LumiSection 144 at 17-Sep-2013 17:33:58.895 EDT
+Begin processing the 261st record. Run 181693, Event 1622433, LumiSection 144 at 17-Sep-2013 17:34:03.617 EDT
+Begin processing the 271st record. Run 181693, Event 1620876, LumiSection 144 at 17-Sep-2013 17:34:04.168 EDT
+Begin processing the 281st record. Run 181693, Event 1621795, LumiSection 144 at 17-Sep-2013 17:34:04.997 EDT
+Begin processing the 291st record. Run 181693, Event 1615389, LumiSection 144 at 17-Sep-2013 17:34:07.163 EDT
+Begin processing the 301st record. Run 181695, Event 797, LumiSection 1 at 17-Sep-2013 17:34:11.388 EDT
+Begin processing the 311th record. Run 181695, Event 5849, LumiSection 1 at 17-Sep-2013 17:34:12.442 EDT
+Begin processing the 321st record. Run 181695, Event 3352, LumiSection 1 at 17-Sep-2013 17:34:15.207 EDT
+Begin processing the 331st record. Run 181695, Event 8470, LumiSection 1 at 17-Sep-2013 17:34:15.883 EDT
+Begin processing the 341st record. Run 181695, Event 29219, LumiSection 3 at 17-Sep-2013 17:34:20.405 EDT
+Begin processing the 351st record. Run 181695, Event 31918, LumiSection 3 at 17-Sep-2013 17:34:25.004 EDT
+Begin processing the 361st record. Run 181695, Event 24444, LumiSection 3 at 17-Sep-2013 17:34:27.029 EDT
+Begin processing the 371st record. Run 181695, Event 10845, LumiSection 2 at 17-Sep-2013 17:34:27.607 EDT
+Begin processing the 381st record. Run 181695, Event 16623, LumiSection 2 at 17-Sep-2013 17:34:35.597 EDT
+Begin processing the 391st record. Run 181695, Event 19095, LumiSection 2 at 17-Sep-2013 17:34:36.196 EDT
+Begin processing the 401st record. Run 181695, Event 18168, LumiSection 2 at 17-Sep-2013 17:34:36.879 EDT
+Begin processing the 411th record. Run 181695, Event 372788, LumiSection 35 at 17-Sep-2013 17:34:37.989 EDT
+Begin processing the 421st record. Run 181695, Event 371383, LumiSection 35 at 17-Sep-2013 17:34:39.645 EDT
+Begin processing the 431st record. Run 181695, Event 369305, LumiSection 35 at 17-Sep-2013 17:34:41.768 EDT
+Begin processing the 441st record. Run 181695, Event 376994, LumiSection 35 at 17-Sep-2013 17:34:43.437 EDT
+Begin processing the 451st record. Run 181695, Event 36696, LumiSection 4 at 17-Sep-2013 17:34:44.293 EDT
+Begin processing the 461st record. Run 181695, Event 41325, LumiSection 4 at 17-Sep-2013 17:34:48.062 EDT
+Begin processing the 471st record. Run 181695, Event 39435, LumiSection 4 at 17-Sep-2013 17:34:48.466 EDT
+Begin processing the 481st record. Run 181695, Event 41370, LumiSection 4 at 17-Sep-2013 17:34:49.302 EDT
+Begin processing the 491st record. Run 181695, Event 44626, LumiSection 5 at 17-Sep-2013 17:34:52.556 EDT
+Begin processing the 501st record. Run 181695, Event 48446, LumiSection 5 at 17-Sep-2013 17:34:55.539 EDT
+Begin processing the 511th record. Run 181695, Event 53066, LumiSection 5 at 17-Sep-2013 17:34:56.368 EDT
+Begin processing the 521st record. Run 181695, Event 47534, LumiSection 5 at 17-Sep-2013 17:34:57.186 EDT
+Begin processing the 531st record. Run 181695, Event 56865, LumiSection 6 at 17-Sep-2013 17:35:00.028 EDT
+Begin processing the 541st record. Run 181695, Event 62572, LumiSection 6 at 17-Sep-2013 17:35:04.094 EDT
+Begin processing the 551st record. Run 181695, Event 56483, LumiSection 6 at 17-Sep-2013 17:35:04.946 EDT
+Begin processing the 561st record. Run 181695, Event 60254, LumiSection 6 at 17-Sep-2013 17:35:05.473 EDT
+Begin processing the 571st record. Run 181695, Event 67350, LumiSection 7 at 17-Sep-2013 17:35:07.608 EDT
+Begin processing the 581st record. Run 181695, Event 70865, LumiSection 7 at 17-Sep-2013 17:35:09.908 EDT
+Begin processing the 591st record. Run 181695, Event 68250, LumiSection 7 at 17-Sep-2013 17:35:12.925 EDT
+17-Sep-2013 17:35:14 EDT  Closed file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_2_1_8fG.root
+17-Sep-2013 17:35:14 EDT  Initiating request to open file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_29_1_5zm.root
+17-Sep-2013 17:35:14 EDT  Successfully opened file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_29_1_5zm.root
+Begin processing the 601st record. Run 181611, Event 4058787, LumiSection 854 at 17-Sep-2013 17:35:16.297 EDT
+Begin processing the 611th record. Run 181611, Event 4074537, LumiSection 857 at 17-Sep-2013 17:35:16.687 EDT
+Begin processing the 621st record. Run 181611, Event 4089135, LumiSection 861 at 17-Sep-2013 17:35:17.524 EDT
+Begin processing the 631st record. Run 181611, Event 4102756, LumiSection 864 at 17-Sep-2013 17:35:21.557 EDT
+Begin processing the 641st record. Run 181611, Event 4115514, LumiSection 867 at 17-Sep-2013 17:35:23.079 EDT
+Begin processing the 651st record. Run 181611, Event 4129615, LumiSection 870 at 17-Sep-2013 17:35:23.515 EDT
+Begin processing the 661st record. Run 181611, Event 4141911, LumiSection 873 at 17-Sep-2013 17:35:25.952 EDT
+Begin processing the 671st record. Run 181611, Event 4166317, LumiSection 878 at 17-Sep-2013 17:35:28.952 EDT
+Begin processing the 681st record. Run 181611, Event 4175868, LumiSection 881 at 17-Sep-2013 17:35:34.263 EDT
+17-Sep-2013 17:35:34 EDT  Closed file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_29_1_5zm.root
+17-Sep-2013 17:35:34 EDT  Initiating request to open file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_29_1_5OO.root
+17-Sep-2013 17:35:34 EDT  Successfully opened file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_29_1_5OO.root
+Begin processing the 691st record. Run 182382, Event 23162756, LumiSection 606 at 17-Sep-2013 17:35:37.104 EDT
+Begin processing the 701st record. Run 182382, Event 23183018, LumiSection 606 at 17-Sep-2013 17:35:37.734 EDT
+Begin processing the 711th record. Run 182382, Event 23178278, LumiSection 606 at 17-Sep-2013 17:35:39.308 EDT
+Begin processing the 721st record. Run 182382, Event 23168274, LumiSection 606 at 17-Sep-2013 17:35:41.918 EDT
+Begin processing the 731st record. Run 182382, Event 23179453, LumiSection 606 at 17-Sep-2013 17:35:42.957 EDT
+Begin processing the 741st record. Run 182382, Event 23179768, LumiSection 606 at 17-Sep-2013 17:35:43.664 EDT
+Begin processing the 751st record. Run 182382, Event 23180227, LumiSection 606 at 17-Sep-2013 17:35:44.374 EDT
+Begin processing the 761st record. Run 182382, Event 23173344, LumiSection 606 at 17-Sep-2013 17:35:44.729 EDT
+Begin processing the 771st record. Run 182382, Event 23176801, LumiSection 606 at 17-Sep-2013 17:35:45.920 EDT
+Begin processing the 781st record. Run 182382, Event 23165815, LumiSection 606 at 17-Sep-2013 17:35:47.567 EDT
+Begin processing the 791st record. Run 182382, Event 23186363, LumiSection 606 at 17-Sep-2013 17:35:48.076 EDT
+Begin processing the 801st record. Run 182382, Event 23189252, LumiSection 606 at 17-Sep-2013 17:35:48.757 EDT
+Begin processing the 811th record. Run 182382, Event 23198499, LumiSection 607 at 17-Sep-2013 17:35:49.903 EDT
+Begin processing the 821st record. Run 182382, Event 23210799, LumiSection 607 at 17-Sep-2013 17:35:50.319 EDT
+Begin processing the 831st record. Run 182382, Event 23213616, LumiSection 607 at 17-Sep-2013 17:35:51.174 EDT
+Begin processing the 841st record. Run 182382, Event 23223727, LumiSection 607 at 17-Sep-2013 17:35:51.708 EDT
+Begin processing the 851st record. Run 182382, Event 23200357, LumiSection 607 at 17-Sep-2013 17:35:52.566 EDT
+Begin processing the 861st record. Run 182382, Event 23212017, LumiSection 607 at 17-Sep-2013 17:35:54.232 EDT
+Begin processing the 871st record. Run 182382, Event 23215018, LumiSection 607 at 17-Sep-2013 17:35:55.084 EDT
+Begin processing the 881st record. Run 182382, Event 23193160, LumiSection 607 at 17-Sep-2013 17:35:55.782 EDT
+Begin processing the 891st record. Run 182382, Event 23207163, LumiSection 607 at 17-Sep-2013 17:35:56.776 EDT
+Begin processing the 901st record. Run 182382, Event 23222934, LumiSection 607 at 17-Sep-2013 17:35:57.285 EDT
+Begin processing the 911th record. Run 182382, Event 23197916, LumiSection 607 at 17-Sep-2013 17:35:58.140 EDT
+Begin processing the 921st record. Run 182382, Event 23222414, LumiSection 607 at 17-Sep-2013 17:35:59.311 EDT
+Begin processing the 931st record. Run 182382, Event 23227791, LumiSection 608 at 17-Sep-2013 17:36:00.347 EDT
+Begin processing the 941st record. Run 182382, Event 23233492, LumiSection 608 at 17-Sep-2013 17:36:02.318 EDT
+Begin processing the 951st record. Run 182382, Event 23230118, LumiSection 608 at 17-Sep-2013 17:36:02.662 EDT
+Begin processing the 961st record. Run 182382, Event 23244585, LumiSection 608 at 17-Sep-2013 17:36:03.338 EDT
+Begin processing the 971st record. Run 182382, Event 23228582, LumiSection 608 at 17-Sep-2013 17:36:03.728 EDT
+Begin processing the 981st record. Run 182382, Event 23226629, LumiSection 608 at 17-Sep-2013 17:36:04.758 EDT
+Begin processing the 991st record. Run 182382, Event 23240039, LumiSection 608 at 17-Sep-2013 17:36:05.298 EDT
+Begin processing the 1001st record. Run 182382, Event 23227009, LumiSection 608 at 17-Sep-2013 17:36:05.985 EDT
+Begin processing the 1011th record. Run 182382, Event 23253410, LumiSection 608 at 17-Sep-2013 17:36:06.890 EDT
+Begin processing the 1021st record. Run 182382, Event 23242115, LumiSection 608 at 17-Sep-2013 17:36:08.723 EDT
+Begin processing the 1031st record. Run 182382, Event 23249576, LumiSection 608 at 17-Sep-2013 17:36:10.344 EDT
+Begin processing the 1041st record. Run 182382, Event 23253171, LumiSection 608 at 17-Sep-2013 17:36:11.380 EDT
+Begin processing the 1051st record. Run 182382, Event 23276240, LumiSection 609 at 17-Sep-2013 17:36:12.669 EDT
+Begin processing the 1061st record. Run 182382, Event 23281655, LumiSection 609 at 17-Sep-2013 17:36:13.396 EDT
+Begin processing the 1071st record. Run 182382, Event 23276494, LumiSection 609 at 17-Sep-2013 17:36:13.907 EDT
+Begin processing the 1081st record. Run 182382, Event 23263868, LumiSection 609 at 17-Sep-2013 17:36:14.596 EDT
+Begin processing the 1091st record. Run 182382, Event 23261233, LumiSection 609 at 17-Sep-2013 17:36:17.189 EDT
+Begin processing the 1101st record. Run 182382, Event 23260240, LumiSection 609 at 17-Sep-2013 17:36:18.993 EDT
+Begin processing the 1111th record. Run 182382, Event 23264501, LumiSection 609 at 17-Sep-2013 17:36:19.740 EDT
+Begin processing the 1121st record. Run 182382, Event 23289566, LumiSection 609 at 17-Sep-2013 17:36:20.788 EDT
+Begin processing the 1131st record. Run 182382, Event 23276241, LumiSection 609 at 17-Sep-2013 17:36:21.538 EDT
+Begin processing the 1141st record. Run 182382, Event 23257900, LumiSection 609 at 17-Sep-2013 17:36:22.338 EDT
+Begin processing the 1151st record. Run 182382, Event 23289084, LumiSection 609 at 17-Sep-2013 17:36:23.425 EDT
+Begin processing the 1161st record. Run 182382, Event 23298429, LumiSection 610 at 17-Sep-2013 17:36:26.236 EDT
+Begin processing the 1171st record. Run 182382, Event 23308140, LumiSection 610 at 17-Sep-2013 17:36:27.657 EDT
+Begin processing the 1181st record. Run 182382, Event 23316652, LumiSection 610 at 17-Sep-2013 17:36:28.167 EDT
+Begin processing the 1191st record. Run 182382, Event 23306455, LumiSection 610 at 17-Sep-2013 17:36:29.396 EDT
+Begin processing the 1201st record. Run 182382, Event 23307067, LumiSection 610 at 17-Sep-2013 17:36:30.750 EDT
+Begin processing the 1211th record. Run 182382, Event 23317482, LumiSection 610 at 17-Sep-2013 17:36:31.100 EDT
+Begin processing the 1221st record. Run 182382, Event 23315209, LumiSection 610 at 17-Sep-2013 17:36:32.306 EDT
+Begin processing the 1231st record. Run 182382, Event 23298926, LumiSection 610 at 17-Sep-2013 17:36:32.841 EDT
+Begin processing the 1241st record. Run 182382, Event 23315712, LumiSection 610 at 17-Sep-2013 17:36:40.908 EDT
+Begin processing the 1251st record. Run 182382, Event 23295179, LumiSection 610 at 17-Sep-2013 17:36:42.082 EDT
+Begin processing the 1261st record. Run 182382, Event 23304101, LumiSection 610 at 17-Sep-2013 17:36:42.441 EDT
+Begin processing the 1271st record. Run 182382, Event 23329921, LumiSection 611 at 17-Sep-2013 17:36:44.021 EDT
+Begin processing the 1281st record. Run 182382, Event 23325888, LumiSection 611 at 17-Sep-2013 17:36:45.124 EDT
+Begin processing the 1291st record. Run 182382, Event 23345865, LumiSection 611 at 17-Sep-2013 17:36:45.958 EDT
+Begin processing the 1301st record. Run 182382, Event 23323374, LumiSection 611 at 17-Sep-2013 17:36:46.715 EDT
+Begin processing the 1311th record. Run 182382, Event 23353198, LumiSection 611 at 17-Sep-2013 17:36:47.612 EDT
+Begin processing the 1321st record. Run 182382, Event 23349018, LumiSection 611 at 17-Sep-2013 17:36:48.502 EDT
+Begin processing the 1331st record. Run 182382, Event 23342748, LumiSection 611 at 17-Sep-2013 17:36:49.598 EDT
+Begin processing the 1341st record. Run 182382, Event 23332483, LumiSection 611 at 17-Sep-2013 17:36:51.821 EDT
+Begin processing the 1351st record. Run 182382, Event 23349459, LumiSection 611 at 17-Sep-2013 17:36:53.536 EDT
+Begin processing the 1361st record. Run 182382, Event 23347269, LumiSection 611 at 17-Sep-2013 17:36:55.367 EDT
+Begin processing the 1371st record. Run 182382, Event 23337277, LumiSection 611 at 17-Sep-2013 17:36:56.202 EDT
+Begin processing the 1381st record. Run 182382, Event 23331247, LumiSection 611 at 17-Sep-2013 17:36:57.365 EDT
+Begin processing the 1391st record. Run 182382, Event 23324324, LumiSection 611 at 17-Sep-2013 17:36:57.920 EDT
+Begin processing the 1401st record. Run 182382, Event 23360928, LumiSection 612 at 17-Sep-2013 17:37:00.695 EDT
+Begin processing the 1411th record. Run 182382, Event 23379328, LumiSection 612 at 17-Sep-2013 17:37:02.350 EDT
+Begin processing the 1421st record. Run 182382, Event 23359381, LumiSection 612 at 17-Sep-2013 17:37:06.090 EDT
+Begin processing the 1431st record. Run 182382, Event 23387693, LumiSection 612 at 17-Sep-2013 17:37:10.249 EDT
+Begin processing the 1441st record. Run 182382, Event 23383370, LumiSection 612 at 17-Sep-2013 17:37:11.109 EDT
+Begin processing the 1451st record. Run 182382, Event 23370951, LumiSection 612 at 17-Sep-2013 17:37:11.916 EDT
+Begin processing the 1461st record. Run 182382, Event 23379810, LumiSection 612 at 17-Sep-2013 17:37:13.077 EDT
+Begin processing the 1471st record. Run 182382, Event 23377143, LumiSection 612 at 17-Sep-2013 17:37:13.653 EDT
+Begin processing the 1481st record. Run 182382, Event 23369883, LumiSection 612 at 17-Sep-2013 17:37:14.858 EDT
+Begin processing the 1491st record. Run 182382, Event 23378509, LumiSection 612 at 17-Sep-2013 17:37:15.421 EDT
+Begin processing the 1501st record. Run 182382, Event 23380985, LumiSection 612 at 17-Sep-2013 17:37:16.518 EDT
+Begin processing the 1511th record. Run 182382, Event 23403947, LumiSection 613 at 17-Sep-2013 17:37:20.208 EDT
+Begin processing the 1521st record. Run 182382, Event 23401856, LumiSection 613 at 17-Sep-2013 17:37:21.295 EDT
+Begin processing the 1531st record. Run 182382, Event 23410866, LumiSection 613 at 17-Sep-2013 17:37:22.156 EDT
+Begin processing the 1541st record. Run 182382, Event 23390904, LumiSection 613 at 17-Sep-2013 17:37:22.669 EDT
+Begin processing the 1551st record. Run 182382, Event 23397567, LumiSection 613 at 17-Sep-2013 17:37:23.210 EDT
+Begin processing the 1561st record. Run 182382, Event 23405645, LumiSection 613 at 17-Sep-2013 17:37:24.082 EDT
+Begin processing the 1571st record. Run 182382, Event 23401042, LumiSection 613 at 17-Sep-2013 17:37:25.098 EDT
+Begin processing the 1581st record. Run 182382, Event 23418269, LumiSection 613 at 17-Sep-2013 17:37:25.871 EDT
+Begin processing the 1591st record. Run 182382, Event 23393212, LumiSection 613 at 17-Sep-2013 17:37:26.373 EDT
+Begin processing the 1601st record. Run 182382, Event 23417260, LumiSection 613 at 17-Sep-2013 17:37:29.774 EDT
+Begin processing the 1611th record. Run 182382, Event 23390281, LumiSection 613 at 17-Sep-2013 17:37:31.362 EDT
+Begin processing the 1621st record. Run 182382, Event 23431729, LumiSection 614 at 17-Sep-2013 17:37:32.045 EDT
+Begin processing the 1631st record. Run 182382, Event 23449687, LumiSection 614 at 17-Sep-2013 17:37:32.766 EDT
+Begin processing the 1641st record. Run 182382, Event 23421208, LumiSection 614 at 17-Sep-2013 17:37:33.441 EDT
+Begin processing the 1651st record. Run 182382, Event 23436828, LumiSection 614 at 17-Sep-2013 17:37:39.289 EDT
+Begin processing the 1661st record. Run 182382, Event 23447863, LumiSection 614 at 17-Sep-2013 17:37:40.807 EDT
+Begin processing the 1671st record. Run 182382, Event 23442292, LumiSection 614 at 17-Sep-2013 17:37:42.810 EDT
+Begin processing the 1681st record. Run 182382, Event 23423157, LumiSection 614 at 17-Sep-2013 17:37:44.409 EDT
+Begin processing the 1691st record. Run 182382, Event 23446213, LumiSection 614 at 17-Sep-2013 17:37:47.642 EDT
+Begin processing the 1701st record. Run 182382, Event 23443363, LumiSection 614 at 17-Sep-2013 17:37:48.427 EDT
+Begin processing the 1711th record. Run 182382, Event 23421147, LumiSection 614 at 17-Sep-2013 17:37:49.173 EDT
+Begin processing the 1721st record. Run 182382, Event 23424649, LumiSection 614 at 17-Sep-2013 17:37:49.695 EDT
+Begin processing the 1731st record. Run 182382, Event 23461309, LumiSection 615 at 17-Sep-2013 17:37:52.631 EDT
+Begin processing the 1741st record. Run 182382, Event 23476009, LumiSection 615 at 17-Sep-2013 17:37:53.959 EDT
+Begin processing the 1751st record. Run 182382, Event 23455240, LumiSection 615 at 17-Sep-2013 17:37:54.653 EDT
+Begin processing the 1761st record. Run 182382, Event 23457100, LumiSection 615 at 17-Sep-2013 17:37:56.114 EDT
+Begin processing the 1771st record. Run 182382, Event 23466151, LumiSection 615 at 17-Sep-2013 17:38:11.745 EDT
+Begin processing the 1781st record. Run 182382, Event 23481244, LumiSection 615 at 17-Sep-2013 17:38:13.688 EDT
+Begin processing the 1791st record. Run 182382, Event 23475312, LumiSection 615 at 17-Sep-2013 17:38:13.868 EDT
+Begin processing the 1801st record. Run 182382, Event 23465182, LumiSection 615 at 17-Sep-2013 17:38:14.589 EDT
+Begin processing the 1811th record. Run 182382, Event 23475023, LumiSection 615 at 17-Sep-2013 17:38:16.151 EDT
+Begin processing the 1821st record. Run 182382, Event 23481306, LumiSection 615 at 17-Sep-2013 17:38:18.221 EDT
+Begin processing the 1831st record. Run 182382, Event 23484029, LumiSection 615 at 17-Sep-2013 17:38:21.697 EDT
+Begin processing the 1841st record. Run 182382, Event 23472601, LumiSection 615 at 17-Sep-2013 17:38:23.475 EDT
+17-Sep-2013 17:38:23 EDT  Closed file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_29_1_5OO.root
+
+=============================================
+
+MessageLogger Summary
+
+ type     category        sev    module        subroutine        count    total
+ ---- -------------------- -- ---------------- ----------------  -----    -----
+    1 fileAction           -s file_close                             4        4
+    2 fileAction           -s file_open                              8        8
+
+ type    category    Examples: run/evt        run/evt          run/evt
+ ---- -------------------- ---------------- ---------------- ----------------
+    1 fileAction           PostProcessEvent PostProcessEvent PostEndRun
+    2 fileAction           pre-events       pre-events       PostProcessEvent
+
+Severity    # Occurrences   Total Occurrences
+--------    -------------   -----------------
+System                 12                  12

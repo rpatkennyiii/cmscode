@@ -8,7 +8,6 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "DataFormats/TrackReco/interface/TrackFwd.h"
-#include "DataFormats/HeavyIonEvent/interface/CentralityProvider.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/MuonReco/interface/Muon.h"
@@ -37,7 +36,7 @@ public:
 private:
 	virtual void beginJob();
 	virtual void analyze(const edm::Event&, const edm::EventSetup&);
-	void getTrack(const Track *trax,unsigned int &ndof, float &chi2,unsigned int &vHits, unsigned int &pixHits, unsigned int &traxHits,
+	void getTrack(const Track *trax,unsigned int &ndof, bool &isHighPurity, float &chi2,unsigned int &vHits, unsigned int &pixHits, unsigned int &traxHits,
 	   float &x, float &y, float &z,
 	   float &p, float &qoverp, float &lambda, float &phi,
 	   float &varqoverp, float &varlambda, float &varphi,
@@ -53,6 +52,7 @@ private:
 	isTrackerMuon[100],
 	isStandAloneMuon[100],
 	isCaloMuon[100],
+	isHighPurity[100],
 	isGoodMuon[100];
 	
 	unsigned int
@@ -108,6 +108,7 @@ void UPCPatMuonAnalyzer::beginJob(){
 	MuonTree->Branch("isTrackerMuon",isTrackerMuon,"isTrackerMuon[nMuon]/O");
 	MuonTree->Branch("isStandAloneMuon",isStandAloneMuon,"isStandAloneMuon[nMuon]/O");
 	MuonTree->Branch("isCaloMuon",isCaloMuon,"isCaloMuon[nMuon]/O");
+	MuonTree->Branch("isHighPurity",isHighPurity,"isHighPurity[nMuon]/O");
 
 	MuonTree->Branch("caloMuonTower",caloMuonTower,"caloMuonTower[nMuon]/F");
 	MuonTree->Branch("caloMuonTowerS9",caloMuonTowerS9,"caloMuonTowerS9[nMuon]/F");
@@ -155,7 +156,6 @@ void UPCPatMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup
 		        isGlobalMuon[i]=(*muons)[i].isGlobalMuon();
 		        isTrackerMuon[i]=(*muons)[i].isTrackerMuon();
 		        isStandAloneMuon[i]=(*muons)[i].isStandAloneMuon();
-		        isCaloMuon[i]=(*muons)[i].isCaloMuon();
 			isGoodMuon[i]=muon::isGoodMuon((*muons)[i],muon::TMOneStationTight);
 
 			MuonEnergy muE=(*muons)[i].calEnergy();
@@ -177,7 +177,7 @@ void UPCPatMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup
 			const Track *track;
 			if (isStandAloneMuon[i] && !(isGlobalMuon[i])) track=((*muons)[i].standAloneMuon()).get();
 			else  track=((*muons)[i].track()).get();
-		        getTrack(track,ndof[nMuon],chi2[nMuon],numberOfValidTrackerHits[nMuon],pixelLayersWithMeasurement[nMuon],trackerLayersWithMeasurement[nMuon],x[nMuon],y[nMuon],z[nMuon],p[nMuon],qoverp[nMuon],lambda[nMuon],phi[nMuon],varQoverp[nMuon],varLambda[nMuon],varPhi[nMuon],
+		        getTrack(track,ndof[nMuon], isHighPurity[nMuon], chi2[nMuon],numberOfValidTrackerHits[nMuon],pixelLayersWithMeasurement[nMuon],trackerLayersWithMeasurement[nMuon],x[nMuon],y[nMuon],z[nMuon],p[nMuon],qoverp[nMuon],lambda[nMuon],phi[nMuon],varQoverp[nMuon],varLambda[nMuon],varPhi[nMuon],
 				  covarQoverpLambda[nMuon],covarQoverpPhi[nMuon],covarLambdaPhi[nMuon]);
 			nMuon++;
 		}
@@ -186,7 +186,7 @@ void UPCPatMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup
 	MuonTree->Fill();
 }
 
-void UPCPatMuonAnalyzer::getTrack(const Track *trax, unsigned int &ndof, float &chi2, unsigned int &vHits, unsigned int &pixHits, unsigned int &traxHits,
+void UPCPatMuonAnalyzer::getTrack(const Track *trax, unsigned int &ndof, bool &isHighPurity, float &chi2, unsigned int &vHits, unsigned int &pixHits, unsigned int &traxHits,
 	float &x, float &y, float &z,
 	float &p, float &qoverp, float &lambda, float &phi,
 	float &varqoverp, float &varlambda, float &varphi,
@@ -206,6 +206,7 @@ void UPCPatMuonAnalyzer::getTrack(const Track *trax, unsigned int &ndof, float &
 	covarlambdaphi=trax->covariance(1,2);
 	chi2=trax->chi2();
 	ndof=trax->ndof();
+	isHighPurity=trax->quality(reco::TrackBase::highPurity);
 	vHits=trax->hitPattern().numberOfValidTrackerHits();
 	pixHits=trax->hitPattern().pixelLayersWithMeasurement();
 	traxHits=trax->hitPattern().trackerLayersWithMeasurement();

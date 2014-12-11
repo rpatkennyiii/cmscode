@@ -1,0 +1,123 @@
+10-Sep-2013 03:07:58 EDT  Initiating request to open file file:/mnt/hadoop/cms/store/user/pkenny/UPCData/OniaRECO/upcOnia2MuMu246.root
+10-Sep-2013 03:07:59 EDT  Successfully opened file file:/mnt/hadoop/cms/store/user/pkenny/UPCData/OniaRECO/upcOnia2MuMu246.root
+Begin processing the 1st record. Run 181938, Event 11417750, LumiSection 363 at 10-Sep-2013 03:08:03.988 EDT
+Begin processing the 11th record. Run 181938, Event 11409237, LumiSection 363 at 10-Sep-2013 03:08:10.077 EDT
+Begin processing the 21st record. Run 181938, Event 11465483, LumiSection 364 at 10-Sep-2013 03:08:10.833 EDT
+Begin processing the 31st record. Run 181938, Event 11479632, LumiSection 364 at 10-Sep-2013 03:08:12.362 EDT
+Begin processing the 41st record. Run 181938, Event 20649231, LumiSection 619 at 10-Sep-2013 03:08:13.253 EDT
+Begin processing the 51st record. Run 181938, Event 11605956, LumiSection 368 at 10-Sep-2013 03:08:13.964 EDT
+Begin processing the 61st record. Run 181938, Event 11603546, LumiSection 368 at 10-Sep-2013 03:08:14.673 EDT
+Begin processing the 71st record. Run 181938, Event 11568496, LumiSection 367 at 10-Sep-2013 03:08:15.600 EDT
+Begin processing the 81st record. Run 181938, Event 21122388, LumiSection 637 at 10-Sep-2013 03:08:16.350 EDT
+Begin processing the 91st record. Run 181938, Event 11645092, LumiSection 369 at 10-Sep-2013 03:08:17.126 EDT
+Begin processing the 101st record. Run 181938, Event 11790640, LumiSection 372 at 10-Sep-2013 03:08:17.889 EDT
+Begin processing the 111th record. Run 181938, Event 11704392, LumiSection 370 at 10-Sep-2013 03:08:19.169 EDT
+Begin processing the 121st record. Run 181938, Event 16721797, LumiSection 489 at 10-Sep-2013 03:08:19.875 EDT
+Begin processing the 131st record. Run 181938, Event 11713070, LumiSection 371 at 10-Sep-2013 03:08:20.901 EDT
+Begin processing the 141st record. Run 181938, Event 21148452, LumiSection 638 at 10-Sep-2013 03:08:21.604 EDT
+Begin processing the 151st record. Run 181938, Event 14069606, LumiSection 433 at 10-Sep-2013 03:08:22.954 EDT
+Begin processing the 161st record. Run 181938, Event 14079961, LumiSection 433 at 10-Sep-2013 03:08:23.697 EDT
+Begin processing the 171st record. Run 181938, Event 11897621, LumiSection 375 at 10-Sep-2013 03:08:24.433 EDT
+Begin processing the 181st record. Run 181938, Event 11913241, LumiSection 376 at 10-Sep-2013 03:08:25.126 EDT
+Begin processing the 191st record. Run 181938, Event 17290447, LumiSection 506 at 10-Sep-2013 03:08:25.823 EDT
+Begin processing the 201st record. Run 181938, Event 12002078, LumiSection 378 at 10-Sep-2013 03:08:26.583 EDT
+Begin processing the 211th record. Run 181938, Event 21173977, LumiSection 639 at 10-Sep-2013 03:08:27.322 EDT
+Begin processing the 221st record. Run 181938, Event 12025370, LumiSection 379 at 10-Sep-2013 03:08:28.254 EDT
+%MSG-e TooManyTriplets:  PixelTrackProducer:hiPixelTracks  10-Sep-2013 03:08:28 EDT Run: 181938 Event: 12038829
+ number of triples exceed maximum. no triplets produced.
+%MSG
+Begin processing the 231st record. Run 181938, Event 16344926, LumiSection 477 at 10-Sep-2013 03:08:30.443 EDT
+Begin processing the 241st record. Run 181938, Event 12065079, LumiSection 380 at 10-Sep-2013 03:08:32.178 EDT
+Begin processing the 251st record. Run 181938, Event 12068207, LumiSection 380 at 10-Sep-2013 03:08:32.880 EDT
+Begin processing the 261st record. Run 181938, Event 12147120, LumiSection 382 at 10-Sep-2013 03:08:33.665 EDT
+Begin processing the 271st record. Run 181938, Event 12175909, LumiSection 383 at 10-Sep-2013 03:08:34.563 EDT
+Begin processing the 281st record. Run 181938, Event 12257146, LumiSection 385 at 10-Sep-2013 03:08:35.275 EDT
+Begin processing the 291st record. Run 181938, Event 12311548, LumiSection 386 at 10-Sep-2013 03:08:35.998 EDT
+Begin processing the 301st record. Run 181938, Event 12302200, LumiSection 386 at 10-Sep-2013 03:08:37.353 EDT
+Begin processing the 311th record. Run 181938, Event 21208690, LumiSection 640 at 10-Sep-2013 03:08:38.127 EDT
+Begin processing the 321st record. Run 181938, Event 10636781, LumiSection 343 at 10-Sep-2013 03:08:39.453 EDT
+Begin processing the 331st record. Run 181938, Event 16253037, LumiSection 475 at 10-Sep-2013 03:08:40.316 EDT
+Begin processing the 341st record. Run 181938, Event 10718130, LumiSection 345 at 10-Sep-2013 03:08:41.206 EDT
+Begin processing the 351st record. Run 181938, Event 10718910, LumiSection 345 at 10-Sep-2013 03:08:41.913 EDT
+Begin processing the 361st record. Run 181938, Event 19820592, LumiSection 590 at 10-Sep-2013 03:08:42.597 EDT
+Begin processing the 371st record. Run 181938, Event 23426104, LumiSection 728 at 10-Sep-2013 03:08:43.317 EDT
+Begin processing the 381st record. Run 181938, Event 10812749, LumiSection 347 at 10-Sep-2013 03:08:44.073 EDT
+Begin processing the 391st record. Run 181938, Event 16231768, LumiSection 474 at 10-Sep-2013 03:08:44.797 EDT
+Begin processing the 401st record. Run 181938, Event 10856322, LumiSection 348 at 10-Sep-2013 03:08:45.628 EDT
+Begin processing the 411th record. Run 181938, Event 20195329, LumiSection 603 at 10-Sep-2013 03:08:46.839 EDT
+Begin processing the 421st record. Run 181938, Event 10888222, LumiSection 349 at 10-Sep-2013 03:08:47.645 EDT
+Begin processing the 431st record. Run 181938, Event 10934778, LumiSection 350 at 10-Sep-2013 03:08:48.837 EDT
+Begin processing the 441st record. Run 181938, Event 10941271, LumiSection 351 at 10-Sep-2013 03:08:49.602 EDT
+Begin processing the 451st record. Run 181938, Event 11171133, LumiSection 356 at 10-Sep-2013 03:08:50.396 EDT
+Begin processing the 461st record. Run 181938, Event 11010593, LumiSection 352 at 10-Sep-2013 03:08:51.079 EDT
+Begin processing the 471st record. Run 181938, Event 10979211, LumiSection 352 at 10-Sep-2013 03:08:51.793 EDT
+Begin processing the 481st record. Run 181938, Event 11031021, LumiSection 353 at 10-Sep-2013 03:08:52.672 EDT
+Begin processing the 491st record. Run 181938, Event 23546984, LumiSection 733 at 10-Sep-2013 03:08:53.504 EDT
+Begin processing the 501st record. Run 181938, Event 11123152, LumiSection 355 at 10-Sep-2013 03:08:55.032 EDT
+Begin processing the 511th record. Run 181938, Event 13513635, LumiSection 418 at 10-Sep-2013 03:08:55.843 EDT
+Begin processing the 521st record. Run 181938, Event 11195964, LumiSection 357 at 10-Sep-2013 03:08:56.703 EDT
+Begin processing the 531st record. Run 181938, Event 16684521, LumiSection 487 at 10-Sep-2013 03:08:57.634 EDT
+Begin processing the 541st record. Run 181938, Event 11243335, LumiSection 358 at 10-Sep-2013 03:08:58.340 EDT
+Begin processing the 551st record. Run 181938, Event 12230722, LumiSection 384 at 10-Sep-2013 03:08:59.059 EDT
+Begin processing the 561st record. Run 181938, Event 11250801, LumiSection 359 at 10-Sep-2013 03:09:00.054 EDT
+Begin processing the 571st record. Run 181938, Event 11837371, LumiSection 374 at 10-Sep-2013 03:09:01.127 EDT
+Begin processing the 581st record. Run 181938, Event 11321815, LumiSection 360 at 10-Sep-2013 03:09:01.985 EDT
+Begin processing the 591st record. Run 181938, Event 11298793, LumiSection 360 at 10-Sep-2013 03:09:02.831 EDT
+Begin processing the 601st record. Run 181938, Event 11360254, LumiSection 361 at 10-Sep-2013 03:09:04.408 EDT
+Begin processing the 611th record. Run 181938, Event 11378767, LumiSection 362 at 10-Sep-2013 03:09:05.267 EDT
+Begin processing the 621st record. Run 181938, Event 16795025, LumiSection 491 at 10-Sep-2013 03:09:05.969 EDT
+Begin processing the 631st record. Run 182972, Event 30723291, LumiSection 685 at 10-Sep-2013 03:09:07.393 EDT
+Begin processing the 641st record. Run 182972, Event 30757456, LumiSection 686 at 10-Sep-2013 03:09:08.200 EDT
+Begin processing the 651st record. Run 182972, Event 30758351, LumiSection 686 at 10-Sep-2013 03:09:09.181 EDT
+Begin processing the 661st record. Run 182972, Event 30809040, LumiSection 687 at 10-Sep-2013 03:09:10.051 EDT
+Begin processing the 671st record. Run 182972, Event 30840215, LumiSection 688 at 10-Sep-2013 03:09:11.139 EDT
+Begin processing the 681st record. Run 182972, Event 30861550, LumiSection 689 at 10-Sep-2013 03:09:12.322 EDT
+Begin processing the 691st record. Run 182972, Event 30879060, LumiSection 689 at 10-Sep-2013 03:09:13.115 EDT
+Begin processing the 701st record. Run 182972, Event 30956182, LumiSection 691 at 10-Sep-2013 03:09:14.081 EDT
+Begin processing the 711th record. Run 182972, Event 30973748, LumiSection 692 at 10-Sep-2013 03:09:15.018 EDT
+Begin processing the 721st record. Run 182972, Event 30984381, LumiSection 692 at 10-Sep-2013 03:09:16.296 EDT
+Begin processing the 731st record. Run 182972, Event 31029243, LumiSection 693 at 10-Sep-2013 03:09:17.238 EDT
+Begin processing the 741st record. Run 182972, Event 31048929, LumiSection 694 at 10-Sep-2013 03:09:18.245 EDT
+Begin processing the 751st record. Run 182972, Event 31062080, LumiSection 694 at 10-Sep-2013 03:09:19.467 EDT
+Begin processing the 761st record. Run 182972, Event 31085663, LumiSection 695 at 10-Sep-2013 03:09:20.413 EDT
+Begin processing the 771st record. Run 182972, Event 16451456, LumiSection 339 at 10-Sep-2013 03:09:21.322 EDT
+Begin processing the 781st record. Run 182972, Event 16489881, LumiSection 339 at 10-Sep-2013 03:09:22.215 EDT
+Begin processing the 791st record. Run 182972, Event 16539848, LumiSection 340 at 10-Sep-2013 03:09:23.029 EDT
+Begin processing the 801st record. Run 182972, Event 16539794, LumiSection 340 at 10-Sep-2013 03:09:24.328 EDT
+Begin processing the 811th record. Run 182972, Event 16567787, LumiSection 341 at 10-Sep-2013 03:09:25.164 EDT
+Begin processing the 821st record. Run 182972, Event 16574687, LumiSection 341 at 10-Sep-2013 03:09:26.418 EDT
+Begin processing the 831st record. Run 182972, Event 16680480, LumiSection 343 at 10-Sep-2013 03:09:27.318 EDT
+Begin processing the 841st record. Run 182972, Event 16679734, LumiSection 343 at 10-Sep-2013 03:09:28.170 EDT
+Begin processing the 851st record. Run 182972, Event 16698146, LumiSection 344 at 10-Sep-2013 03:09:28.962 EDT
+Begin processing the 861st record. Run 182972, Event 16688177, LumiSection 344 at 10-Sep-2013 03:09:29.968 EDT
+Begin processing the 871st record. Run 182972, Event 16708456, LumiSection 344 at 10-Sep-2013 03:09:30.806 EDT
+Begin processing the 881st record. Run 182972, Event 16772060, LumiSection 345 at 10-Sep-2013 03:09:31.841 EDT
+Begin processing the 891st record. Run 182972, Event 16766559, LumiSection 345 at 10-Sep-2013 03:09:32.820 EDT
+Begin processing the 901st record. Run 182972, Event 16787278, LumiSection 346 at 10-Sep-2013 03:09:33.828 EDT
+Begin processing the 911th record. Run 182972, Event 16834989, LumiSection 347 at 10-Sep-2013 03:09:34.637 EDT
+Begin processing the 921st record. Run 182972, Event 16869505, LumiSection 347 at 10-Sep-2013 03:09:35.459 EDT
+Begin processing the 931st record. Run 182972, Event 30644840, LumiSection 683 at 10-Sep-2013 03:09:36.458 EDT
+Begin processing the 941st record. Run 182972, Event 30686899, LumiSection 684 at 10-Sep-2013 03:09:37.474 EDT
+Begin processing the 951st record. Run 182972, Event 30684156, LumiSection 684 at 10-Sep-2013 03:09:38.473 EDT
+10-Sep-2013 03:09:38 EDT  Closed file file:/mnt/hadoop/cms/store/user/pkenny/UPCData/OniaRECO/upcOnia2MuMu246.root
+
+=============================================
+
+MessageLogger Summary
+
+ type     category        sev    module        subroutine        count    total
+ ---- -------------------- -- ---------------- ----------------  -----    -----
+    1 TooManyTriplets      -e PixelTrackProduc                       1        1
+    2 fileAction           -s file_close                             1        1
+    3 fileAction           -s file_open                              2        2
+
+ type    category    Examples: run/evt        run/evt          run/evt
+ ---- -------------------- ---------------- ---------------- ----------------
+    1 TooManyTriplets      181938/12038829                   
+    2 fileAction           PostEndRun                        
+    3 fileAction           pre-events       pre-events       
+
+Severity    # Occurrences   Total Occurrences
+--------    -------------   -----------------
+Error                   1                   1
+System                  3                   3

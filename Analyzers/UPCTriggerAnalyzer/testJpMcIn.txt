@@ -1,0 +1,10 @@
+file:/mnt/hadoop/cms/store/user/pkenny/STARlightData/OniaRECO/JPsi/MuMu/Xn0n/Co/STARlight_JPsiMuMuXn0nCo_RECOnia44Y_222.root 
+file:/mnt/hadoop/cms/store/user/pkenny/STARlightData/OniaRECO/JPsi/MuMu/Xn0n/Co/STARlight_JPsiMuMuXn0nCo_RECOnia44Y_468.root 
+file:/mnt/hadoop/cms/store/user/pkenny/STARlightData/OniaRECO/JPsi/MuMu/Xn0n/Co/STARlight_JPsiMuMuXn0nCo_RECOnia44Y_245.root 
+file:/mnt/hadoop/cms/store/user/pkenny/STARlightData/OniaRECO/JPsi/MuMu/Xn0n/Co/STARlight_JPsiMuMuXn0nCo_RECOnia44Y_220.root 
+file:/mnt/hadoop/cms/store/user/pkenny/STARlightData/OniaRECO/JPsi/MuMu/Xn0n/Co/STARlight_JPsiMuMuXn0nCo_RECOnia44Y_707.root 
+file:/mnt/hadoop/cms/store/user/pkenny/STARlightData/OniaRECO/JPsi/MuMu/Xn0n/Co/STARlight_JPsiMuMuXn0nCo_RECOnia44Y_706.root 
+file:/mnt/hadoop/cms/store/user/pkenny/STARlightData/OniaRECO/JPsi/MuMu/Xn0n/Co/STARlight_JPsiMuMuXn0nCo_RECOnia44Y_213.root 
+file:/mnt/hadoop/cms/store/user/pkenny/STARlightData/OniaRECO/JPsi/MuMu/Xn0n/Co/STARlight_JPsiMuMuXn0nCo_RECOnia44Y_768.root 
+file:/mnt/hadoop/cms/store/user/pkenny/STARlightData/OniaRECO/JPsi/MuMu/Xn0n/Co/STARlight_JPsiMuMuXn0nCo_RECOnia44Y_670.root 
+file:/mnt/hadoop/cms/store/user/pkenny/STARlightData/OniaRECO/JPsi/MuMu/Xn0n/Co/STARlight_JPsiMuMuXn0nCo_RECOnia44Y_453.root 

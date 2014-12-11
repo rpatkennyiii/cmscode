@@ -1,0 +1,30 @@
+17-Sep-2013 17:32:37 EDT  Initiating request to open file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_619_2_mdF.root
+17-Sep-2013 17:32:41 EDT  Successfully opened file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_619_2_mdF.root
+17-Sep-2013 17:32:53 EDT  Closed file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_619_2_mdF.root
+17-Sep-2013 17:32:53 EDT  Initiating request to open file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_618_1_IxX.root
+17-Sep-2013 17:32:53 EDT  Successfully opened file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_618_1_IxX.root
+17-Sep-2013 17:32:53 EDT  Closed file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_618_1_IxX.root
+17-Sep-2013 17:32:53 EDT  Initiating request to open file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_617_1_emN.root
+17-Sep-2013 17:32:53 EDT  Successfully opened file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_617_1_emN.root
+17-Sep-2013 17:32:54 EDT  Closed file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_617_1_emN.root
+17-Sep-2013 17:32:54 EDT  Initiating request to open file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_616_1_es6.root
+17-Sep-2013 17:32:54 EDT  Successfully opened file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_616_1_es6.root
+17-Sep-2013 17:32:54 EDT  Closed file file:/mnt/hadoop/cms/store/user/mojoe137/HIMinBiasUPC/hiUPCPhysics2011/8ee8b4be026b1b1fe7ebb9116b19f519/UPCPhysics_616_1_es6.root
+
+=============================================
+
+MessageLogger Summary
+
+ type     category        sev    module        subroutine        count    total
+ ---- -------------------- -- ---------------- ----------------  -----    -----
+    1 fileAction           -s file_close                             4        4
+    2 fileAction           -s file_open                              8        8
+
+ type    category    Examples: run/evt        run/evt          run/evt
+ ---- -------------------- ---------------- ---------------- ----------------
+    1 fileAction           PostBeginLumi    PostBeginLumi    PostEndRun
+    2 fileAction           pre-events       pre-events       PostBeginLumi
+
+Severity    # Occurrences   Total Occurrences
+--------    -------------   -----------------
+System                 12                  12

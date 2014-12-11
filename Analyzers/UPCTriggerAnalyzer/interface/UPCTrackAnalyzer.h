@@ -29,7 +29,7 @@ public:
 private:
 	virtual void beginJob();
 	virtual void analyze(const edm::Event&, const edm::EventSetup&);
-	virtual void getTracks(edm::Handle<TrackCollection>, vector<int>&, vector<double>&, vector<double>&, 
+	virtual void getTracks(edm::Handle<TrackCollection>, vector<int>&, vector<int>&, vector<double>&, vector<double>&, 
              vector<double>&, vector<double>&, vector<double>&, vector<double>&,
              vector<double>&, vector<double>&, vector<double>&, vector<double>&,
              vector<double>&, vector<double>&, vector<double>&, vector<double>&);
@@ -39,7 +39,7 @@ private:
 	string trackCollection; 
 
 	int nTracks;
-	vector<int> ndof;
+	vector<int> ndof, isHighPurity;
 	vector<double> chi2,x, y, z, 
 	   p, qoverp, lambda, phi,
 	   varQoverp, varLambda, varPhi,

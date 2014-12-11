@@ -1,0 +1,1 @@
+/mnt/hadoop/cms/store/user/pkenny/STARlightData/OniaRECO/JPsi/MuMu/Gun/FlatPt/jPsiGun2mumuFlatPt_RECOnia44Y_353.root
