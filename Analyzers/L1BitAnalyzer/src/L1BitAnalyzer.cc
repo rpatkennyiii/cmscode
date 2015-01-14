@@ -23,7 +23,7 @@ L1BitAnalyzer::~L1BitAnalyzer(){}
 
 void L1BitAnalyzer::beginRun(const edm::Run& e, const edm::EventSetup& iSetup){
    hltConfig_.init(e,iSetup,hltresults_.process(),firstEv);
-   firstEv=true;
+   cout << firstEv << endl;
 }
 
 void L1BitAnalyzer::analyze(edm::Event const& e, edm::EventSetup const& iSetup){
@@ -40,13 +40,17 @@ void L1BitAnalyzer::analyze(edm::Event const& e, edm::EventSetup const& iSetup){
 
   int iErrorCode = 0;
   m_l1GtUtils.getL1GtRunCache(e,iSetup,true,false);
+  m_l1GtUtils.prescaleFactorSetIndex(e, L1GtUtils::AlgorithmTrigger, iErrorCode);
+  m_l1GtUtils.prescaleFactorSetIndex(e, L1GtUtils::TechnicalTrigger, iErrorCode);
 
   edm::Handle<L1GlobalTriggerReadoutRecord> l1GtRR; 
   edm::Handle<edm::TriggerResults> hltresults;
 
   e.getByLabel(l1GtRR_, l1GtRR);
   e.getByLabel(hltresults_, hltresults);
-
+  
+  bool triggerError=0;
+  unsigned int prescaleError=-1;
   nBits=0;
   nHltBits=0;
 
@@ -66,6 +70,9 @@ void L1BitAnalyzer::analyze(edm::Event const& e, edm::EventSetup const& iSetup){
       if(L1BitTree->GetBranch(trigName)){ 
         L1BitTree->SetBranchAddress(trigName,&L1Bits[nBits]);
         L1BitTree->SetBranchAddress(trigName+"_Prescl",&L1BitsPs[nBits]);
+      }else{
+        L1BitTree->SetBranchAddress(trigName,&triggerError);
+        L1BitTree->SetBranchAddress(trigName+"_Prescl",&prescaleError);
       }
       nBits++;
     } 
@@ -81,6 +88,9 @@ void L1BitAnalyzer::analyze(edm::Event const& e, edm::EventSetup const& iSetup){
       if(L1BitTree->GetBranch(trigName)){ 
         L1BitTree->SetBranchAddress(trigName,&L1Bits[nBits]);
 	      L1BitTree->SetBranchAddress(trigName+"_Prescl",&L1BitsPs[nBits]);
+      }else{
+        L1BitTree->SetBranchAddress(trigName,&triggerError);
+        L1BitTree->SetBranchAddress(trigName+"_Prescl",&prescaleError);
       }
       nBits++;
     }
@@ -103,9 +113,14 @@ void L1BitAnalyzer::analyze(edm::Event const& e, edm::EventSetup const& iSetup){
       HltBitsPs[nHltBits] = prescales.second;
 	    if(L1BitTree->GetBranch(trigName)){ 
         L1BitTree->SetBranchAddress(trigName,&L1Bits[nBits]);
-        L1BitTree->SetBranchAddress(trigName+"_HltPrescl",&L1BitsPs[nHltBits]);
+        L1BitTree->SetBranchAddress(trigName+"_HltPrescl",&HltBitsPs[nHltBits]);
         L1BitTree->SetBranchAddress(trigName+"_L1Prescl",&L1BitsPs[nBits]);
+      }else{
+        L1BitTree->SetBranchAddress(trigName,&triggerError);
+        L1BitTree->SetBranchAddress(trigName+"_L1Prescl",&prescaleError);
+        L1BitTree->SetBranchAddress(trigName+"_HltPrescl",&prescaleError);
       }
+
 	    nBits++;
       nHltBits++;
     }
