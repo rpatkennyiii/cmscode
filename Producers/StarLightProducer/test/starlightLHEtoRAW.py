@@ -17,7 +17,7 @@ process.load('SimGeneral.MixingModule.mixNoPU_cfi')
 process.load('Configuration.StandardSequences.GeometryDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('Configuration.StandardSequences.Generator_cff')
-process.load('IOMC.EventVertexGenerators.VtxSmearedRealisticHI2011Collision_cfi')
+process.load('IOMC.EventVertexGenerators.VtxSmearedRealistic7TeV2011Collision_cfi')
 process.load('GeneratorInterface.Core.genFilterSummary_cff')
 process.load('Configuration.StandardSequences.SimIdeal_cff')
 process.load('Configuration.StandardSequences.Digi_cff')
@@ -39,7 +39,9 @@ process.source = cms.Source("LHESource",
     fileNames = cms.untracked.vstring('file:slight'+sys.argv[2]+'.lhe')
 )
 
-process.options = cms.untracked.PSet()
+process.options = cms.untracked.PSet(
+
+)
 
 # Production Info
 process.configurationMetadata = cms.untracked.PSet(

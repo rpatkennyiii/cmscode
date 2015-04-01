@@ -28,11 +28,15 @@ private:
 	virtual void beginJob();
 	virtual void analyze(const edm::Event&, const edm::EventSetup&);
 private:
+	unsigned int nbOfCASTORDigis, CastorDigiDataADC[22400], CastorDigiModule[22400], CastorDigiSector[22400];
+        float CastorDigiDatafC[22400];
+
 	unsigned int nbOfCASTORRecHits, CastorRecHitModule[2240], CastorRecHitSector[2240];
         float CastorRecHitData[2240];
 
 	edm::Service<TFileService> mFileServer;
 	
+	TTree* CastorDigiTree;
 	TTree* CastorRecHitTree;
 };
 DEFINE_FWK_MODULE(UPCCastorAnalyzer);

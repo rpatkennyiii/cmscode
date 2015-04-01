@@ -95,48 +95,48 @@ void UPCMaxCalAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 			for(unsigned i=0; i < detIds.size(); i++){
 				HcalDetId hcalDetId((detIds[i].det()==DetId::Hcal)?HcalDetId(detIds[i]):HcalDetId()); 
 
+				CaloIsHF=(CaloIsHF||(hcalDetId.subdet()==HcalForward&&detIds[i].det()==DetId::Hcal));
+				CaloIsHB=(CaloIsHB||(hcalDetId.subdet()==HcalBarrel&&detIds[i].det()==DetId::Hcal));
+				CaloIsHE=(CaloIsHE||(hcalDetId.subdet()==HcalEndcap&&detIds[i].det()==DetId::Hcal));
 				CaloIsEB=(CaloIsEB||(EcalSubdetector(detIds[i].subdetId())==EcalBarrel&&detIds[i].det()==DetId::Ecal));
 				CaloIsEE=(CaloIsEE||(EcalSubdetector(detIds[i].subdetId())==EcalEndcap&&detIds[i].det()==DetId::Ecal));
-				CaloIsHB=(CaloIsHB||hcalDetId.subdet()==HcalBarrel);
-				CaloIsHE=(CaloIsHE||hcalDetId.subdet()==HcalEndcap);
-				CaloIsHF=(CaloIsHF||hcalDetId.subdet()==HcalForward);
 			}
 
 			if(calt->emEnergy()>MaxEBEnergy&&CaloIsEB&&!CaloIsEE)MaxEBEta=calt->p4().eta();
 			if(calt->emEnergy()>MaxEEEnergy&&CaloIsEE&&!CaloIsEB)MaxEEEta=calt->p4().eta();
-			if(calt->energyInHB()>MaxHBEnergy)MaxHBEta=calt->p4().eta();
-			if(calt->energyInHE()>MaxHEEnergy)MaxHEEta=calt->p4().eta();
-			if(calt->energyInHF()>MaxHFEnergy)MaxHFEta=calt->p4().eta();
+			if(calt->hadEnergy()>MaxHBEnergy&&CaloIsHB&&!CaloIsHE)MaxHBEta=calt->p4().eta();
+			if(calt->hadEnergy()>MaxHEEnergy&&CaloIsHE&&!CaloIsHB&&!CaloIsHF)MaxHEEta=calt->p4().eta();
+			if(calt->energy()>MaxHFEnergy&&CaloIsHF&&!CaloIsHE)MaxHFEta=calt->p4().eta();
 
 			if(calt->emEnergy()>MaxEBEnergy&&CaloIsEB&&!CaloIsEE)MaxEBPhi=calt->p4().phi();
 			if(calt->emEnergy()>MaxEEEnergy&&CaloIsEE&&!CaloIsEB)MaxEEPhi=calt->p4().phi();
-			if(calt->energyInHB()>MaxHBEnergy)MaxHBPhi=calt->p4().phi();
-			if(calt->energyInHE()>MaxHEEnergy)MaxHEPhi=calt->p4().phi();
-			if(calt->energyInHF()>MaxHFEnergy)MaxHFPhi=calt->p4().phi();
+			if(calt->hadEnergy()>MaxHBEnergy&&CaloIsHB&&!CaloIsHE)MaxHBPhi=calt->p4().phi();
+			if(calt->hadEnergy()>MaxHEEnergy&&CaloIsHE&&!CaloIsHB&&!CaloIsHF)MaxHEPhi=calt->p4().phi();
+			if(calt->energy()>MaxHFEnergy&&CaloIsHF&&!CaloIsHE)MaxHFPhi=calt->p4().phi();
 
 			if(calt->emEnergy()>MaxEBEnergy&&CaloIsEB&&!CaloIsEE)MaxEBEnergy=calt->emEnergy();
 			if(calt->emEnergy()>MaxEEEnergy&&CaloIsEE&&!CaloIsEB)MaxEEEnergy=calt->emEnergy();
-			if(calt->energyInHB()>MaxHBEnergy)MaxHBEnergy=calt->energyInHB();
-			if(calt->energyInHE()>MaxHEEnergy)MaxHEEnergy=calt->energyInHE();
-			if(calt->energyInHF()>MaxHFEnergy)MaxHFEnergy=calt->energyInHF();
+			if(calt->hadEnergy()>MaxHBEnergy&&CaloIsHB&&!CaloIsHE)MaxHBEnergy=calt->hadEnergy();
+			if(calt->hadEnergy()>MaxHEEnergy&&CaloIsHE&&!CaloIsHB&&!CaloIsHF)MaxHEEnergy=calt->hadEnergy();
+			if(calt->energy()>MaxHFEnergy&&CaloIsHF&&!CaloIsHE)MaxHFEnergy=calt->energy();
 
 			SumEBEnergy+=calt->emEnergy()*int(CaloIsEB);
 			SumEEEnergy+=calt->emEnergy()*int(CaloIsEE);
-			SumHBEnergy+=calt->energyInHB();
-			SumHEEnergy+=calt->energyInHE();
-			SumHFEnergy+=calt->energyInHF();
+			SumHBEnergy+=calt->hadEnergy()*int(CaloIsHB);
+			SumHEEnergy+=calt->hadEnergy()*int(CaloIsHE);
+			SumHFEnergy+=calt->energy()*int(CaloIsHF);
 
 			SumEBEta+=calt->emEnergy()*int(CaloIsEB)*calt->p4().eta();
 			SumEEEta+=calt->emEnergy()*int(CaloIsEE)*calt->p4().eta();
-			SumHBEta+=calt->energyInHB()*int(CaloIsHB)*calt->p4().eta();
-			SumHEEta+=calt->energyInHE()*int(CaloIsHE)*calt->p4().eta();
-			SumHFEta+=calt->energyInHF()*int(CaloIsHF)*calt->p4().eta();
+			SumHBEta+=calt->hadEnergy()*int(CaloIsHB)*calt->p4().eta();
+			SumHEEta+=calt->hadEnergy()*int(CaloIsHE)*calt->p4().eta();
+			SumHFEta+=calt->energy()*int(CaloIsHF)*calt->p4().eta();
 
 			SumEBPhi+=calt->emEnergy()*int(CaloIsEB)*calt->p4().phi();
 			SumEEPhi+=calt->emEnergy()*int(CaloIsEE)*calt->p4().phi();
-			SumHBPhi+=calt->energyInHB()*int(CaloIsHB)*calt->p4().phi();
-			SumHEPhi+=calt->energyInHE()*int(CaloIsHE)*calt->p4().phi();
-			SumHFPhi+=calt->energyInHF()*int(CaloIsHF)*calt->p4().phi();
+			SumHBPhi+=calt->hadEnergy()*int(CaloIsHB)*calt->p4().phi();
+			SumHEPhi+=calt->hadEnergy()*int(CaloIsHE)*calt->p4().phi();
+			SumHFPhi+=calt->energy()*int(CaloIsHF)*calt->p4().phi();
 		}
 	}
 	

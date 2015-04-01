@@ -14,7 +14,6 @@ void UPCTrackAnalyzer::beginJob(){
 
 	TrakTree->Branch("nTracks",&nTracks,"nTracks/I");
 	TrakTree->Branch("ndof",&ndof,"ndof[nTracks]/I");
-	TrakTree->Branch("isHighPurity",&isHighPurity,"isHighPurity[nTracks]/I");
 	TrakTree->Branch("chi2",&chi2,"chi2[nTracks]/D");
 	TrakTree->Branch("p",&p[0],"p[nTracks]/D");
 	TrakTree->Branch("qoverp",&qoverp[0],"qoverp[nTracks]/D");
@@ -35,20 +34,19 @@ void UPCTrackAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
 	Handle<TrackCollection> hiTrax;
 	iEvent.getByLabel(trackCollection.c_str(),hiTrax);
 	
-	chi2.clear(); ndof.clear(); isHighPurity.clear();
+	chi2.clear(); ndof.clear();
 	x.clear(); y.clear(); z.clear(); 
 	p.clear(); qoverp.clear(); lambda.clear(); phi.clear();
 	varQoverp.clear(); varLambda.clear(); varPhi.clear();
 	covarQoverpLambda.clear();covarQoverpPhi.clear();covarLambdaPhi.clear();
 
-	if(!hiTrax.failedToGet()){getTracks(hiTrax,ndof,isHighPurity,chi2,x,y,z,p,qoverp,lambda,phi,varQoverp,varLambda,varPhi,
+	if(!hiTrax.failedToGet()){getTracks(hiTrax,ndof,chi2,x,y,z,p,qoverp,lambda,phi,varQoverp,varLambda,varPhi,
                                            covarQoverpLambda,covarQoverpPhi,covarLambdaPhi);}
 
 	nTracks=x.size();
 
 	TrakTree->SetBranchAddress("nTracks",&nTracks);
 	TrakTree->SetBranchAddress("ndof",&ndof[0]);
-	TrakTree->SetBranchAddress("isHighPurity",&isHighPurity[0]);
 	TrakTree->SetBranchAddress("chi2",&chi2[0]);
 	TrakTree->SetBranchAddress("p",&p[0]);
 	TrakTree->SetBranchAddress("qoverp",&qoverp[0]);
@@ -67,7 +65,7 @@ void UPCTrackAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
 	TrakTree->Fill();
 }
 
-void UPCTrackAnalyzer::getTracks(Handle<TrackCollection> TrackCol, vector<int> &ndof,vector<int> &isHighPurity, vector<double> &chi2,
+void UPCTrackAnalyzer::getTracks(Handle<TrackCollection> TrackCol, vector<int> &ndof, vector<double> &chi2,
 	vector<double> &x, vector<double> &y, vector<double> &z,
 	vector<double> &p, vector<double> &qoverp, vector<double> &lambda, vector<double> &phi,
 	vector<double> &varqoverp, vector<double> &varlambda, vector<double> &varphi,
@@ -89,6 +87,5 @@ void UPCTrackAnalyzer::getTracks(Handle<TrackCollection> TrackCol, vector<int> &
 		covarlambdaphi.push_back(trax->covariance(1,2));
 		chi2.push_back(trax->chi2());
 		ndof.push_back(trax->ndof());
-		isHighPurity.push_back(trax->quality(reco::TrackBase::highPurity));
 	}
 }

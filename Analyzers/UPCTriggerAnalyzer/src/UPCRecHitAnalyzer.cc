@@ -75,88 +75,88 @@ private:
    bool FillHFSumOnly;                    // Whether to store HF digi-level information or not
    bool FillEBSumOnly;                    // Whether to store EB digi-level information or not
    bool FillEESumOnly;                    // Whether to store EE digi-level information or not
-   float TotalChargeThreshold;    // To avoid trees from overweight, only store digis above some threshold
+   double TotalChargeThreshold;    // To avoid trees from overweight, only store digis above some threshold
    string sHBHERecHitCollection;   // Name of the HBHE rechit collection
    edm::Service<TFileService> FileService;
 
    // HBHE rechits and digis
    int PulseCount;
-   float HBEnergySumPlus;
-   float HBEnergySumMinus;
-   float HBEnergyMaxPlus;
-   float HBEnergyMaxMinus;
-   float HBEtaMaxPlus;
-   float HBEtaMaxMinus;
-   float HBPhiMaxPlus;
-   float HBPhiMaxMinus;
+   double HBEnergySumPlus;
+   double HBEnergySumMinus;
+   double HBEnergyMaxPlus;
+   double HBEnergyMaxMinus;
+   double HBEtaMaxPlus;
+   double HBEtaMaxMinus;
+   double HBPhiMaxPlus;
+   double HBPhiMaxMinus;
 
-   float HEEnergySumPlus;
-   float HEEnergySumMinus;
-   float HEEnergyMaxPlus;
-   float HEEnergyMaxMinus;
-   float HEEtaMaxPlus;
-   float HEEtaMaxMinus;
-   float HEPhiMaxPlus;
-   float HEPhiMaxMinus;
+   double HEEnergySumPlus;
+   double HEEnergySumMinus;
+   double HEEnergyMaxPlus;
+   double HEEnergyMaxMinus;
+   double HEEtaMaxPlus;
+   double HEEtaMaxMinus;
+   double HEPhiMaxPlus;
+   double HEPhiMaxMinus;
 
-   float Charge[5184][10];
-   float Pedestal[5184][10];
-   float Energy[5184];
+   double Charge[5184][10];
+   double Pedestal[5184][10];
+   double Energy[5184];
    float Eta[5184];
    float Phi[5184];
    int IEta[5184];
    int IPhi[5184];
    int Depth[5184];
-   float RecHitTime[5184];
+   double RecHitTime[5184];
    uint32_t FlagWord[5184];
    uint32_t AuxWord[5184];
 
    // HF rechits and digis
    int HFPulseCount;
-   float HFEnergySumPlus;
-   float HFEnergySumMinus;
-   float HFEnergyMaxPlus;
-   float HFEnergyMaxMinus;
-   float HFEtaMaxPlus;
-   float HFPhiMaxPlus;
-   float HFEtaMaxMinus;
-   float HFPhiMaxMinus;
-   float HFCharge[1726][10];
-   float HFPedestal[1726][10];
+   double HFEnergySumPlus;
+   double HFEnergySumMinus;
+   double HFEnergyMaxPlus;
+   double HFEnergyMaxMinus;
+   double HFEtaMaxPlus;
+   double HFPhiMaxPlus;
+   double HFEtaMaxMinus;
+   double HFPhiMaxMinus;
+   double HFCharge[1726][10];
+   double HFPedestal[1726][10];
    float HFEta[1726];
    float HFPhi[1726];
    int HFIEta[1726];
    int HFIPhi[1726];
    int HFDepth[1726];
-   float HFEnergy[1726];
+   double HFEnergy[1726];
 
    // EB rechits and digis
    int EBPulseCount;
-   float EBEnergySumPlus;
-   float EBEnergySumMinus;
-   float EBEnergyMaxPlus;
-   float EBEnergyMaxMinus;
-   float EBEtaMaxPlus;
-   float EBPhiMaxPlus;
-   float EBEtaMaxMinus;
-   float EBPhiMaxMinus;
+   double EBEnergySumPlus;
+   double EBEnergySumMinus;
+   double EBEnergyMaxPlus;
+   double EBEnergyMaxMinus;
+   double EBEtaMaxPlus;
+   double EBPhiMaxPlus;
+   double EBEtaMaxMinus;
+   double EBPhiMaxMinus;
    float EBEta[60581];
    float EBPhi[60581];
-   float EBEnergy[60581];
+   double EBEnergy[60581];
 
    // EE rechits and digis
    int EEPulseCount;
-   float EEEnergySumPlus;
-   float EEEnergySumMinus;
-   float EEEnergyMaxPlus;
-   float EEEnergyMaxMinus;
-   float EEEtaMaxPlus;
-   float EEPhiMaxPlus;
-   float EEEtaMaxMinus;
-   float EEPhiMaxMinus;
+   double EEEnergySumPlus;
+   double EEEnergySumMinus;
+   double EEEnergyMaxPlus;
+   double EEEnergyMaxMinus;
+   double EEEtaMaxPlus;
+   double EEPhiMaxPlus;
+   double EEEtaMaxMinus;
+   double EEPhiMaxMinus;
    float EEEta[14407];
    float EEPhi[14407];
-   float EEEnergy[14407];
+   double EEEnergy[14407];
 
    TTree *HBHETree;
    TTree *HFTree;
@@ -256,6 +256,22 @@ void UPCRecHitAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
       CaloSamples Tool;
       if(FillHBHEDigis) Coder.adc2fC(*iterHBHE, Tool);
 
+      // Total charge of the digi
+      double TotalCharge = 0;
+      for(int i = 0; i < FillHBHEDigis?(int)iterHBHE->size():0; i++)
+         TotalCharge = TotalCharge + Tool[i] - Calibrations.pedestal(iterHBHE->sample(i).capid());
+
+      // If total charge is smaller than threshold, don't store this rechit/digi into the tree
+      if(TotalCharge < TotalChargeThreshold)
+         continue;
+
+      // Safety check - there are only 5184 channels in HBHE, but just in case...
+      if(PulseCount >= 5184)
+      {
+         PulseCount = PulseCount + 1;
+         continue;
+      }
+
       // Fill things into the tree
       for(int i = 0; FillHBHEDigis?(int)iterHBHE->size():0; i++)
       {
@@ -264,37 +280,33 @@ void UPCRecHitAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
          Pedestal[PulseCount][i] = Calibrations.pedestal(QIE.capid());
          Charge[PulseCount][i] = Tool[i] - Pedestal[PulseCount][i];
       }
-	
-      GlobalPoint fPos = Geometry->getPosition(id);
+
       IEta[PulseCount] = id.ieta();
       IPhi[PulseCount] = id.iphi();
-      Eta[PulseCount] = fPos.eta();
-      Phi[PulseCount] = fPos.phi();
-     // Eta[PulseCount] = Geometry->getPosition(id).eta();
-     // Phi[PulseCount] = Geometry->getPosition(id).phi();
+      Eta[PulseCount] = Geometry->getPosition(id).eta();
+      Phi[PulseCount] = Geometry->getPosition(id).phi();
       Depth[PulseCount] = id.depth();
 
       Energy[PulseCount] = (*hRecHits)[RecHitIndex[id]].energy();
       
+      double eta=Eta[PulseCount], energy=Energy[PulseCount], phi=Phi[PulseCount];
+      HBEnergySumPlus += energy*double(abs(eta)<=1.305&&eta>=0);
+      HBEnergySumMinus += energy*double(abs(eta)<=1.305&&eta<0);
+      HBEtaMaxPlus = (energy*double(abs(eta)<=1.305)>HBEnergyMaxPlus&&eta>=0)?eta:HBEtaMaxPlus;
+      HBPhiMaxPlus = (energy*double(abs(eta)<=1.305)>HBEnergyMaxPlus&&eta>=0)?phi:HBPhiMaxPlus;
+      HBEtaMaxMinus = (energy*double(abs(eta)<=1.305)>HBEnergyMaxMinus&&eta<0)?eta:HBEtaMaxMinus;
+      HBPhiMaxMinus = (energy*double(abs(eta)<=1.305)>HBEnergyMaxMinus&&eta<0)?phi:HBPhiMaxMinus;
+      HBEnergyMaxPlus = (energy*double(abs(eta)<=1.305)>HBEnergyMaxPlus&&eta>=0)?energy:HBEnergyMaxPlus;
+      HBEnergyMaxMinus = (energy*double(abs(eta)<=1.305)>HBEnergyMaxMinus&&eta<0)?energy:HBEnergyMaxMinus;
 
-      float eta=Eta[PulseCount], energy=Energy[PulseCount], phi=Phi[PulseCount];
-      HBEnergySumPlus += energy*float(abs(eta)<=1.305&&eta>=0);
-      HBEnergySumMinus += energy*float(abs(eta)<=1.305&&eta<0);
-      HBEtaMaxPlus = (energy*float(abs(eta)<=1.305)>HBEnergyMaxPlus&&eta>=0)?eta:HBEtaMaxPlus;
-      HBPhiMaxPlus = (energy*float(abs(eta)<=1.305)>HBEnergyMaxPlus&&eta>=0)?phi:HBPhiMaxPlus;
-      HBEtaMaxMinus = (energy*float(abs(eta)<=1.305)>HBEnergyMaxMinus&&eta<0)?eta:HBEtaMaxMinus;
-      HBPhiMaxMinus = (energy*float(abs(eta)<=1.305)>HBEnergyMaxMinus&&eta<0)?phi:HBPhiMaxMinus;
-      HBEnergyMaxPlus = (energy*float(abs(eta)<=1.305)>HBEnergyMaxPlus&&eta>=0)?energy:HBEnergyMaxPlus;
-      HBEnergyMaxMinus = (energy*float(abs(eta)<=1.305)>HBEnergyMaxMinus&&eta<0)?energy:HBEnergyMaxMinus;
-
-      HEEnergySumPlus += energy*float(abs(eta)>=1.392&&eta>=0);
-      HEEnergySumMinus += energy*float(abs(eta)>=1.392&&eta<0);
-      HEEtaMaxPlus = (energy*float(abs(eta)>=1.392)>HEEnergyMaxPlus&&eta>=0)?eta:HEEtaMaxPlus;
-      HEPhiMaxPlus = (energy*float(abs(eta)>=1.392)>HEEnergyMaxPlus&&eta>=0)?phi:HEPhiMaxPlus;
-      HEEtaMaxMinus = (energy*float(abs(eta)>=1.392)>HEEnergyMaxMinus&&eta<0)?eta:HEEtaMaxMinus;
-      HEPhiMaxMinus = (energy*float(abs(eta)>=1.392)>HEEnergyMaxMinus&&eta<0)?phi:HEPhiMaxMinus;
-      HEEnergyMaxPlus = (energy*float(abs(eta)>=1.392)>HEEnergyMaxPlus&&eta>=0)?energy:HEEnergyMaxPlus;
-      HEEnergyMaxMinus = (energy*float(abs(eta)>=1.392)>HEEnergyMaxMinus&&eta<0)?energy:HEEnergyMaxMinus;
+      HEEnergySumPlus += energy*double(abs(eta)>=1.392&&eta>=0);
+      HEEnergySumMinus += energy*double(abs(eta)>=1.392&&eta<0);
+      HEEtaMaxPlus = (energy*double(abs(eta)>=1.392)>HEEnergyMaxPlus&&eta>=0)?eta:HEEtaMaxPlus;
+      HEPhiMaxPlus = (energy*double(abs(eta)>=1.392)>HEEnergyMaxPlus&&eta>=0)?phi:HEPhiMaxPlus;
+      HEEtaMaxMinus = (energy*double(abs(eta)>=1.392)>HEEnergyMaxMinus&&eta<0)?eta:HEEtaMaxMinus;
+      HEPhiMaxMinus = (energy*double(abs(eta)>=1.392)>HEEnergyMaxMinus&&eta<0)?phi:HEPhiMaxMinus;
+      HEEnergyMaxPlus = (energy*double(abs(eta)>=1.392)>HEEnergyMaxPlus&&eta>=0)?energy:HEEnergyMaxPlus;
+      HEEnergyMaxMinus = (energy*double(abs(eta)>=1.392)>HEEnergyMaxMinus&&eta<0)?energy:HEEnergyMaxMinus;
 
       RecHitTime[PulseCount] = (*hRecHits)[RecHitIndex[id]].time();
 
@@ -329,26 +341,23 @@ void UPCRecHitAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
          HFCharge[HFPulseCount][i] = Tool[i] - HFPedestal[HFPulseCount][i];
       }
 
-      GlobalPoint fPos = Geometry->getPosition(id);
       HFIEta[HFPulseCount] = id.ieta();
       HFIPhi[HFPulseCount] = id.iphi();
-      HFEta[HFPulseCount] = fPos.eta();
-      HFPhi[HFPulseCount] = fPos.phi();
-      //HFEta[HFPulseCount] = Geometry->getPosition(id).eta();
-      //HFPhi[HFPulseCount] = Geometry->getPosition(id).phi();
+      HFEta[HFPulseCount] = Geometry->getPosition(id).eta();
+      HFPhi[HFPulseCount] = Geometry->getPosition(id).phi();
       HFDepth[HFPulseCount] = id.depth();
 
       HFEnergy[HFPulseCount] = (*hHFRecHits)[HFRecHitIndex[id]].energy();
 
-      float eta=HFEta[HFPulseCount], energy=HFEnergy[HFPulseCount], phi=HFPhi[HFPulseCount];
-      HFEnergySumPlus += energy*float(eta>=0)*float(abs(eta)>=3.139);
-      HFEnergySumMinus += energy*float(eta<0)*float(abs(eta)>=3.139);
-      HFEtaMaxPlus = (energy*float(abs(eta)>=3.139)>HFEnergyMaxPlus&&eta>=0)?eta:HFEtaMaxPlus;
-      HFPhiMaxPlus = (energy*float(abs(eta)>=3.139)>HFEnergyMaxPlus&&eta>=0)?phi:HFPhiMaxPlus;
-      HFEtaMaxMinus = (energy*float(abs(eta)>=3.139)>HFEnergyMaxMinus&&eta<0)?eta:HFEtaMaxMinus;
-      HFPhiMaxMinus = (energy*float(abs(eta)>=3.139)>HFEnergyMaxMinus&&eta<0)?phi:HFPhiMaxMinus;
-      HFEnergyMaxPlus = (energy*float(abs(eta)>=3.139)>HFEnergyMaxPlus&&eta>=0)?energy:HFEnergyMaxPlus;
-      HFEnergyMaxMinus = (energy*float(abs(eta)>=3.139)>HFEnergyMaxMinus&&eta<0)?energy:HFEnergyMaxMinus;
+      double eta=HFEta[HFPulseCount], energy=HFEnergy[HFPulseCount], phi=HFPhi[HFPulseCount];
+      HFEnergySumPlus += energy*double(eta>=0)*double(abs(eta)>=3.139);
+      HFEnergySumMinus += energy*double(eta<0)*double(abs(eta)>=3.139);
+      HFEtaMaxPlus = (energy*double(abs(eta)>=3.139)>HFEnergyMaxPlus&&eta>=0)?eta:HFEtaMaxPlus;
+      HFPhiMaxPlus = (energy*double(abs(eta)>=3.139)>HFEnergyMaxPlus&&eta>=0)?phi:HFPhiMaxPlus;
+      HFEtaMaxMinus = (energy*double(abs(eta)>=3.139)>HFEnergyMaxMinus&&eta<0)?eta:HFEtaMaxMinus;
+      HFPhiMaxMinus = (energy*double(abs(eta)>=3.139)>HFEnergyMaxMinus&&eta<0)?phi:HFPhiMaxMinus;
+      HFEnergyMaxPlus = (energy*double(abs(eta)>=3.139)>HFEnergyMaxPlus&&eta>=0)?energy:HFEnergyMaxPlus;
+      HFEnergyMaxMinus = (energy*double(abs(eta)>=3.139)>HFEnergyMaxMinus&&eta<0)?energy:HFEnergyMaxMinus;
 
       HFPulseCount = HFPulseCount + 1;
       if(FillHFDigis) iterHF++;
@@ -357,14 +366,11 @@ void UPCRecHitAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 // EB RecHits
    for(int i = 0; i < (int)(*EBRecHits).size(); i++)
    {
-      GlobalPoint fPos = Geometry->getPosition((*EBRecHits)[i].id());
-      EBEta[EBPulseCount] = fPos.eta();
-      EBPhi[EBPulseCount] = fPos.phi();
-      //EBEta[EBPulseCount] = Geometry->getPosition((*EBRecHits)[i].id()).eta();
-      //EBPhi[EBPulseCount] = Geometry->getPosition((*EBRecHits)[i].id()).phi();
+      EBEta[EBPulseCount] = Geometry->getPosition((*EBRecHits)[i].id()).eta();
+      EBPhi[EBPulseCount] = Geometry->getPosition((*EBRecHits)[i].id()).phi();
       EBEnergy[EBPulseCount] = (*EBRecHits)[i].energy();
-      EBEnergySumPlus += (*EBRecHits)[i].energy()*float(EBEta[EBPulseCount]>=0);
-      EBEnergySumMinus += (*EBRecHits)[i].energy()*float(EBEta[EBPulseCount]<0);
+      EBEnergySumPlus += (*EBRecHits)[i].energy()*double(EBEta[EBPulseCount]>=0);
+      EBEnergySumMinus += (*EBRecHits)[i].energy()*double(EBEta[EBPulseCount]<0);
       EBEtaMaxPlus = ((*EBRecHits)[i].energy()>EBEnergyMaxPlus&&EBEta[EBPulseCount]>=0)?EBEta[EBPulseCount]:EBEtaMaxPlus;
       EBPhiMaxPlus = ((*EBRecHits)[i].energy()>EBEnergyMaxPlus&&EBEta[EBPulseCount]>=0)?EBPhi[EBPulseCount]:EBPhiMaxPlus;
       EBEtaMaxMinus = ((*EBRecHits)[i].energy()>EBEnergyMaxMinus&&EBEta[EBPulseCount]<0)?EBEta[EBPulseCount]:EBEtaMaxMinus;
@@ -377,14 +383,11 @@ void UPCRecHitAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 // EE RecHits
    for(int i = 0; i < (int)(*EERecHits).size(); i++)
    {
-      GlobalPoint fPos = Geometry->getPosition((*EERecHits)[i].id());
-      EEEta[EEPulseCount] = fPos.eta();
-      EEPhi[EEPulseCount] = fPos.phi();
-      //EEEta[EEPulseCount] = Geometry->getPosition((*EERecHits)[i].id()).eta();
-      //EEPhi[EEPulseCount] = Geometry->getPosition((*EERecHits)[i].id()).phi();
+      EEEta[EEPulseCount] = Geometry->getPosition((*EERecHits)[i].id()).eta();
+      EEPhi[EEPulseCount] = Geometry->getPosition((*EERecHits)[i].id()).phi();
       EEEnergy[EEPulseCount] = (*EERecHits)[i].energy();
-      EEEnergySumPlus += (*EERecHits)[i].energy()*float(EEEta[EEPulseCount]>=0);
-      EEEnergySumMinus += (*EERecHits)[i].energy()*float(EEEta[EEPulseCount]<0);
+      EEEnergySumPlus += (*EERecHits)[i].energy()*double(EEEta[EEPulseCount]>=0);
+      EEEnergySumMinus += (*EERecHits)[i].energy()*double(EEEta[EEPulseCount]<0);
       EEEtaMaxPlus = ((*EERecHits)[i].energy()>EEEnergyMaxPlus&&EEEta[EEPulseCount]>=0)?EEEta[EEPulseCount]:EEEtaMaxPlus;
       EEPhiMaxPlus = ((*EERecHits)[i].energy()>EEEnergyMaxPlus&&EEEta[EEPulseCount]>=0)?EEPhi[EEPulseCount]:EEPhiMaxPlus;
       EEEtaMaxMinus = ((*EERecHits)[i].energy()>EEEnergyMaxMinus&&EEEta[EEPulseCount]<0)?EEEta[EEPulseCount]:EEEtaMaxMinus;
@@ -411,37 +414,37 @@ void UPCRecHitAnalyzer::beginJob()
       HBHETree = new TTree("HBHERecHitTree","HBHERecHitTree");
       HBHETree->Branch("PulseCount", &PulseCount, "PulseCount/I");
       if(FillHBHESumOnly){
-	 HBHETree->Branch("HEEnergySumPlus", &HEEnergySumPlus, "HEEnergySumPlus/F");
-	 HBHETree->Branch("HEEnergySumMinus", &HEEnergySumMinus, "HEEnergySumMinus/F");
-	 HBHETree->Branch("HEEnergyMaxPlus", &HEEnergyMaxPlus, "HEEnergyMaxPlus/F");
-	 HBHETree->Branch("HEEnergyMaxMinus", &HEEnergyMaxMinus, "HEEnergyMaxMinus/F");
-	 HBHETree->Branch("HEEtaMaxPlus", &HEEtaMaxPlus, "HEEtaMaxPlus/F");
-	 HBHETree->Branch("HEPhiMaxPlus", &HEPhiMaxPlus, "HEPhiMaxPlus/F");
-	 HBHETree->Branch("HEEtaMaxMinus", &HEEtaMaxMinus, "HEEtaMaxMinus/F");
-	 HBHETree->Branch("HEPhiMaxMinus", &HEPhiMaxMinus, "HEPhiMaxMinus/F");
+	 HBHETree->Branch("HEEnergySumPlus", &HEEnergySumPlus, "HEEnergySumPlus/D");
+	 HBHETree->Branch("HEEnergySumMinus", &HEEnergySumMinus, "HEEnergySumMinus/D");
+	 HBHETree->Branch("HEEnergyMaxPlus", &HEEnergyMaxPlus, "HEEnergyMaxPlus/D");
+	 HBHETree->Branch("HEEnergyMaxMinus", &HEEnergyMaxMinus, "HEEnergyMaxMinus/D");
+	 HBHETree->Branch("HEEtaMaxPlus", &HEEtaMaxPlus, "HEEtaMaxPlus/D");
+	 HBHETree->Branch("HEPhiMaxPlus", &HEPhiMaxPlus, "HEPhiMaxPlus/D");
+	 HBHETree->Branch("HEEtaMaxMinus", &HEEtaMaxMinus, "HEEtaMaxMinus/D");
+	 HBHETree->Branch("HEPhiMaxMinus", &HEPhiMaxMinus, "HEPhiMaxMinus/D");
 
-	 HBHETree->Branch("HBEnergySumPlus", &HBEnergySumPlus, "HBEnergySumPlus/F");
-	 HBHETree->Branch("HBEnergySumMinus", &HBEnergySumMinus, "HBEnergySumMinus/F");
-	 HBHETree->Branch("HBEnergyMaxPlus", &HBEnergyMaxPlus, "HBEnergyMaxPlus/F");
-	 HBHETree->Branch("HBEnergyMaxMinus", &HBEnergyMaxMinus, "HBEnergyMaxMinus/F");
-	 HBHETree->Branch("HBEtaMaxPlus", &HBEtaMaxPlus, "HBEtaMaxPlus/F");
-	 HBHETree->Branch("HBPhiMaxPlus", &HBPhiMaxPlus, "HBPhiMaxPlus/F");
-	 HBHETree->Branch("HBEtaMaxMinus", &HBEtaMaxMinus, "HBEtaMaxMinus/F");
-	 HBHETree->Branch("HBPhiMaxMinus", &HBPhiMaxMinus, "HBPhiMaxMinus/F");
+	 HBHETree->Branch("HBEnergySumPlus", &HBEnergySumPlus, "HBEnergySumPlus/D");
+	 HBHETree->Branch("HBEnergySumMinus", &HBEnergySumMinus, "HBEnergySumMinus/D");
+	 HBHETree->Branch("HBEnergyMaxPlus", &HBEnergyMaxPlus, "HBEnergyMaxPlus/D");
+	 HBHETree->Branch("HBEnergyMaxMinus", &HBEnergyMaxMinus, "HBEnergyMaxMinus/D");
+	 HBHETree->Branch("HBEtaMaxPlus", &HBEtaMaxPlus, "HBEtaMaxPlus/D");
+	 HBHETree->Branch("HBPhiMaxPlus", &HBPhiMaxPlus, "HBPhiMaxPlus/D");
+	 HBHETree->Branch("HBEtaMaxMinus", &HBEtaMaxMinus, "HBEtaMaxMinus/D");
+	 HBHETree->Branch("HBPhiMaxMinus", &HBPhiMaxMinus, "HBPhiMaxMinus/D");
       } else {
-	 HBHETree->Branch("Energy", &Energy, "Energy[PulseCount]/F");
+	 HBHETree->Branch("Energy", &Energy, "Energy[PulseCount]/D");
 	 HBHETree->Branch("Eta", &Eta, "Eta[PulseCount]/F");
 	 HBHETree->Branch("Phi", &Phi, "Phi[PulseCount]/F");
 	 HBHETree->Branch("IEta", &IEta, "IEta[PulseCount]/I");
 	 HBHETree->Branch("IPhi", &IPhi, "IPhi[PulseCount]/I");
 	 HBHETree->Branch("Depth", &Depth, "Depth[PulseCount]/I");
-	 HBHETree->Branch("RecHitTime", &RecHitTime, "RecHitTime[PulseCount]/F");
+	 HBHETree->Branch("RecHitTime", &RecHitTime, "RecHitTime[PulseCount]/D");
 	 HBHETree->Branch("FlagWord", &FlagWord, "FlagWord[PulseCount]/i");
 	 HBHETree->Branch("AuxWord", &AuxWord, "AuxWord[PulseCount]/i");
 
 	 if(FillHBHEDigis){
-		 HBHETree->Branch("Charge", &Charge, "Charge[PulseCount][10]/F");
-		 HBHETree->Branch("Pedestal", &Pedestal, "Pedestal[PulseCount][10]/F");
+		 HBHETree->Branch("Charge", &Charge, "Charge[PulseCount][10]/D");
+		 HBHETree->Branch("Pedestal", &Pedestal, "Pedestal[PulseCount][10]/D");
 	 }
       }
    }
@@ -451,25 +454,25 @@ void UPCRecHitAnalyzer::beginJob()
       HFTree = new TTree("HFRecHitTree","HFRecHitTree");
       HFTree->Branch("HFPulseCount", &HFPulseCount, "HFPulseCount/I");
       if(FillHFSumOnly){
-	 HFTree->Branch("HFEnergySumPlus", &HFEnergySumPlus, "HFEnergySumPlus/F");
-	 HFTree->Branch("HFEnergySumMinus", &HFEnergySumMinus, "HFEnergySumMinus/F");
-	 HFTree->Branch("HFEnergyMaxPlus", &HFEnergyMaxPlus, "HFEnergyMaxPlus/F");
-	 HFTree->Branch("HFEnergyMaxMinus", &HFEnergyMaxMinus, "HFEnergyMaxMinus/F");
-	 HFTree->Branch("HFEtaMaxPlus", &HFEtaMaxPlus, "HFEtaMaxPlus/F");
-	 HFTree->Branch("HFPhiMaxPlus", &HFPhiMaxPlus, "HFPhiMaxPlus/F");
-	 HFTree->Branch("HFEtaMaxMinus", &HFEtaMaxMinus, "HFEtaMaxMinus/F");
-	 HFTree->Branch("HFPhiMaxMinus", &HFPhiMaxMinus, "HFPhiMaxMinus/F");
+	 HFTree->Branch("HFEnergySumPlus", &HFEnergySumPlus, "HFEnergySumPlus/D");
+	 HFTree->Branch("HFEnergySumMinus", &HFEnergySumMinus, "HFEnergySumMinus/D");
+	 HFTree->Branch("HFEnergyMaxPlus", &HFEnergyMaxPlus, "HFEnergyMaxPlus/D");
+	 HFTree->Branch("HFEnergyMaxMinus", &HFEnergyMaxMinus, "HFEnergyMaxMinus/D");
+	 HFTree->Branch("HFEtaMaxPlus", &HFEtaMaxPlus, "HFEtaMaxPlus/D");
+	 HFTree->Branch("HFPhiMaxPlus", &HFPhiMaxPlus, "HFPhiMaxPlus/D");
+	 HFTree->Branch("HFEtaMaxMinus", &HFEtaMaxMinus, "HFEtaMaxMinus/D");
+	 HFTree->Branch("HFPhiMaxMinus", &HFPhiMaxMinus, "HFPhiMaxMinus/D");
       } else {
 	 HFTree->Branch("HFPhi", &HFPhi, "HFPhi[HFPulseCount]/F");
 	 HFTree->Branch("HFEta", &HFEta, "HFEta[HFPulseCount]/F");
 	 HFTree->Branch("HFIPhi", &HFIPhi, "HFIPhi[HFPulseCount]/I");
 	 HFTree->Branch("HFIEta", &HFIEta, "HFIEta[HFPulseCount]/I");
 	 HFTree->Branch("HFDepth", &HFDepth, "HFDepth[HFPulseCount]/I");
-	 HFTree->Branch("HFEnergy", &HFEnergy, "HFEnergy[HFPulseCount]/F");
+	 HFTree->Branch("HFEnergy", &HFEnergy, "HFEnergy[HFPulseCount]/D");
 
 	 if(FillHFDigis){
-	     HFTree->Branch("HFCharge", &HFCharge, "HFCharge[HFPulseCount][10]/F");
-	     HFTree->Branch("HFPedestal", &HFPedestal, "HFPedestal[HFPulseCount][10]/F");
+	     HFTree->Branch("HFCharge", &HFCharge, "HFCharge[HFPulseCount][10]/D");
+	     HFTree->Branch("HFPedestal", &HFPedestal, "HFPedestal[HFPulseCount][10]/D");
 	 }
       }
    }
@@ -479,18 +482,18 @@ void UPCRecHitAnalyzer::beginJob()
       EBTree = new TTree("EBRecHitTree","EBRecHitTree");
       EBTree->Branch("EBPulseCount", &EBPulseCount, "EBPulseCount/I");
       if(FillEBSumOnly){
-	 EBTree->Branch("EBEnergySumPlus", &EBEnergySumPlus, "EBEnergySumPlus/F");
-	 EBTree->Branch("EBEnergySumMinus", &EBEnergySumMinus, "EBEnergySumMinus/F");
-	 EBTree->Branch("EBEnergyMaxPlus", &EBEnergyMaxPlus, "EBEnergyMaxPlus/F");
-	 EBTree->Branch("EBEnergyMaxMinus", &EBEnergyMaxMinus, "EBEnergyMaxMinus/F");
-	 EBTree->Branch("EBEtaMaxPlus", &EBEtaMaxPlus, "EBEtaMaxPlus/F");
-	 EBTree->Branch("EBPhiMaxPlus", &EBPhiMaxPlus, "EBPhiMaxPlus/F");
-	 EBTree->Branch("EBEtaMaxMinus", &EBEtaMaxMinus, "EBEtaMaxMinus/F");
-	 EBTree->Branch("EBPhiMaxMinus", &EBPhiMaxMinus, "EBPhiMaxMinus/F");
+	 EBTree->Branch("EBEnergySumPlus", &EBEnergySumPlus, "EBEnergySumPlus/D");
+	 EBTree->Branch("EBEnergySumMinus", &EBEnergySumMinus, "EBEnergySumMinus/D");
+	 EBTree->Branch("EBEnergyMaxPlus", &EBEnergyMaxPlus, "EBEnergyMaxPlus/D");
+	 EBTree->Branch("EBEnergyMaxMinus", &EBEnergyMaxMinus, "EBEnergyMaxMinus/D");
+	 EBTree->Branch("EBEtaMaxPlus", &EBEtaMaxPlus, "EBEtaMaxPlus/D");
+	 EBTree->Branch("EBPhiMaxPlus", &EBPhiMaxPlus, "EBPhiMaxPlus/D");
+	 EBTree->Branch("EBEtaMaxMinus", &EBEtaMaxMinus, "EBEtaMaxMinus/D");
+	 EBTree->Branch("EBPhiMaxMinus", &EBPhiMaxMinus, "EBPhiMaxMinus/D");
       } else {
 	 EBTree->Branch("EBPhi", &EBPhi, "EBPhi[EBPulseCount]/F");
 	 EBTree->Branch("EBEta", &EBEta, "EBEta[EBPulseCount]/F");
-	 EBTree->Branch("EBEnergy", &EBEnergy, "EBEnergy[EBPulseCount]/F");
+	 EBTree->Branch("EBEnergy", &EBEnergy, "EBEnergy[EBPulseCount]/D");
       }
    }
 
@@ -499,18 +502,18 @@ void UPCRecHitAnalyzer::beginJob()
       EETree = new TTree("EERecHitTree","EERecHitTree");
       EETree->Branch("EEPulseCount", &EEPulseCount, "EEPulseCount/I");
       if(FillEESumOnly){
-	 EETree->Branch("EEEnergySumPlus", &EEEnergySumPlus, "EEEnergySumPlus/F");
-	 EETree->Branch("EEEnergySumMinus", &EEEnergySumMinus, "EEEnergySumMinus/F");
-	 EETree->Branch("EEEnergyMaxPlus", &EEEnergyMaxPlus, "EEEnergyMaxPlus/F");
-	 EETree->Branch("EEEnergyMaxMinus", &EEEnergyMaxMinus, "EEEnergyMaxMinus/F");
-	 EETree->Branch("EEEtaMaxPlus", &EEEtaMaxPlus, "EEEtaMaxPlus/F");
-	 EETree->Branch("EEPhiMaxPlus", &EEPhiMaxPlus, "EEPhiMaxPlus/F");
-	 EETree->Branch("EEEtaMaxMinus", &EEEtaMaxMinus, "EEEtaMaxMinus/F");
-	 EETree->Branch("EEPhiMaxMinus", &EEPhiMaxMinus, "EEPhiMaxMinus/F");
+	 EETree->Branch("EEEnergySumPlus", &EEEnergySumPlus, "EEEnergySumPlus/D");
+	 EETree->Branch("EEEnergySumMinus", &EEEnergySumMinus, "EEEnergySumMinus/D");
+	 EETree->Branch("EEEnergyMaxPlus", &EEEnergyMaxPlus, "EEEnergyMaxPlus/D");
+	 EETree->Branch("EEEnergyMaxMinus", &EEEnergyMaxMinus, "EEEnergyMaxMinus/D");
+	 EETree->Branch("EEEtaMaxPlus", &EEEtaMaxPlus, "EEEtaMaxPlus/D");
+	 EETree->Branch("EEPhiMaxPlus", &EEPhiMaxPlus, "EEPhiMaxPlus/D");
+	 EETree->Branch("EEEtaMaxMinus", &EEEtaMaxMinus, "EEEtaMaxMinus/D");
+	 EETree->Branch("EEPhiMaxMinus", &EEPhiMaxMinus, "EEPhiMaxMinus/D");
       } else {
 	 EETree->Branch("EEPhi", &EEPhi, "EEPhi[EEPulseCount]/F");
 	 EETree->Branch("EEEta", &EEEta, "EEEta[EEPulseCount]/F");
-	 EETree->Branch("EEEnergy", &EEEnergy, "EEEnergy[EEPulseCount]/F");
+	 EETree->Branch("EEEnergy", &EEEnergy, "EEEnergy[EEPulseCount]/D");
       }
    }
 }
