@@ -1,0 +1,10 @@
+Executable      = muonHadd.sh
+Universe        = vanilla
+should_transfer_files   = NO
+Rank            = kflops
+Requirements    = Arch == "X86_64"
+Getenv          = True
++AccountingGroup = "group_cmshi.mojoe137"
+
+Arguments = UPCSTARlightJPsiInCo2MuMuXn0n.root /net/hidsk0001/d00/scratch/mojoe137/CMSSW_4_4_3/src/Analyzers/UPCTriggerAnalyzer/condor/upcMuonCondor/inputFiles/upcMcJPsiInCoFiles.txt
+Queue 

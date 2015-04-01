@@ -1,0 +1,10 @@
+Executable      = muonOnlyUpcMon.sh
+Universe        = vanilla
+should_transfer_files   = NO
+Rank            = kflops
+Requirements    = Arch == "X86_64"
+Getenv          = True
++AccountingGroup = "group_cmshi.mojoe137"
+
+Arguments = inputFiles/UpcFiles$(Process) UPCMonMuOnlyTree$(Process).root
+Queue 255

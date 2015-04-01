@@ -1,0 +1,11 @@
+Executable      = muonUpcMon.sh
+Universe        = vanilla
+Error           = logs/err.$(Process)
+Output          = logs/out.$(Process)
+Log             = logs/log.$(Process)
+Rank            = kflops
+Requirements    = Arch == "X86_64"
+Getenv          = True
+
+Arguments = inputFiles/badUpcMonFile$(Process) output/UPCMonTree$(Process)_1.root
+Queue 76

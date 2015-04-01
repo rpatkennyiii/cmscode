@@ -1,0 +1,15 @@
+Executable      = muonUpcSplitMc.sh
+Universe        = vanilla
+Error           = logs/errMcSplit.$(Process)
+Output          = logs/outMcSplit.$(Process)
+Log             = logs/logMcSplit.$(Process)
+Rank            = kflops
+Requirements    = Arch == "X86_64"
+Getenv          = True
++AccountingGroup = "group_cmshi.mojoe137"
+
+Arguments = inputFiles/ltaGunSame$(Process).txt jPsiGunLTASamePt2MuMu_$(Process).root
+Queue 125
+
+Arguments = inputFiles/ltaGunOpp$(Process).txt jPsiGunLTAOppPt2MuMu_$(Process).root
+Queue 125

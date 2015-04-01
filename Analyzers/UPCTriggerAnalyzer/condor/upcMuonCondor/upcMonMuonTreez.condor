@@ -1,0 +1,12 @@
+Executable      = muonUpcMon.sh
+Universe        = vanilla
+Error           = logs/err.$(Process)
+Output          = logs/out.$(Process)
+Log             = logs/log.$(Process)
+Rank            = kflops
+Requirements    = Arch == "X86_64"
+Getenv          = True
++AccountingGroup = "group_cmshi.mojoe137"
+
+Arguments = inputFiles/UpcFiles$(Process) UPCMonTree$(Process).root
+Queue 225

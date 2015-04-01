@@ -1,0 +1,18 @@
+Executable      = muonUpcMc.sh
+Universe        = vanilla
+Error           = logs/err.$(Process)
+Output          = logs/out.$(Process)
+Log             = logs/log.$(Process)
+Rank            = kflops
+Requirements    = Arch == "X86_64"
+Getenv          = True
++AccountingGroup = "group_cmshi.mojoe137"
+
+Arguments = inputFiles/oniaMcFilesJPsi$(Process).txt UPCOniaMcJPsiTree$(Process).root
+Queue 100
+Arguments = inputFiles/oniaMcFilesPsiPrime$(Process).txt UPCOniaMcPsiPrimeTree$(Process).root
+Queue 100
+Arguments = inputFiles/oniaMcFilesUps$(Process).txt UPCOniaMcUpsTree$(Process).root
+Queue 100
+Arguments = inputFiles/oniaMcfilesGamma$(Process).txt UPCOniaMcGammaTree$(Process).root
+Queue 1000
