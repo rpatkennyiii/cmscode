@@ -8,6 +8,7 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/InputTag.h"
+#include "DataFormats/MuonReco/interface/MuonSelectors.h"
 #include "DataFormats/PatCandidates/interface/CompositeCandidate.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/Math/interface/deltaPhi.h"
@@ -15,14 +16,14 @@
 //TFile Service
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
-#include "TLorentzVector.h"
-#include "TRotation.h"
-#include "TVector3.h"
 
 //Root Classes
 #include "TTree.h"
 #include "TFile.h"
 #include "TString.h"
+#include "TLorentzVector.h"
+#include "TRotation.h"
+#include "TVector3.h"
 
 using namespace reco;
 using namespace std;
@@ -59,8 +60,6 @@ class UPCPatCandidateAnalyzer : public edm::EDAnalyzer {
       float cand_theta[100000];
       float cand_PolHXphi[100000];
       float cand_PolHXtheta[100000];
-      bool pass1[100000];
-      bool pass2[100000];
       
       //daughter Pat muons from the composite candidate
 

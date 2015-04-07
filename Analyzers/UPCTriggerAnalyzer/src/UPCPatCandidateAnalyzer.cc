@@ -24,10 +24,11 @@ void UPCPatCandidateAnalyzer::beginJob(){
   candTree->Branch("cand_et", cand_et, "cand_et[acceptedCand]/F");
   candTree->Branch("cand_px", cand_px, "cand_px[acceptedCand]/F");
   candTree->Branch("cand_py", cand_py, "cand_py[acceptedCand]/F");
-  candTree->Branch("cand_vProb", cand_vProb, "cand_vProb[acceptedCand]/F");
   candTree->Branch("cand_pz", cand_pz, "cand_pz[acceptedCand]/F");
   candTree->Branch("cand_theta", cand_theta, "cand_theta[acceptedCand]/F");
   candTree->Branch("cand_dPhi", cand_dPhi, "cand_dPhi[acceptedCand]/F");
+  candTree->Branch("cand_PolHXphi", cand_PolHXphi, "cand_PolHXphi[acceptedCand]/F");
+  candTree->Branch("cand_PolHXtheta", cand_PolHXtheta, "cand_PolHXtheta[acceptedCand]/F");
   candTree->Branch("cand_vProb", cand_vProb, "cand_vProb[acceptedCand]/F");
 
   candTree->Branch("muon1_pt", muon1_pt, "muon1_pt[acceptedCand]/F");
@@ -162,6 +163,7 @@ void UPCPatCandidateAnalyzer::analyze(const edm::Event& iEvent, const edm::Event
       muon1_caloMuonCompatibility[cand_size] = muon1->caloCompatibility();
       muon1_dB[cand_size]=muon1->dB();
       muon1_numberOfMatchedStations[cand_size]=muon1->numberOfMatchedStations();
+      muon1_trkArbit[cand_size]=bool(muon1->muonID("TrackerMuonArbitrated"));
       muon1_isGoodMuon[cand_size]=bool(muon::isGoodMuon((*muon1),muon::TMOneStationTight));
       muon1_l1DeltaR[cand_size]=muon1->userFloat("muonL1Info:deltaR");
       muon1_l1Quality[cand_size]=muon1->userInt("muonL1Info:quality");
@@ -196,9 +198,12 @@ void UPCPatCandidateAnalyzer::analyze(const edm::Event& iEvent, const edm::Event
       muon2_StandAlone[cand_size] = muon2->isStandAloneMuon();
       muon2_Global[cand_size] = muon2->isGlobalMuon();
       muon2_Tracker[cand_size] = muon2->isTrackerMuon();
+      muon2_Calo[cand_size] = muon2->isCaloMuon();
       muon2_rapidity[cand_size] = muon2->rapidity();
+      muon2_caloMuonCompatibility[cand_size] = muon2->caloCompatibility();
       muon2_dB[cand_size]=muon2->dB();
       muon2_numberOfMatchedStations[cand_size]=muon2->numberOfMatchedStations();
+      muon2_trkArbit[cand_size]=bool(muon2->muonID("TrackerMuonArbitrated"));
       muon2_isGoodMuon[cand_size]=bool(muon::isGoodMuon((*muon2),muon::TMOneStationTight));
       muon2_l1DeltaR[cand_size]=muon2->userFloat("muonL1Info:deltaR");
       muon2_l1Quality[cand_size]=muon2->userInt("muonL1Info:quality");
@@ -223,7 +228,7 @@ void UPCPatCandidateAnalyzer::analyze(const edm::Event& iEvent, const edm::Event
       muon2_caloMuonHad[cand_size]=muE.had;
       muon2_caloMuonHadS9[cand_size]=muE.hadS9;
       muon2_caloMuonHadMax[cand_size]=muE.hadMax;
- 
+
       cand_size++;
     }
   }
