@@ -1,0 +1,51 @@
+Executable      = muonUpcMon.sh
+Universe        = vanilla
+Error           = logs/errBad.$(Process)
+Output          = logs/outBad.$(Process)
+Log             = logs/logBad.$(Process)
+Rank            = kflops
+Requirements    = Arch == "X86_64"
+Getenv          = True
++AccountingGroup = "group_cmshi.mojoe137"
+
+Arguments = inputFiles/badUpcMonFile37 output/UPCMonTree37_2.root
+Queue
+
+#Arguments = inputFiles/badUpcMonFile40 output/UPCMonTree40_2.root
+#Queue
+#
+#Arguments = inputFiles/badUpcMonFile43 output/UPCMonTree43_2.root
+#Queue
+#
+#Arguments = inputFiles/badUpcMonFile50 output/UPCMonTree50_2.root
+#Queue
+#
+#Arguments = inputFiles/badUpcMonFile51 output/UPCMonTree51_2.root
+#Queue
+#
+#Arguments = inputFiles/badUpcMonFile53 output/UPCMonTree53_2.root
+#Queue
+#
+#Arguments = inputFiles/badUpcMonFile54 output/UPCMonTree54_2.root
+#Queue
+#
+#Arguments = inputFiles/badUpcMonFile64 output/UPCMonTree64_2.root
+#Queue
+#
+#Arguments = inputFiles/badUpcMonFile65 output/UPCMonTree65_2.root
+#Queue
+#
+#Arguments = inputFiles/badUpcMonFile66 output/UPCMonTree66_2.root
+#Queue
+#
+#Arguments = inputFiles/badUpcMonFile70 output/UPCMonTree70_2.root
+#Queue
+#
+#Arguments = inputFiles/badUpcMonFile73 output/UPCMonTree73_2.root
+#Queue
+#
+#Arguments = inputFiles/badUpcMonFile74 output/UPCMonTree74_2.root
+#Queue
+#
+#Arguments = inputFiles/badUpcMonFile75 output/UPCMonTree75_2.root
+#Queue

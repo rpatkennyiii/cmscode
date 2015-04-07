@@ -1,0 +1,14 @@
+Executable      = muonUpcRH.sh
+Universe        = vanilla
+Error           = logs/err.$(Process)
+Output          = logs/out.$(Process)
+Log             = logs/log.$(Process)
+Rank            = kflops
+Requirements    = Arch == "X86_64"
+Getenv          = True
+should_transfer_files   = YES
+when_to_transfer_output = ON_EXIT
++AccountingGroup = "group_cmshi.mojoe137"
+
+Arguments = inputFiles/UPCOniaFile$(Process).txt  UPCOniaCutRHTree$(Process).root
+Queue 255

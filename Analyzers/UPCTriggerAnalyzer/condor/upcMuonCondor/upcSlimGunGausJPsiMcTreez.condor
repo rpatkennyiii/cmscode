@@ -1,0 +1,12 @@
+Executable      = muonUpcSlimMc.sh
+Universe        = vanilla
+Error           = logs/errMcSplit.$(Process)
+Output          = logs/outMcSplit.$(Process)
+Log             = logs/logMcSplit.$(Process)
+Rank            = kflops
+Requirements    = Arch == "X86_64"
+Getenv          = True
++AccountingGroup = "group_cmshi.mojoe137"
+
+Arguments = inputFiles/upcGunGausJPsiOniaFile$(Process).txt jPsiGunGausPt2MuMuSlim_$(Process).root
+Queue 1000

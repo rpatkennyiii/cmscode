@@ -1,0 +1,10 @@
+Executable      = muonUpcSplitMc.sh
+Universe        = vanilla
+should_transfer_files   = NO
+Rank            = kflops
+Requirements    = Arch == "X86_64"
+Getenv          = True
++AccountingGroup = "group_cmshi.mojoe137"
+
+Arguments = inputFiles/upcSLGammaOniaFile$(Process).txt UPCSTARlightGammaCo2MuMuXn0nNZS_$(Process).root
+Queue 1000

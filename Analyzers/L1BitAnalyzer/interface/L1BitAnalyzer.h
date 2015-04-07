@@ -43,7 +43,7 @@ public:
 private:
   edm::Service<TFileService> mFileServer;
   TTree *L1BitTree;
-  unsigned int RunData[5], nBits, L1BitsPs[400];
+  unsigned int RunData[5], nBits, nHltBits, L1BitsPs[400], HltBitsPs[400];
   bool L1Bits[400], firstEv;
   edm::InputTag l1GtRR_, hltresults_;
   std::string treeName;

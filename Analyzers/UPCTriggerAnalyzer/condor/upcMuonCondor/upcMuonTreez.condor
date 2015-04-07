@@ -1,0 +1,11 @@
+Executable      = muonUpc.sh
+Universe        = vanilla
+Error           = logs/err.$(Process)
+Output          = logs/out.$(Process)
+Log             = logs/log.$(Process)
+Rank            = kflops
+Requirements    = Arch == "X86_64"
+Getenv          = True
+
+Arguments = inputFiles/UpcFiles$(Process) UPCTree$(Process).root
+Queue 225

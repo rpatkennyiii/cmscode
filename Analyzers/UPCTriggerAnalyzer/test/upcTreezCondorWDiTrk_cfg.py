@@ -4,7 +4,7 @@ import sys
 
 infile=open(sys.argv[2])
 outfile=(sys.argv[3])
-process = cms.Process("UPCTreeMaker")
+process = cms.Process("PAUPCTreeMaker")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
@@ -13,8 +13,6 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.load("HeavyIonsAnalysis.Configuration.collisionEventSelection_cff")
 process.load("Analyzers.UPCTriggerAnalyzer.upcPixelClusterShapeAnalyzer_cfi")
-process.load("Analyzers.UPCTriggerAnalyzer.upcPixelTrack_cff")
-process.load("Analyzers.UPCTriggerAnalyzer.upcExCaloCuts_cff")
 process.load("HiSkim.HiOnia2MuMu.upcOnia2MuMuDiTrk_cfi")
 process.load("HiSkim.HiOnia2MuMu.upcPatMuonsWithTrigger_cff")
 
@@ -34,7 +32,7 @@ process.HeavyIonGlobalParameters=cms.PSet(centralityVariable= cms.string("PixelH
 )
 
 process.triggerSelection = cms.EDFilter( "TriggerResultsFilter",
-	 triggerConditions = cms.vstring("HLT_HIUPCNeuMuPixel_SingleTrack_v1"),
+	 triggerConditions = cms.vstring("HLT_PAUpcSingleMuOpenFull_TrackVeto7_v1"),
 	 hltResults = cms.InputTag("TriggerResults::HLT"),
 	 l1tResults = cms.InputTag("gtDigis"),
 	 daqPartitions = cms.uint32( 0x01 ),
@@ -45,7 +43,7 @@ process.triggerSelection = cms.EDFilter( "TriggerResultsFilter",
 
 process.primaryVertexFilter.cut = cms.string("!isFake && abs(z) <= 25 && position.Rho <= 2")
 
-process.GlobalTag.globaltag = 'GR_R_44_V13::All'
+process.GlobalTag.globaltag = 'GR_R_53_V21A::All'
 
 process.l1bitana = cms.EDAnalyzer('L1BitAnalyzer',
 	l1GtRR=cms.InputTag("gtDigis"),
@@ -97,17 +95,17 @@ process.castorana = cms.EDAnalyzer('UPCCastorAnalyzer')
 
 process.candtraana = cms.EDAnalyzer("UPCPatCandidateAnalyzer",
 	patDiMuon=cms.InputTag("onia2MuMuPatDiTrks"),
-	hltTrigger=cms.string("HLT_HIUPCNeuMuPixel_SingleTrack_v1")
+	hltTrigger=cms.string("HLT_PAUpcSingleMuOpenFull_TrackVeto7_v1")
 )
 
 process.candglbana = cms.EDAnalyzer("UPCPatCandidateAnalyzer",
 	patDiMuon=cms.InputTag("onia2MuMuPatGlbGlb"),
-	hltTrigger=cms.string("HLT_HIUPCNeuMuPixel_SingleTrack_v1")
+	hltTrigger=cms.string("HLT_PAUpcSingleMuOpenFull_TrackVeto7_v1")
 )
 
 process.candtratraana = cms.EDAnalyzer("UPCPatCandidateAnalyzer",
 	patDiMuon=cms.InputTag("onia2MuMuPatTraTra"),
-	hltTrigger=cms.string("HLT_HIUPCNeuMuPixel_SingleTrack_v1")
+	hltTrigger=cms.string("HLT_PAUpcSingleMuOpenFull_TrackVeto7_v1")
 )
 
 process.candCount = cms.EDFilter("CandCountFilter",
@@ -176,9 +174,8 @@ process.onia2MuMuPatTraTra = cms.EDProducer('HiOnia2MuMuPAT',
     resolvePileUpAmbiguity = cms.bool(False)   ## Order PVs by their vicinity to the J/psi vertex, not by sumPt                            
 )
 
-process.siTrackSeq = cms.Sequence(process.siPixSeq+process.upctrackpix)
 process.trackSeq = cms.Sequence(process.upctrackselana)
-process.runSeq = cms.Sequence(process.siPixelRecHits+process.upcPixelClusterShapeAnalyzer+process.upcvertexana+process.upccentralityana)
+process.runSeq = cms.Sequence(process.siPixelRecHits+process.upcPixelClusterShapeAnalyzer+process.upcvertexana)
 process.zdcSeq = cms.Sequence(process.zdcana)
 process.ecalclustSeq = cms.Sequence(process.eclustbana+process.eclusteana)
 process.muSeq = cms.Sequence(process.upcPatMuonsWithTriggerSequence+process.upcmuana)

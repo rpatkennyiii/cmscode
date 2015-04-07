@@ -1,0 +1,13 @@
+Executable      = muonUpcSplitMc.sh
+Universe        = vanilla
+should_transfer_files   = NO
+Rank            = kflops
+Requirements    = Arch == "X86_64"
+Getenv          = True
++AccountingGroup = "group_cmshi.mojoe137"
+
+Arguments = inputFiles/upcSLJPsiCoOniaFile123.txt UPCSTARlightJPsiCo2MuMuXn0n_284.root
+Queue
+
+Arguments = inputFiles/upcSLJPsiCoOniaFile165.txt UPCSTARlightJPsiCo2MuMuXn0n_403.root
+Queue

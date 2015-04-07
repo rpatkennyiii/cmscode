@@ -1,0 +1,25 @@
+Executable      = muonUpcEGMon.sh
+Universe        = vanilla
+should_transfer_files   = NO
+Rank            = kflops
+Requirements    = Arch == "X86_64"
+Getenv          = True
++AccountingGroup = "group_cmshi.mojoe137"
+
+Arguments = inputFiles/UpcFiles105 UPCEGMonTree105.root
+Queue
+
+Arguments = inputFiles/UpcFiles110 UPCEGMonTree110.root
+Queue
+
+Arguments = inputFiles/UpcFiles119 UPCEGMonTree119.root
+Queue
+
+Arguments = inputFiles/UpcFiles72 UPCEGMonTree72.root
+Queue
+
+Arguments = inputFiles/UpcFiles94 UPCEGMonTree94.root
+Queue
+
+Arguments = inputFiles/UpcFiles97 UPCEGMonTree97.root
+Queue
