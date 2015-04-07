@@ -1,1 +1,0 @@
-root://xrootd.vanderbilt.edu//store/hidata/HIRun2011/HIMinBiasUPC/RECO/12Jun2013-v1/10000/38565894-E0DD-E211-BB78-00A0D1E952C2.root

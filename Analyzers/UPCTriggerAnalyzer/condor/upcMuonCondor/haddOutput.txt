@@ -1,2 +1,0 @@
-Target file: UPCOniaTree.root
-Source file 1: /mnt/hadoop/cms/store/user/pkenny/UPCData/UPCTrees/U*

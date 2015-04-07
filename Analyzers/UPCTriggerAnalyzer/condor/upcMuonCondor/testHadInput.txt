@@ -1,2 +1,0 @@
-root://xrootd.cmsaf.mit.edu//store/user/pkenny/STARlightData/UPCTrees/UPCSTARlightJPsiCo2MuMuXn0n_0.root
-root://xrootd.cmsaf.mit.edu//store/user/pkenny/STARlightData/UPCTrees/UPCSTARlightJPsiCo2MuMuXn0n_100.root

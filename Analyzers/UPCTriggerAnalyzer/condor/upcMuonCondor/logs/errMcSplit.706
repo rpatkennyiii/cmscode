@@ -1,3 +1,0 @@
-/net/hidsk0001/d00/scratch/mojoe137/CMSSW_4_4_3/src/Analyzers/UPCTriggerAnalyzer/condor/upcMuonCondor/muonUpcSplitMc.sh: line 9: scram: command not found
-/net/hidsk0001/d00/scratch/mojoe137/CMSSW_4_4_3/src/Analyzers/UPCTriggerAnalyzer/condor/upcMuonCondor/muonUpcSplitMc.sh: line 12: cmsRun: command not found
-mv: cannot stat `/condor/execute/dir_8988/UPCSTARlightGammaCo2MuMuXn0nNZS_706.root': No such file or directory

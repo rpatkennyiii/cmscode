@@ -1,1 +1,0 @@
-root://xrootd.cmsaf.mit.edu//store/user/pkenny/STARlightData/OniaRECO/Gamma/MuMu/Xn0n/Co/STARlight_GammaMuMuXn0nCo_RECOnia44Y_559.root

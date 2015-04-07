@@ -1,1 +1,0 @@
-root://xrootd.cmsaf.mit.edu//store/user/pkenny/STARlightData/OniaRECO/JPsi/MuMu/Xn0n/InCo/STARlight_JPsiMuMuXn0nInCo_RECOnia44Y_150.root
