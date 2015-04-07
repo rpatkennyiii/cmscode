@@ -15,6 +15,9 @@
 //TFile Service
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
+#include "TLorentzVector.h"
+#include "TRotation.h"
+#include "TVector3.h"
 
 //Root Classes
 #include "TTree.h"
@@ -32,6 +35,7 @@ class UPCPatCandidateAnalyzer : public edm::EDAnalyzer {
    private:
       virtual void beginJob();
       virtual void analyze(const edm::Event&, const edm::EventSetup&);
+      float* calcPol(TLorentzVector,TLorentzVector);
 
       edm::Service<TFileService> mFileServer;
       edm::Handle<pat::CompositeCandidateCollection> collDiMuon;
@@ -53,6 +57,8 @@ class UPCPatCandidateAnalyzer : public edm::EDAnalyzer {
       float cand_py[100000];
       float cand_pz[100000];
       float cand_theta[100000];
+      float cand_PolHXphi[100000];
+      float cand_PolHXtheta[100000];
       bool pass1[100000];
       bool pass2[100000];
       
@@ -66,15 +72,31 @@ class UPCPatCandidateAnalyzer : public edm::EDAnalyzer {
       int muon1_StandAlone[100000];
       int muon1_Global[100000];
       int muon1_Tracker[100000];
+      int muon1_Calo[100000];
+      int muon1_l1Quality[100000];
+      float muon1_l1DeltaR[100000];
       float muon1_rapidity[100000];
+      float muon1_caloMuonCompatibility[100000];
+      float muon1_caloMuonTower[100000];
+      float muon1_caloMuonTowerS9[100000];
+      float muon1_caloMuonEm[100000];
+      float muon1_caloMuonEmS9[100000];
+      float muon1_caloMuonEmS25[100000];
+      float muon1_caloMuonEmMax[100000];
+      float muon1_caloMuonHad[100000];
+      float muon1_caloMuonHadS9[100000];
+      float muon1_caloMuonHadMax[100000];
       float muon1_numberOfValidHits[100000];
       float muon1_pixelLayersWithMeasurement[100000];
+      float muon1_trackerLayersWithMeasurement[100000];
       float muon1_normalizedChi2[100000];
       float muon1_dz[100000];
       float muon1_dB[100000];
       float muon1_numberOfMatchedStations[100000];
       float muon1_ndof[100000];
       bool muon1_trkArbit[100000];
+      bool muon1_isGoodMuon[100000];
+      bool muon1_pass[100000];
 
       float muon2_pt[100000];
       float muon2_eta[100000];
@@ -84,15 +106,31 @@ class UPCPatCandidateAnalyzer : public edm::EDAnalyzer {
       int muon2_StandAlone[100000];
       int muon2_Global[100000];
       int muon2_Tracker[100000];
+      int muon2_Calo[100000];
+      int muon2_l1Quality[100000];
+      float muon2_l1DeltaR[100000];
       float muon2_rapidity[100000];
+      float muon2_caloMuonCompatibility[100000];
+      float muon2_caloMuonTower[100000];
+      float muon2_caloMuonTowerS9[100000];
+      float muon2_caloMuonEm[100000];
+      float muon2_caloMuonEmS9[100000];
+      float muon2_caloMuonEmS25[100000];
+      float muon2_caloMuonEmMax[100000];
+      float muon2_caloMuonHad[100000];
+      float muon2_caloMuonHadS9[100000];
+      float muon2_caloMuonHadMax[100000];
       float muon2_numberOfValidHits[100000];
       float muon2_pixelLayersWithMeasurement[100000];
+      float muon2_trackerLayersWithMeasurement[100000];
       float muon2_normalizedChi2[100000];
       float muon2_dz[100000];
       float muon2_dB[100000];
       float muon2_numberOfMatchedStations[100000];
       float muon2_ndof[100000];
       bool muon2_trkArbit[100000];
+      bool muon2_isGoodMuon[100000];
+      bool muon2_pass[100000];
 
       float cand_dPhi[100000];
       float cand_vProb[100000];

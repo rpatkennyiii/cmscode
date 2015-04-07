@@ -31,15 +31,18 @@ private:
 	virtual void getParticles(edm::Handle<vector<reco::GenParticle> >, 
              vector<double>&, vector<double>&, vector<double>&, 
              vector<double>&, vector<double>&, vector<double>&,
+	     vector<double>&,
              vector<double>&, vector<double>&);
 
 	edm::Service<TFileService> mFileServer;
 
 	string genParticleCollection; 
+	string treeName; 
 
 	int nParticles;
+        double polCosTheta;
 	vector<double>  x, y, z, 
-			px, py, pz,
+			px, py, pz, eta,
 			mass, charge;
  
 	TTree* GenPartTree;
