@@ -29,7 +29,7 @@ private:
 
 	edm::Service<TFileService> mFileServer;
 
-	int RunData[4];
+	int RunData[5];
 
 	TTree* RunTree;
 };

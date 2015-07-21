@@ -14,6 +14,7 @@ void UPCRunAnalyzer::beginJob(){
 	RunTree->Branch("LumiBlock",&RunData[1],"LumiBlock/I");
 	RunTree->Branch("Event",&RunData[2],"Event/I");
 	RunTree->Branch("Run",&RunData[3],"Run/I");
+	RunTree->Branch("Time",&RunData[2],"Time/I");
 }
 
 void UPCRunAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
@@ -21,6 +22,7 @@ void UPCRunAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 	RunData[1]=iEvent.id().luminosityBlock();
 	RunData[2]=iEvent.id().event();
 	RunData[3]=iEvent.id().run();
+        RunData[4]=iEvent.time().unixTime();
 
 	RunTree->Fill();
 }

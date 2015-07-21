@@ -20,6 +20,7 @@
 <use   name="Geometry/Records"/>
 <use   name="Geometry/CommonDetUnit"/>
 <use   name="Geometry/CaloGeometry"/>
+<use   name="RecoHI/HiCentralityAlgos"/>
 <use   name="rootgpad"/>
 <use   name="root"/>
 <flags   EDM_PLUGIN="1"/>

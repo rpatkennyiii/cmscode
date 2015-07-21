@@ -27,14 +27,16 @@ private:
         virtual void endJob(){};
 	virtual bool filter(edm::Event&, const edm::EventSetup&);
 
-	double hfThreshold;	
+	double hfMinusThreshold;	
+	double hfPlusThreshold;	
 	double heThreshold;	
 	double hbThreshold;	
 	double eeThreshold;	
 	double ebThreshold;	
 };
 
-UPCMaxCalFilter::UPCMaxCalFilter(const ParameterSet& iConfig):hfThreshold(iConfig.getUntrackedParameter<double>("hfThreshold")),
+UPCMaxCalFilter::UPCMaxCalFilter(const ParameterSet& iConfig):hfMinusThreshold(iConfig.getUntrackedParameter<double>("hfMinusThreshold")),
+  hfPlusThreshold(iConfig.getUntrackedParameter<double>("hfPlusThreshold")),
 	heThreshold(iConfig.getUntrackedParameter<double>("heThreshold")),
 	hbThreshold(iConfig.getUntrackedParameter<double>("hbThreshold")),
 	eeThreshold(iConfig.getUntrackedParameter<double>("eeThreshold")),
@@ -47,7 +49,8 @@ bool UPCMaxCalFilter::filter(Event& iEvent, const EventSetup& iSetup)
 
 	if(!calotower.failedToGet()){
 		for(CaloTowerCollection::const_iterator calt=(&*calotower)->begin();calt!=(&*calotower)->end();calt++){
-			bool CaloIsHF=0;
+			bool CaloIsHFMinus=0;
+			bool CaloIsHFPlus=0;
 			bool CaloIsHB=0;
 			bool CaloIsHE=0;
 			bool CaloIsEE=0;
@@ -57,18 +60,20 @@ bool UPCMaxCalFilter::filter(Event& iEvent, const EventSetup& iSetup)
 			for(unsigned i=0; i < detIds.size(); i++){
 				HcalDetId hcalDetId((detIds[i].det()==DetId::Hcal)?HcalDetId(detIds[i]):HcalDetId()); 
 
-				CaloIsHF=(CaloIsHF||(hcalDetId.subdet()==HcalForward&&detIds[i].det()==DetId::Hcal))?1:0;
+				CaloIsHFMinus=(CaloIsHFMinus||(hcalDetId.zside()<0&&hcalDetId.subdet()==HcalForward&&detIds[i].det()==DetId::Hcal))?1:0;
+				CaloIsHFPlus=(CaloIsHFPlus||(hcalDetId.zside()>0&&hcalDetId.subdet()==HcalForward&&detIds[i].det()==DetId::Hcal))?1:0;
 				CaloIsHB=(CaloIsHB||(hcalDetId.subdet()==HcalBarrel&&detIds[i].det()==DetId::Hcal))?1:0;
 				CaloIsHE=(CaloIsHE||(hcalDetId.subdet()==HcalEndcap&&detIds[i].det()==DetId::Hcal))?1:0;
 				CaloIsEB=(CaloIsEB||(EcalSubdetector(detIds[i].subdetId())==EcalBarrel&&detIds[i].det()==DetId::Ecal))?1:0;
 				CaloIsEE=(CaloIsEE||(EcalSubdetector(detIds[i].subdetId())==EcalEndcap&&detIds[i].det()==DetId::Ecal))?1:0;
 			}
 
-			if(CaloIsEB&&(calt->emEnergy()>ebThreshold))return 0;
-			if(CaloIsEE&&(calt->emEnergy()>eeThreshold))return 0;
-			if(CaloIsHB&&(calt->hadEnergy()>hbThreshold))return 0;
-			if(CaloIsHE&&(calt->hadEnergy()>heThreshold))return 0;
-			if(CaloIsHF&&(calt->hadEnergy()>hfThreshold))return 0;
+			if(CaloIsEB&&(calt->emEnergy()>ebThreshold)&&ebThreshold!=9999)return 0;
+			if(CaloIsEE&&(calt->emEnergy()>eeThreshold)&&eeThreshold!=9999)return 0;
+			if(CaloIsHB&&(calt->hadEnergy()>hbThreshold)&&hbThreshold!=9999)return 0;
+			if(CaloIsHE&&(calt->hadEnergy()>heThreshold)&&heThreshold!=9999)return 0;
+			if(CaloIsHFMinus&&(calt->energy()>hfMinusThreshold)&&hfMinusThreshold!=9999)return 0;
+			if(CaloIsHFPlus&&(calt->energy()>hfPlusThreshold)&&hfPlusThreshold!=9999)return 0;
 		}
 
 		return 1;

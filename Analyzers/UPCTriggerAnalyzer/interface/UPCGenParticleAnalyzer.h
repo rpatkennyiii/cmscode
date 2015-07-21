@@ -17,6 +17,7 @@
 //Root Classes
 #include "TTree.h"
 #include "TFile.h"
+#include "TLorentzVector.h"
 
 using namespace reco;
 using namespace std;
@@ -31,8 +32,8 @@ private:
 	virtual void getParticles(edm::Handle<vector<reco::GenParticle> >, 
              vector<double>&, vector<double>&, vector<double>&, 
              vector<double>&, vector<double>&, vector<double>&,
-	     vector<double>&,
-             vector<double>&, vector<double>&);
+	     vector<double>&, vector<double>&);
+        float calcPolHXCosTheta(TLorentzVector, TLorentzVector);
 
 	edm::Service<TFileService> mFileServer;
 

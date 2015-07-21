@@ -48,7 +48,7 @@ void UPCGenParticleAnalyzer::analyze(const edm::Event& iEvent, const edm::EventS
 	 muMinus=TLorentzVector(px[4],py[4],pz[4],e1);
 	}
 	 
-	polCosTheta=calcPol(muPlus,muMinus);
+	polCosTheta=calcPolHXCosTheta(muPlus,muMinus);
 
 	GenPartTree->SetBranchAddress("nParticles",&nParticles);
 	GenPartTree->SetBranchAddress("x",&x[0]);
@@ -82,16 +82,15 @@ void UPCGenParticleAnalyzer::getParticles(Handle<vector<reco::GenParticle> > Par
 	 }  
 }
 
-float UPCGenParticleAnalyzer::calcPolHXCosTheta(TLorentzVector muplus_LAB,
-	     TLorentzVector muminus_LAB){
+float UPCGenParticleAnalyzer::calcPolHXCosTheta(TLorentzVector muPlus_LAB,
+	     TLorentzVector muMinus_LAB){
 	TLorentzVector jPsi=muPlus_LAB+muMinus_LAB; 
 
 	TVector3 jPsiHat=jPsi.Vect().Unit(); 
 	TVector3 boost=-jPsi.BoostVector(); 
 
-	muPlus.Boost(boost); 
-	TVector3 muPlusHat=muPlus.Vect().Unit(); 
+	muPlus_LAB.Boost(boost); 
+	TVector3 muPlusHat=muPlus_LAB.Vect().Unit(); 
 	 
 	return(jPsiHat.Dot(muPlusHat));
 }
-
